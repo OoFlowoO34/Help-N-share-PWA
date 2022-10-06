@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Demand{% endblock %}
+
+{% block body %}
+    <h1>Demand</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ demand.id }}</td>
+            </tr>
+            <tr>
+                <th>Title</th>
+                <td>{{ demand.title }}</td>
+            </tr>
+            <tr>
+                <th>Text</th>
+                <td>{{ demand.text }}</td>
+            </tr>
+            <tr>
+                <th>Photo</th>
+                <td>{{ demand.photo }}</td>
+            </tr>
+            <tr>
+                <th>Date_created</th>
+                <td>{{ demand.dateCreated ? demand.dateCreated|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Date_modified</th>
+                <td>{{ demand.dateModified ? demand.dateModified|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Deleted</th>
+                <td>{{ demand.deleted ? 'Yes' : 'No' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_demand_index') }}">back to list</a>
+
+    <a href="{{ path('app_demand_edit', {'id': demand.id}) }}">edit</a>
+
+    {{ include('demand/_delete_form.html.twig') }}
+{% endblock %}

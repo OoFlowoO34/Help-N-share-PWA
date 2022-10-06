@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Demand index{% endblock %}
+
+{% block body %}
+    <h1>Demand index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Title</th>
+                <th>Text</th>
+                <th>Photo</th>
+                <th>Date_created</th>
+                <th>Date_modified</th>
+                <th>Deleted</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for demand in demands %}
+            <tr>
+                <td>{{ demand.id }}</td>
+                <td>{{ demand.title }}</td>
+                <td>{{ demand.text }}</td>
+                <td>{{ demand.photo }}</td>
+                <td>{{ demand.dateCreated ? demand.dateCreated|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ demand.dateModified ? demand.dateModified|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ demand.deleted ? 'Yes' : 'No' }}</td>
+                <td>
+                    <a href="{{ path('app_demand_show', {'id': demand.id}) }}">show</a>
+                    <a href="{{ path('app_demand_edit', {'id': demand.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="8">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_demand_new') }}">Create new</a>
+{% endblock %}

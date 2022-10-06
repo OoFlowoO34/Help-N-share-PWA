@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -37,6 +39,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $photo = null;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Demand::class, orphanRemoval: true)]
+    private Collection $demands;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Proposal::class, orphanRemoval: true)]
+    private Collection $proposals;
+
+    public function __construct()
+    {
+        $this->demands = new ArrayCollection();
+        $this->proposals = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -140,6 +154,66 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPhoto(?string $photo): self
     {
         $this->photo = $photo;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Demand>
+     */
+    public function getDemands(): Collection
+    {
+        return $this->demands;
+    }
+
+    public function addDemand(Demand $demand): self
+    {
+        if (!$this->demands->contains($demand)) {
+            $this->demands->add($demand);
+            $demand->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDemand(Demand $demand): self
+    {
+        if ($this->demands->removeElement($demand)) {
+            // set the owning side to null (unless already changed)
+            if ($demand->getUser() === $this) {
+                $demand->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Proposal>
+     */
+    public function getProposals(): Collection
+    {
+        return $this->proposals;
+    }
+
+    public function addProposal(Proposal $proposal): self
+    {
+        if (!$this->proposals->contains($proposal)) {
+            $this->proposals->add($proposal);
+            $proposal->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProposal(Proposal $proposal): self
+    {
+        if ($this->proposals->removeElement($proposal)) {
+            // set the owning side to null (unless already changed)
+            if ($proposal->getUser() === $this) {
+                $proposal->setUser(null);
+            }
+        }
 
         return $this;
     }

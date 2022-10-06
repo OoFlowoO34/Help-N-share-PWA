@@ -2,12 +2,12 @@
 
 namespace App\Entity;
 
-use App\Repository\DemandRepository;
+use App\Repository\ProposalRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: DemandRepository::class)]
-class Demand
+#[ORM\Entity(repositoryClass: ProposalRepository::class)]
+class Proposal
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -32,7 +32,7 @@ class Demand
     #[ORM\Column]
     private ?bool $deleted = null;
 
-    #[ORM\ManyToOne(inversedBy: 'demands')]
+    #[ORM\ManyToOne(inversedBy: 'proposals')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
