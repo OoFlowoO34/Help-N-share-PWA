@@ -7,9 +7,9 @@ use Faker\Factory;
 use App\Entity\User;
 use Faker\Generator;
 use App\Entity\Demand;
+use App\Entity\Proposal;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class AppFixtures extends Fixture
@@ -26,26 +26,7 @@ class AppFixtures extends Fixture
     public function load(ObjectManager $manager): void
     {
         /**
-         * Generate fake users, put it in a tab so it can be reused to generate the other entities related to User.
-         */
-        $users = [];
-        for ($i = 0; $i< 20; ++$i) {
-            $user = new User();
-            $user->setEmail($this->faker->email());
-            $user->setRoles([]);
-            $user->setPassword($this->hasher->hashPassword(
-                $user,
-                'password'
-            ));
-            $user->setPseudo($this->faker->firstName());
-            $user->setLocation($this->faker->region());
-            $user->setPhoto($this->faker->imageUrl(200, 200, 'photo', true));
-            $users[] = $user;
-            $manager->persist($user);
-        }
-
-        /**
-         * Generate fake demands, put it in a tab so it can be reused to generate the other entities related to User.
+         * Generate fake Users, put it in a tab so it can be reused to generate the other related entities.
          */
         $users = [];
         for ($i = 0; $i< 20; ++$i) {
@@ -63,10 +44,12 @@ class AppFixtures extends Fixture
             $manager->persist($user);
         }
 
-        $demands = [];
+        /**
+         * Generate fake Demands
+         */
+    
         for ($i = 0; $i< 20; ++$i) {
 
-            
             // Generated two random values, the value of the modified date must be less than the created date
             // so the random value for modified is between 0 and the value generated for the created date      
             $rand_weeks_created = mt_rand(0, 365);
@@ -80,8 +63,29 @@ class AppFixtures extends Fixture
             $demand->setDateModified($this->faker->dateTimeBetween('-'.$rand_weeks_modified.' days'));
             $demand->setDeleted($this->faker->boolean());
             $demand->setUser($users[mt_rand(0, count($users) - 1)]);  
-            $demands[] = $demand;
             $manager->persist($demand);
+        }
+
+        /**
+         * Generate fake Proposals
+         */
+    
+        for ($i = 0; $i< 20; ++$i) {
+
+            // Generated two random values, the value of the modified date must be less than the created date
+            // so the random value for modified is between 0 and the value generated for the created date      
+            $rand_weeks_created = mt_rand(0, 365);
+            $rand_weeks_modified = mt_rand(0,$rand_weeks_created);
+
+            $proposal = new Proposal();
+            $proposal->setTitle($this->faker->sentence(3));
+            $proposal->setText($this->faker->text());
+            $proposal->setPhoto($this->faker->imageUrl(200, 200, 'photo', true));
+            $proposal->setDateCreated($this->faker->dateTimeBetween('-'.$rand_weeks_created.' days','-'.$rand_weeks_modified.' days'));
+            $proposal->setDateModified($this->faker->dateTimeBetween('-'.$rand_weeks_modified.' days'));
+            $proposal->setDeleted($this->faker->boolean());
+            $proposal->setUser($users[mt_rand(0, count($users) - 1)]);  
+            $manager->persist($proposal);
         }
         $manager->flush();
     }
