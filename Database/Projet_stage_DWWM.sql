@@ -1,7 +1,10 @@
+-- To avoid problems, instead of creating the database in SQL and import it on your symfony project,
+-- you should create the database with the command "symfony console doctrine:database:create" and load the fixtures 
+
 -- phpMyAdmin SQL Dump
 -- version 5.1.0
 -- https://www.phpmyadmin.net/
---
+--git add 
 -- Hôte : localhost:8889
 -- Généré le : ven. 07 oct. 2022 à 08:11
 -- Version du serveur :  5.7.34
