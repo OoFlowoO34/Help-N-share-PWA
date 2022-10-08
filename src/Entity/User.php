@@ -41,7 +41,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $photo = null;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Demand::class, orphanRemoval: true)]
-    private Collection $demands;
+    protected Collection $demands;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Proposal::class, orphanRemoval: true)]
     private Collection $proposals;

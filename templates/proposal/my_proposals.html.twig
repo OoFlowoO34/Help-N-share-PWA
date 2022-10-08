@@ -26,7 +26,7 @@
         {% for proposal in proposals %}
 
             {# Don't show the demand if is from the connected user and if he has deleted it #}
-            {% if proposal.user != app.user and proposal.deleted == 0 %} 
+            {% if proposal.deleted == 0 %} 
                 <tr>
                     <td>{{ proposal.user.pseudo }}</td>
                     <td>{{ proposal.user.location }}</td>

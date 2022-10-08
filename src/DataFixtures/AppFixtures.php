@@ -39,7 +39,7 @@ class AppFixtures extends Fixture
             ));
             $user->setPseudo($this->faker->firstName());
             $user->setLocation($this->faker->departmentName());
-            $user->setPhoto($this->faker->imageUrl(200, 200, 'photo', true));
+            $user->setPhoto($this->faker->imageUrl(100, 100, 'photo', true));
             $users[] = $user;
             $manager->persist($user);
         }
@@ -58,7 +58,7 @@ class AppFixtures extends Fixture
             $demand = new Demand();
             $demand->setTitle($this->faker->sentence(3));
             $demand->setText($this->faker->text());
-            $demand->setPhoto($this->faker->imageUrl(200, 200, 'photo', true));
+            $demand->setPhoto($this->faker->imageUrl(100, 100, 'photo', true));
             $demand->setDateCreated($this->faker->dateTimeBetween('-'.$rand_weeks_created.' days','-'.$rand_weeks_modified.' days'));
             $demand->setDateModified($this->faker->dateTimeBetween('-'.$rand_weeks_modified.' days'));
             $demand->setDeleted($this->faker->boolean());
@@ -80,7 +80,7 @@ class AppFixtures extends Fixture
             $proposal = new Proposal();
             $proposal->setTitle($this->faker->sentence(3));
             $proposal->setText($this->faker->text());
-            $proposal->setPhoto($this->faker->imageUrl(200, 200, 'photo', true));
+            $proposal->setPhoto($this->faker->imageUrl(100, 100, 'photo', true));
             $proposal->setDateCreated($this->faker->dateTimeBetween('-'.$rand_weeks_created.' days','-'.$rand_weeks_modified.' days'));
             $proposal->setDateModified($this->faker->dateTimeBetween('-'.$rand_weeks_modified.' days'));
             $proposal->setDeleted($this->faker->boolean());

@@ -2,13 +2,15 @@
 
 namespace App\Controller;
 
+
 use App\Entity\Demand;
 use App\Form\DemandType;
 use App\Repository\DemandRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route('/demand')]
 class DemandController extends AbstractController
@@ -21,14 +23,27 @@ class DemandController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'app_demand_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, DemandRepository $demandRepository): Response
+    #[Route('/mes_demandes', name: 'my_demands', methods: ['GET'])]
+    public function demandUser(DemandRepository $demandRepository): Response
     {
+        // Get logged user's object
+        $user = (object) $this->getUser();
+        return $this->render('demand/my_demands.html.twig', [
+            'demands' => $demandRepository->findBy(['user'=> $user]),
+        ]);
+    }
+
+    #[Route('/new', name: 'app_demand_new', methods: ['GET', 'POST'])]
+    public function new(Request $request, DemandRepository $demandRepository, Security $security): Response
+    {
+        $user = $security->getUser();
         $demand = new Demand();
+
         $form = $this->createForm(DemandType::class, $demand);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $demand->setUser($user);
             $demandRepository->save($demand, true);
 
             return $this->redirectToRoute('app_demand_index', [], Response::HTTP_SEE_OTHER);

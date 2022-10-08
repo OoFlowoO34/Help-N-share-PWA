@@ -28,7 +28,7 @@
         {% for demand in demands %}
 
             {# Don't show the demand if is from the connected user and if he has deleted it #}
-            {% if demand.user != app.user and demand.deleted == 0 %} 
+            {% if demand.deleted == 0 %} 
                 <tr>
                     <td>{{ demand.user.pseudo }}</td>
                     <td>{{ demand.user.location }}</td>

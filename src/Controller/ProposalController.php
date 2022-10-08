@@ -21,6 +21,17 @@ class ProposalController extends AbstractController
         ]);
     }
 
+    #[Route('/mes_propositions', name: 'my_proposals', methods: ['GET'])]
+    public function proposalUser(ProposalRepository $proposalRepository): Response
+    {
+        // Get logged user's object
+        $user = (object) $this->getUser();
+        
+        return $this->render('proposal/my_proposals.html.twig', [
+            'proposals' => $proposalRepository->findBy(['user' => $user]),
+        ]);
+    }
+
     #[Route('/new', name: 'app_proposal_new', methods: ['GET', 'POST'])]
     public function new(Request $request, ProposalRepository $proposalRepository): Response
     {
