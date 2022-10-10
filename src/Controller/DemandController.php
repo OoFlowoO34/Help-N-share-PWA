@@ -11,6 +11,7 @@ use Symfony\Component\Security\Core\Security;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 #[Route('/demand')]
 class DemandController extends AbstractController
@@ -24,13 +25,21 @@ class DemandController extends AbstractController
     }
 
     #[Route('/mes_demandes', name: 'my_demands', methods: ['GET'])]
-    public function demandUser(DemandRepository $demandRepository): Response
+    public function demandUser(DemandRepository $demandRepository,AuthenticationUtils $authenticationUtilsuthenticationUtils): Response
     {
+        if ($this->getUser())
+        {
         // Get logged user's object
         $user = (object) $this->getUser();
         return $this->render('demand/my_demands.html.twig', [
             'demands' => $demandRepository->findBy(['user'=> $user]),
         ]);
+        }
+        else
+        {
+            return $this->redirectToRoute('app_login');
+        }
+
     }
 
     #[Route('/new', name: 'app_demand_new', methods: ['GET', 'POST'])]

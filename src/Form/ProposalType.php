@@ -15,10 +15,6 @@ class ProposalType extends AbstractType
             ->add('title')
             ->add('text')
             ->add('photo')
-            ->add('date_created')
-            ->add('date_modified')
-            ->add('deleted')
-            ->add('user')
         ;
     }
 

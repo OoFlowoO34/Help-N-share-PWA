@@ -49,6 +49,8 @@
         {% endfor %}
         </tbody>
     </table>
-
-    <a href="{{ path('app_proposal_new') }}">Create new</a>
+    {% if app.user %}
+        <a href="{{ path('app_proposal_new') }}">Create new</a>
+    {% endif %}
+    
 {% endblock %}

@@ -12,13 +12,9 @@ class DemandType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            // ->add('user', UserType::class)
             ->add('title')
             ->add('text')
             ->add('photo')
-            ->add('date_created')
-            ->add('date_modified')
-            ->add('deleted')
         ;
     }
 

@@ -5,10 +5,11 @@ namespace App\Controller;
 use App\Entity\Proposal;
 use App\Form\ProposalType;
 use App\Repository\ProposalRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route('/proposal')]
 class ProposalController extends AbstractController
@@ -24,22 +25,30 @@ class ProposalController extends AbstractController
     #[Route('/mes_propositions', name: 'my_proposals', methods: ['GET'])]
     public function proposalUser(ProposalRepository $proposalRepository): Response
     {
+        if ($this->getUser()){
         // Get logged user's object
         $user = (object) $this->getUser();
         
         return $this->render('proposal/my_proposals.html.twig', [
             'proposals' => $proposalRepository->findBy(['user' => $user]),
-        ]);
+        ]);    
+        }
+        else
+        {
+            return $this->redirectToRoute('app_login');
+        }
     }
 
     #[Route('/new', name: 'app_proposal_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, ProposalRepository $proposalRepository): Response
+    public function new(Request $request, ProposalRepository $proposalRepository, Security $security): Response
     {
+        $user = $security->getUser();
         $proposal = new Proposal();
         $form = $this->createForm(ProposalType::class, $proposal);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $proposal->setUser($user);
             $proposalRepository->save($proposal, true);
 
             return $this->redirectToRoute('app_proposal_index', [], Response::HTTP_SEE_OTHER);
