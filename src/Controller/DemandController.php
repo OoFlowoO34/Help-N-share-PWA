@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 
+use DateTime;
 use App\Entity\Demand;
 use App\Form\DemandType;
 use App\Repository\DemandRepository;
@@ -53,6 +54,8 @@ class DemandController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $demand->setUser($user);
+            $demand->setDateCreated(new DateTime('Europe/Paris'));
+            $demand->setDeleted(false);
             $demandRepository->save($demand, true);
 
             return $this->redirectToRoute('app_demand_index', [], Response::HTTP_SEE_OTHER);
@@ -79,8 +82,9 @@ class DemandController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $demand->setDateModified(new DateTime('Europe/Paris'));
             $demandRepository->save($demand, true);
-
+            
             return $this->redirectToRoute('app_demand_index', [], Response::HTTP_SEE_OTHER);
         }
 

@@ -6,10 +6,8 @@
 
 {% block body %}
 
-    {% include "partials/nav.html.twig" %}
-
     <h1>Demand index</h1>
-
+    <a href="{{ path('app_demand_new') }}">Create new</a>
     <table class="table">
         <thead>
             <tr>
@@ -52,5 +50,4 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_demand_new') }}">Create new</a>
 {% endblock %}

@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello HomeController!{% endblock %}
+
+{% block body %}
+  {% block nav %}
+  {% endblock %}
+    <h1>Home</h1>
+
+    <a href={{path("app_demand_index")}}>Demandes</a>
+    <a href={{path("app_proposal_index")}}>Propositions</a>
+    {% if app.user %}
+    <a href={{path("my_demands")}}>Mes demandes</a>
+    <a href={{path("my_proposals")}}>Mes propositions</a>
+    {# <a href={{path("app_user_index")}}>Parametres</a> #}
+    {% endif %}
+    
+{% endblock %}
