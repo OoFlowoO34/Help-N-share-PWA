@@ -14,19 +14,23 @@
         </div>
 
         <div class="col">
-        <div class="row d-flex justify-content-center">
-            <a href={{path("app_demand_index")}}>Demandes</a>
-        </div>
-        <div class="row d-flex justify-content-center">
-            <a href={{path("app_proposal_index")}}>Propositions</a>
-        </div>
+            <div class="row d-flex justify-content-center p-2">
+                <div class="col d-flex justify-content-center p-2">
+                    <a href={{path("app_demand_index")}}><button type="button" class="btn btn-primary">Demandes</button></a>
+                </div>
+                <div class="col d-flex justify-content-center p-2">
+                    <a href={{path("app_proposal_index")}}><button type="button" class="btn btn-primary">Propositions</button></a>
+                </div>
+            </div>
             {% if app.user %}
-        <div class="row d-flex justify-content-center">
-            <a href={{path("my_demands")}}>Mes demandes</a>
-        </div>
-        <div class="row d-flex justify-content-center">
-            <a href={{path("my_proposals")}}>Mes propositions</a>
-        </div>
+            <div class="row d-flex justify-content-center p-2">
+                <div class="col d-flex justify-content-center p-2">
+                    <a href={{path("my_demands")}}><button type="button" class="btn btn-primary">Mes demandes</button></a>
+                </div>
+                <div class="col d-flex justify-content-center p-2">
+                    <a href={{path("my_proposals")}}><button type="button" class="btn btn-primary">Mes propositions</button></a>
+                </div>
+            </div>
             {# <a href={{path("app_user_index")}}>Parametres</a> #}
             {% endif %}
         </div>

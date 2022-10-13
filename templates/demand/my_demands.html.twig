@@ -2,11 +2,11 @@
 
 
 
-{% block title %}Demand index{% endblock %}
+{% block title %}Mes demandes{% endblock %}
 
 {% block body %}
 
-    <h1>Demand index</h1>
+    <h1>Mes Demandes</h1>
     <a href="{{ path('app_demand_new') }}">Create new</a>
     <table class="table">
         <thead>
@@ -32,7 +32,7 @@
                     <td>{{ demand.user.location }}</td>
                     <td>{{ demand.title }}</td>
                     <td>{{ demand.text }}</td>
-                    <td><img src="{{ demand.photo }}" alt=""></td>
+                    <td><img class="w-25" src="{{ asset('uploads/brochures/' ~ demand.photo) }}" alt=""></td>
                     <td>{{ demand.dateCreated ? demand.dateCreated|date('Y-m-d H:i:s') : '' }}</td>
                     <td>{{ demand.dateModified ? demand.dateModified|date('Y-m-d H:i:s') : '' }}</td>
                     <td>{{ demand.deleted ? 'Yes' : 'No' }}</td>

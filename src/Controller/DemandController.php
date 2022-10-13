@@ -11,7 +11,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 #[Route('/demand')]
@@ -44,7 +46,7 @@ class DemandController extends AbstractController
     }
 
     #[Route('/new', name: 'app_demand_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, DemandRepository $demandRepository, Security $security): Response
+    public function new(Request $request, DemandRepository $demandRepository, Security $security, SluggerInterface $slugger): Response
     {
         $user = $security->getUser();
         $demand = new Demand();
@@ -56,8 +58,33 @@ class DemandController extends AbstractController
             $demand->setUser($user);
             $demand->setDateCreated(new DateTime('Europe/Paris'));
             $demand->setDeleted(false);
-            $demandRepository->save($demand, true);
+            
+            
+            $photoFile = $form->get('photo')->getData();
 
+            // this condition is needed because the 'photo' field is not required
+            // so the PDF file must be processed only when a file is uploaded
+            if ($photoFile) {
+                $originalFilename = pathinfo($photoFile->getClientOriginalName(), PATHINFO_FILENAME);
+                // this is needed to safely include the file name as part of the URL
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename.'-'.uniqid().'.'.$photoFile->guessExtension();
+
+                // Move the file to the directory where photos are stored
+                try {
+                    $photoFile->move(
+                        $this->getParameter('photos_directory'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    // ... handle exception if something happens during file upload
+                }
+
+                // updates the 'photoFilename' property to store the PDF file name
+                // instead of its contents
+                $demand->setPhoto($newFilename);
+            }
+            $demandRepository->save($demand, true);
             return $this->redirectToRoute('app_demand_index', [], Response::HTTP_SEE_OTHER);
         }
 

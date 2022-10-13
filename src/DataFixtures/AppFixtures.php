@@ -44,6 +44,10 @@ class AppFixtures extends Fixture
             $manager->persist($user);
         }
 
+
+
+
+        $photosTab = ["Capture-d-ecran-2022-09-27-a-15-29-55-1-6348110e27b1e.png","ERGO-Tour-white-634810f718280.png","kisspng-sass-style-sheet-language-cascading-style-sheets-l-sass-5b4621924f1d20-6170390015313227703241-6348171582274.png"];
         /**
          * Generate fake Demands
          */
@@ -58,7 +62,7 @@ class AppFixtures extends Fixture
             $demand = new Demand();
             $demand->setTitle($this->faker->sentence(3));
             $demand->setText($this->faker->text());
-            $demand->setPhoto($this->faker->imageUrl(100, 100, 'photo', true));
+            $demand->setPhoto($photosTab[mt_rand(0, count($photosTab) - 1)]);
             $demand->setDateCreated($this->faker->dateTimeBetween('-'.$rand_days_created.' days','-'.$rand_days_modified.' days'));
 
             // Add fake random modified and no modified demands ( around 50% chance )

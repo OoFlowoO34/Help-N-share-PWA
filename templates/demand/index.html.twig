@@ -23,7 +23,7 @@
                     <td>{{ demand.user.location }}</td>
                     <td>{{ demand.title }}</td>
                     <td>{{ demand.text }}</td>
-                    <td><img src="{{ demand.photo }}" alt=""></td>
+                    <td><img class="w-25" src="{{ asset('uploads/brochures/' ~ demand.photo) }}" alt=""></td>
                     <td>{{ demand.dateCreated ? demand.dateCreated|date('Y-m-d H:i:s') : '' }}</td>
                     <td>{{ demand.dateModified ? demand.dateModified|date('Y-m-d H:i:s') : '' }}</td>
                     <td>
