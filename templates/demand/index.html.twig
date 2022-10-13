@@ -13,19 +13,6 @@
     <h1>Demand index</h1>
 
     <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Location</th>
-                <th>Title</th>
-                <th>Text</th>
-                <th>Photo</th>
-                <th>Date_created</th>
-                <th>Date_modified</th>
-                <th>Deleted</th>
-                <th>actions</th>
-            </tr>
-        </thead>
         <tbody>
         {% for demand in demands %}
 
@@ -39,7 +26,6 @@
                     <td><img src="{{ demand.photo }}" alt=""></td>
                     <td>{{ demand.dateCreated ? demand.dateCreated|date('Y-m-d H:i:s') : '' }}</td>
                     <td>{{ demand.dateModified ? demand.dateModified|date('Y-m-d H:i:s') : '' }}</td>
-                    <td>{{ demand.deleted ? 'Yes' : 'No' }}</td>
                     <td>
                         <a href="{{ path('app_demand_show', {'id': demand.id}) }}">show</a>
                     </td>

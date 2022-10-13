@@ -52,15 +52,21 @@ class AppFixtures extends Fixture
 
             // Generated two random values, the value of the modified date must be less than the created date
             // so the random value for modified is between 0 and the value generated for the created date      
-            $rand_weeks_created = mt_rand(0, 365);
-            $rand_weeks_modified = mt_rand(0,$rand_weeks_created);
+            $rand_days_created = mt_rand(0, 365);
+            $rand_days_modified = mt_rand(0,$rand_days_created);
 
             $demand = new Demand();
             $demand->setTitle($this->faker->sentence(3));
             $demand->setText($this->faker->text());
             $demand->setPhoto($this->faker->imageUrl(100, 100, 'photo', true));
-            $demand->setDateCreated($this->faker->dateTimeBetween('-'.$rand_weeks_created.' days','-'.$rand_weeks_modified.' days'));
-            $demand->setDateModified($this->faker->dateTimeBetween('-'.$rand_weeks_modified.' days'));
+            $demand->setDateCreated($this->faker->dateTimeBetween('-'.$rand_days_created.' days','-'.$rand_days_modified.' days'));
+
+            // Add fake random modified and no modified demands ( around 50% chance )
+            // $rand_days_created = mt_rand(0, 365);
+            if ($rand_days_created > 182) {
+                $demand->setDateModified($this->faker->dateTimeBetween('-'.$rand_days_modified.' days'));
+            }
+
             $demand->setDeleted($this->faker->boolean());
             $demand->setUser($users[mt_rand(0, count($users) - 1)]);  
             $manager->persist($demand);
@@ -74,15 +80,21 @@ class AppFixtures extends Fixture
 
             // Generated two random values, the value of the modified date must be less than the created date
             // so the random value for modified is between 0 and the value generated for the created date      
-            $rand_weeks_created = mt_rand(0, 365);
-            $rand_weeks_modified = mt_rand(0,$rand_weeks_created);
+            $rand_days_created = mt_rand(0, 365);
+            $rand_days_modified = mt_rand(0,$rand_days_created);
 
             $proposal = new Proposal();
             $proposal->setTitle($this->faker->sentence(3));
             $proposal->setText($this->faker->text());
             $proposal->setPhoto($this->faker->imageUrl(100, 100, 'photo', true));
-            $proposal->setDateCreated($this->faker->dateTimeBetween('-'.$rand_weeks_created.' days','-'.$rand_weeks_modified.' days'));
-            $proposal->setDateModified($this->faker->dateTimeBetween('-'.$rand_weeks_modified.' days'));
+            $proposal->setDateCreated($this->faker->dateTimeBetween('-'.$rand_days_created.' days','-'.$rand_days_modified.' days'));
+            
+            // Add fake random modified and no modified proposals ( around 50% chance )
+            // $rand_days_created = mt_rand(0, 365);
+            if ($rand_days_created > 182) {
+                $proposal->setDateModified($this->faker->dateTimeBetween('-'.$rand_days_modified.' days'));
+            }
+
             $proposal->setDeleted($this->faker->boolean());
             $proposal->setUser($users[mt_rand(0, count($users) - 1)]);  
             $manager->persist($proposal);
