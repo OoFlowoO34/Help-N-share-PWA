@@ -46,10 +46,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Proposal::class, orphanRemoval: true)]
     private Collection $proposals;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: DemandRelation::class)]
+    private Collection $demandRelations;
+
     public function __construct()
     {
         $this->demands = new ArrayCollection();
         $this->proposals = new ArrayCollection();
+        $this->demandRelations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -220,4 +224,34 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function __toString(){
     return $this->pseudo;
 }
+
+    /**
+     * @return Collection<int, DemandRelation>
+     */
+    public function getDemandRelations(): Collection
+    {
+        return $this->demandRelations;
+    }
+
+    public function addDemandRelation(DemandRelation $demandRelation): self
+    {
+        if (!$this->demandRelations->contains($demandRelation)) {
+            $this->demandRelations->add($demandRelation);
+            $demandRelation->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDemandRelation(DemandRelation $demandRelation): self
+    {
+        if ($this->demandRelations->removeElement($demandRelation)) {
+            // set the owning side to null (unless already changed)
+            if ($demandRelation->getUser() === $this) {
+                $demandRelation->setUser(null);
+            }
+        }
+
+        return $this;
+    }
 }

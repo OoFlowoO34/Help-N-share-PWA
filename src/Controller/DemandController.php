@@ -6,6 +6,7 @@ namespace App\Controller;
 use DateTime;
 use App\Entity\Demand;
 use App\Form\DemandType;
+use App\Repository\DemandRelationRepository;
 use App\Repository\DemandRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Security;
@@ -95,10 +96,11 @@ class DemandController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_demand_show', methods: ['GET'])]
-    public function show(Demand $demand): Response
+    public function show(Demand $demand, DemandRelationRepository $demandRelationRepository): Response
     {
         return $this->render('demand/show.html.twig', [
             'demand' => $demand,
+            'demand_relations' => $demandRelationRepository->findAll(),
         ]);
     }
 

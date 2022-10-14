@@ -43,12 +43,30 @@
         </tbody>
     </table>
 
+
+    {# <a href="{{ path('app_demand_relation_new') }}">contact</a> #}
+        <form action="{{ path('app_demand_relation_new') }}" method="POST">
+            <input name="demandId" type="hidden" name="demandId" value= "{{ demand.id }}">
+            <button type="submit" class="btn btn-outline-primary">
+                <span>Contacter</span>
+            </button>
+        </form>
+
+    
     <a href="{{ path('app_demand_index') }}">back to list</a>
 
     {% if app.user == demand.user %}
     <a href="{{ path('app_demand_edit', {'id': demand.id}) }}">edit</a>
-    {{ include('demand/_delete_form.html.twig') }}
+    {{ include('demand/_delete_form.html.twig', {'id': demand.id}) }}
     {% endif %}
 
-    
+    {% for demand_relation in demand_relations %}
+
+        {% if demand_relation.user == app.user and demand.id == demand_relation.demand.id  %} 
+            <span>Vous avez contacté: {{demand.user.pseudo}} </span>
+        {% endif %}
+
+    {% endfor %}
+
+   
 {% endblock %}

@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New DemandRelation{% endblock %}
+
+{% block body %}
+    <h1>Create new DemandRelation</h1>
+
+    {{ include('demand_relation/_form.html.twig') }}
+
+    <a href="{{ path('app_demand_relation_index') }}">back to list</a>
+{% endblock %}

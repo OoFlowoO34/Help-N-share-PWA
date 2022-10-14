@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : localhost:8889
--- Généré le : ven. 07 oct. 2022 à 09:14
+-- Généré le : ven. 14 oct. 2022 à 10:50
 -- Version du serveur :  5.7.34
 -- Version de PHP : 8.0.8
 
@@ -34,7 +34,7 @@ CREATE TABLE `demand` (
   `text` longtext COLLATE utf8_unicode_ci NOT NULL,
   `photo` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `date_created` datetime NOT NULL,
-  `date_modified` datetime NOT NULL,
+  `date_modified` datetime DEFAULT NULL,
   `deleted` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -43,26 +43,38 @@ CREATE TABLE `demand` (
 --
 
 INSERT INTO `demand` (`id`, `user_id`, `title`, `text`, `photo`, `date_created`, `date_modified`, `deleted`) VALUES
-(181, 430, 'Nobis architecto sunt.', 'Delectus rerum autem aspernatur ipsum aliquam officia quas. Culpa vitae magni voluptatibus enim optio inventore dolorem quia. Consequatur facilis et sed eius.', 'https://via.placeholder.com/200x200.png/00aaee?text=photo+adipisci', '2021-12-23 20:32:46', '2022-05-02 14:12:52', 0),
-(182, 434, 'Ut voluptatem perferendis vel.', 'Eligendi enim ut dolores quasi. Praesentium illo voluptates placeat omnis. Libero vel qui fugit corrupti. Nihil magnam qui corrupti praesentium earum voluptas soluta.', 'https://via.placeholder.com/200x200.png/00ffcc?text=photo+doloribus', '2022-02-08 04:21:40', '2022-09-24 19:09:48', 1),
-(183, 430, 'Est aut pariatur ea.', 'Et sit laboriosam qui aut consequuntur est. Itaque ratione quae et velit dolor necessitatibus. Illum veniam excepturi consectetur voluptatibus reprehenderit neque.', 'https://via.placeholder.com/200x200.png/005599?text=photo+aut', '2022-07-22 05:08:27', '2022-10-02 13:13:00', 1),
-(184, 421, 'Consequatur et unde voluptates.', 'Magnam neque molestias sequi. Est eum est est aliquid voluptas placeat. Laudantium repudiandae eum sint velit.', 'https://via.placeholder.com/200x200.png/003322?text=photo+blanditiis', '2022-07-15 08:48:44', '2022-09-27 22:30:55', 1),
-(185, 422, 'Sint et asperiores.', 'Accusamus molestiae quis quidem. Adipisci tempora vitae id hic eos rerum deleniti. Earum atque placeat praesentium numquam. Sunt dolorum dolor ratione ducimus.', 'https://via.placeholder.com/200x200.png/00bb88?text=photo+iste', '2022-02-03 21:35:16', '2022-10-04 13:17:41', 1),
-(186, 424, 'Dolor sint sit.', 'Et quisquam illo omnis. Ipsum at nam aliquam ad laboriosam voluptas fugiat. Veniam vitae eos eum. Soluta rerum ullam qui deserunt enim vero vitae.', 'https://via.placeholder.com/200x200.png/008866?text=photo+dolorem', '2022-02-22 07:15:06', '2022-09-08 23:52:22', 1),
-(187, 427, 'Earum eum vero consectetur.', 'Fugiat porro quia omnis non natus officiis dolores expedita. Recusandae suscipit dolor illum a sint magnam. Vel hic iure soluta sunt nihil ut. Hic minus est eum minima sapiente et.', 'https://via.placeholder.com/200x200.png/00ffff?text=photo+labore', '2022-08-13 00:41:35', '2022-09-23 08:15:33', 0),
-(188, 436, 'Porro ea ut.', 'Ipsum ab architecto quibusdam maxime praesentium dolorem odio suscipit. Reiciendis magnam sapiente culpa harum. Ut aut est qui possimus voluptas dolorum.', 'https://via.placeholder.com/200x200.png/00bbff?text=photo+et', '2022-02-11 08:07:15', '2022-05-28 20:28:18', 1),
-(189, 438, 'Veniam deserunt commodi.', 'Voluptatem optio odio nemo expedita aut deserunt ut. Aut corrupti hic harum possimus minima illum sed. Eaque minima enim quis ipsa sit est.', 'https://via.placeholder.com/200x200.png/0088ff?text=photo+iusto', '2022-07-31 14:12:26', '2022-10-07 07:27:10', 1),
-(190, 422, 'Voluptatum laudantium nemo.', 'Eos et consequuntur ut voluptatem. Qui non atque aut et. Et hic aut velit fugiat corrupti vero quidem. Eos earum autem ratione omnis. Consequatur vel molestiae et aut.', 'https://via.placeholder.com/200x200.png/0022cc?text=photo+rerum', '2022-06-12 18:49:38', '2022-09-11 05:05:28', 1),
-(191, 438, 'Ipsam architecto aliquam voluptates.', 'Aut accusamus nihil illo et. Officia quibusdam ut hic nostrum.', 'https://via.placeholder.com/200x200.png/00ee00?text=photo+eveniet', '2022-09-18 03:01:41', '2022-10-01 18:39:39', 0),
-(192, 422, 'Harum dolores voluptatem et.', 'Incidunt et optio tempora doloribus eos. Nemo itaque esse nam qui quae modi. Quas quis in molestiae vero optio consectetur. Cumque harum ratione eveniet excepturi sint.', 'https://via.placeholder.com/200x200.png/007711?text=photo+libero', '2022-03-19 05:44:39', '2022-07-03 23:04:25', 0),
-(193, 423, 'Quam eum.', 'Vero optio sit qui laboriosam ut ex et. Placeat necessitatibus enim sint et ipsum. Quia neque qui sed sint.', 'https://via.placeholder.com/200x200.png/006666?text=photo+molestias', '2022-06-17 13:46:41', '2022-09-26 08:41:26', 1),
-(194, 426, 'Sit error dolorem et laborum.', 'Mollitia sit temporibus dolorem odio perspiciatis id ab consequuntur. Soluta molestiae consequuntur dolorem voluptates similique quaerat incidunt.', 'https://via.placeholder.com/200x200.png/003377?text=photo+enim', '2022-06-19 02:10:52', '2022-09-19 09:45:53', 0),
-(195, 432, 'Voluptatibus nobis voluptatem et.', 'Distinctio officia dolorem impedit itaque. Eum quis placeat non doloribus nihil quis.', 'https://via.placeholder.com/200x200.png/00cc77?text=photo+nam', '2022-06-28 16:31:46', '2022-08-26 11:43:52', 0),
-(196, 431, 'Sunt asperiores rem.', 'Laborum voluptatum vitae dolor a aut fugiat perferendis. Ut id deserunt hic enim temporibus. Repudiandae ut nihil beatae sapiente sunt necessitatibus.', 'https://via.placeholder.com/200x200.png/00ffbb?text=photo+et', '2022-05-28 22:19:15', '2022-08-13 22:30:28', 0),
-(197, 424, 'Corrupti consequatur quia.', 'Enim ut qui officia dolorum laudantium. Dolor rem laborum autem voluptatibus nam voluptas totam. Iusto quidem consequatur sapiente cumque.', 'https://via.placeholder.com/200x200.png/0044ee?text=photo+et', '2022-09-18 01:48:33', '2022-10-04 01:16:56', 0),
-(198, 425, 'Soluta accusantium molestias modi.', 'Dolorem quam neque aut. Officia aut et neque voluptas quia. Deleniti voluptatum fugit nobis quia beatae delectus. Est recusandae neque assumenda ut et. Dolorem aut optio laudantium aut cumque.', 'https://via.placeholder.com/200x200.png/002266?text=photo+ut', '2022-09-21 17:54:03', '2022-10-02 20:59:39', 1),
-(199, 422, 'Voluptatem sed velit.', 'Adipisci similique maxime consequatur incidunt accusamus sequi nam. Consequuntur voluptatem quaerat ad nemo. Dignissimos maxime eum fugit voluptatibus sit voluptas.', 'https://via.placeholder.com/200x200.png/0033cc?text=photo+delectus', '2022-08-28 04:27:13', '2022-09-30 17:21:56', 0),
-(200, 426, 'Ratione nostrum et maiores vel.', 'Velit et hic ut ratione tempore dolore. Consequatur quisquam sequi voluptas in. Minus maiores dolorem soluta autem rerum. Corrupti ut sapiente exercitationem.', 'https://via.placeholder.com/200x200.png/0022aa?text=photo+laboriosam', '2022-01-01 03:23:37', '2022-03-17 06:09:55', 0);
+(151, 153, 'Ea esse cupiditate.', 'Neque recusandae commodi dolorum enim dolor qui quia. Nihil quia consequatur aut ut enim. Veritatis at rerum excepturi voluptatibus provident suscipit sunt voluptas.', 'Capture-d-ecran-2022-09-27-a-15-29-55-1-6348110e27b1e.png', '2022-08-03 18:00:14', NULL, 0),
+(152, 152, 'Fugiat est dolorem possimus.', 'Animi sed distinctio consequatur eos voluptatum omnis. Omnis aut perferendis quia. Fuga enim non ipsam neque id ipsam voluptatem dignissimos.', 'ERGO-Tour-white-634810f718280.png', '2022-03-27 05:09:13', '2022-09-03 17:57:54', 0),
+(153, 154, 'Sed architecto et qui.', 'Distinctio et est quo repellendus sint fugit consectetur. Repudiandae facilis voluptatum repellendus autem iusto ea aut. Voluptatibus neque et quia pariatur in non.', 'kisspng-sass-style-sheet-language-cascading-style-sheets-l-sass-5b4621924f1d20-6170390015313227703241-6348171582274.png', '2022-05-20 05:17:52', '2022-10-03 09:10:37', 0),
+(154, 159, 'Possimus accusamus ipsum illum.', 'Adipisci facere enim ut architecto sint. Laboriosam consequatur porro consectetur nisi dolorum aliquam ipsa. Velit quis id sunt quis. Eos optio eum qui excepturi adipisci alias.', 'kisspng-sass-style-sheet-language-cascading-style-sheets-l-sass-5b4621924f1d20-6170390015313227703241-6348171582274.png', '2022-08-23 12:13:53', NULL, 1),
+(155, 152, 'Mollitia modi voluptatem placeat omnis.', 'Officia est sed in molestiae. Repudiandae suscipit reprehenderit necessitatibus aut veniam. Reiciendis non temporibus voluptas et.', 'kisspng-sass-style-sheet-language-cascading-style-sheets-l-sass-5b4621924f1d20-6170390015313227703241-6348171582274.png', '2022-06-23 08:41:57', NULL, 1),
+(156, 153, 'Rem eligendi maxime veniam.', 'Vero velit excepturi porro eveniet. Quidem impedit odit modi saepe.', 'ERGO-Tour-white-634810f718280.png', '2022-06-10 20:09:33', '2022-07-24 08:48:06', 1),
+(157, 149, 'Ea aut et quos.', 'Tenetur reiciendis velit vel ea modi in velit. Sapiente nemo quo qui praesentium error minus. Autem facere sit voluptate incidunt accusamus cum.', 'kisspng-sass-style-sheet-language-cascading-style-sheets-l-sass-5b4621924f1d20-6170390015313227703241-6348171582274.png', '2022-06-08 04:11:46', NULL, 1),
+(158, 164, 'Nesciunt dolor nihil sit.', 'Quis dolore est odit illo iusto dolor ex. Eum consequuntur et dolorum.', 'Capture-d-ecran-2022-09-27-a-15-29-55-1-6348110e27b1e.png', '2022-10-10 21:28:09', NULL, 1),
+(159, 164, 'Tempora et voluptatibus nihil.', 'Perferendis neque cumque ea et. Fugiat nobis eveniet quis quis ducimus dolores commodi. Velit ut sed minima est mollitia voluptas ea. Ut non tempora quo magni autem.', 'ERGO-Tour-white-634810f718280.png', '2022-05-05 12:20:46', NULL, 1),
+(160, 157, 'In sapiente excepturi.', 'Voluptatem culpa voluptatem unde voluptatem quae quibusdam. Quam ut et voluptas quos quos omnis. Quos quisquam sit consequatur qui sit. Eos debitis architecto cupiditate eum temporibus aliquid.', 'kisspng-sass-style-sheet-language-cascading-style-sheets-l-sass-5b4621924f1d20-6170390015313227703241-6348171582274.png', '2022-07-26 17:08:45', NULL, 0),
+(161, 147, 'Nihil consequatur atque.', 'Eum et recusandae non omnis soluta consequatur recusandae. In et et optio sit. Ut amet et maxime quo adipisci tempora voluptatum.', 'kisspng-sass-style-sheet-language-cascading-style-sheets-l-sass-5b4621924f1d20-6170390015313227703241-6348171582274.png', '2022-02-14 12:56:54', '2022-06-26 00:04:04', 0),
+(162, 158, 'Reprehenderit iure earum.', 'Dolores ut quo tenetur in id. Dolor rerum possimus qui. Ut omnis nam ab impedit laudantium voluptatem. Blanditiis molestiae est reiciendis aliquid laboriosam sed.', 'kisspng-sass-style-sheet-language-cascading-style-sheets-l-sass-5b4621924f1d20-6170390015313227703241-6348171582274.png', '2022-06-28 11:02:46', NULL, 0),
+(163, 163, 'Libero sit est tenetur.', 'Enim pariatur non incidunt suscipit pariatur excepturi. Quae perspiciatis qui possimus minus dolore quos perferendis qui. A in ea consectetur ex iusto. Et sed nihil qui aut molestiae.', 'ERGO-Tour-white-634810f718280.png', '2022-06-01 23:50:19', NULL, 0),
+(164, 158, 'Sapiente sapiente quia ut hic.', 'Aut doloremque et quis vero esse vitae est. Soluta nihil tempore eos magni. Aut aspernatur harum iure molestiae fugiat ullam nihil incidunt.', 'kisspng-sass-style-sheet-language-cascading-style-sheets-l-sass-5b4621924f1d20-6170390015313227703241-6348171582274.png', '2022-04-08 13:02:01', '2022-05-06 06:30:29', 0),
+(165, 151, 'Aut aut voluptatum ullam.', 'Quia iste quo eos magni ut non. Sunt deserunt ducimus consequatur. Praesentium quae facere rerum debitis qui perspiciatis sed velit.', 'Capture-d-ecran-2022-09-27-a-15-29-55-1-6348110e27b1e.png', '2022-03-23 08:19:06', '2022-07-26 01:14:51', 1),
+(166, 162, 'Voluptates nam dolorem.', 'Distinctio harum nesciunt dolores quod. Qui quidem voluptate corrupti laboriosam aut aliquid eius. Laudantium neque eos rem sed. Velit voluptas vitae voluptatum explicabo magni blanditiis.', 'ERGO-Tour-white-634810f718280.png', '2022-05-08 05:47:22', '2022-10-07 06:18:38', 1),
+(167, 146, 'Excepturi perferendis.', 'Quam quae animi mollitia explicabo placeat. Reprehenderit exercitationem quis occaecati assumenda ut. Dicta aut velit sit ab sapiente aut est sit.', 'Capture-d-ecran-2022-09-27-a-15-29-55-1-6348110e27b1e.png', '2022-05-09 10:00:57', NULL, 0),
+(168, 145, 'Occaecati tenetur fugiat ab.', 'Est omnis alias similique non quos facere esse. Laudantium eveniet velit iure unde velit excepturi ad ea. Quis et quod et odit dolor ut. Laudantium fuga libero commodi est itaque sed.', 'ERGO-Tour-white-634810f718280.png', '2022-05-11 11:06:51', '2022-08-21 07:59:47', 1),
+(169, 153, 'Labore facere explicabo.', 'Deserunt nobis et hic mollitia quae commodi ut dolore. Ea omnis ut qui voluptas odit error. Omnis ut velit magni iste repellat.', 'Capture-d-ecran-2022-09-27-a-15-29-55-1-6348110e27b1e.png', '2022-09-05 07:04:48', NULL, 0),
+(170, 145, 'Fuga enim quod sapiente.', 'Excepturi est dolore voluptatem aut. Fugit dignissimos in aut enim et libero accusamus. Officiis dolore inventore aperiam dolores magnam ipsum.', 'ERGO-Tour-white-634810f718280.png', '2021-12-22 20:27:43', '2022-04-27 21:49:27', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `demand_relation`
+--
+
+CREATE TABLE `demand_relation` (
+  `id` int(11) NOT NULL,
+  `demand_id` int(11) DEFAULT NULL,
+  `user_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -81,9 +93,12 @@ CREATE TABLE `doctrine_migration_versions` (
 --
 
 INSERT INTO `doctrine_migration_versions` (`version`, `executed_at`, `execution_time`) VALUES
-('DoctrineMigrations\\Version20221006104824', '2022-10-06 10:48:31', 120),
-('DoctrineMigrations\\Version20221006123047', '2022-10-06 12:30:52', 69),
-('DoctrineMigrations\\Version20221006123219', '2022-10-06 12:32:22', 62);
+('DoctrineMigrations\\Version20221006104824', '2022-10-12 08:24:56', 170),
+('DoctrineMigrations\\Version20221006123047', '2022-10-12 08:24:56', 46),
+('DoctrineMigrations\\Version20221006123219', '2022-10-12 08:24:56', 37),
+('DoctrineMigrations\\Version20221011140350', '2022-10-12 08:24:56', 26),
+('DoctrineMigrations\\Version20221013082158', '2022-10-13 08:22:10', 82),
+('DoctrineMigrations\\Version20221013161743', '2022-10-13 16:18:04', 87);
 
 -- --------------------------------------------------------
 
@@ -114,7 +129,7 @@ CREATE TABLE `proposal` (
   `text` longtext COLLATE utf8_unicode_ci NOT NULL,
   `photo` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `date_created` datetime NOT NULL,
-  `date_modified` datetime NOT NULL,
+  `date_modified` datetime DEFAULT NULL,
   `deleted` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -123,26 +138,26 @@ CREATE TABLE `proposal` (
 --
 
 INSERT INTO `proposal` (`id`, `user_id`, `title`, `text`, `photo`, `date_created`, `date_modified`, `deleted`) VALUES
-(1, 422, 'Inventore sed quia necessitatibus.', 'Vel minus atque et ad ut voluptatum. Excepturi rerum maiores quas libero. Vel autem facilis dolorem laboriosam praesentium consequatur sed.', 'https://via.placeholder.com/200x200.png/00dddd?text=photo+et', '2022-09-05 01:56:52', '2022-09-27 11:40:17', 1),
-(2, 431, 'Commodi inventore.', 'Dolorem aut debitis incidunt sit. Dolor officia sed commodi. Id similique nisi quam. Et qui officia et nulla rerum. Voluptas eum ex magni qui dolores. Quia dicta delectus sequi et quae sit.', 'https://via.placeholder.com/200x200.png/000033?text=photo+quia', '2021-12-30 08:04:38', '2022-03-30 16:51:11', 1),
-(3, 427, 'Adipisci maiores.', 'Omnis neque vel quam quia eveniet nisi sequi. Magni labore sunt nihil dolorem placeat.', 'https://via.placeholder.com/200x200.png/0000bb?text=photo+pariatur', '2022-03-10 15:18:20', '2022-09-11 00:46:50', 0),
-(4, 430, 'Quia ipsam deleniti.', 'Fugit corporis et nobis id saepe dolores. Voluptatibus veniam natus beatae dignissimos non. Minus at provident commodi odio minus assumenda qui. Esse ut quidem atque iusto sunt.', 'https://via.placeholder.com/200x200.png/00ee44?text=photo+ut', '2022-07-25 22:07:10', '2022-09-12 18:33:03', 0),
-(5, 438, 'Voluptatem fuga consequatur dolores cupiditate.', 'Occaecati voluptatem voluptas iusto ut. Doloribus recusandae voluptas amet architecto vitae et cumque.', 'https://via.placeholder.com/200x200.png/00ffdd?text=photo+similique', '2022-03-18 21:52:02', '2022-10-06 12:38:45', 1),
-(6, 429, 'Porro beatae vero.', 'Voluptatibus eligendi voluptas esse dolorem. At tempora explicabo natus distinctio sed quas totam. Sint ut ullam suscipit illo quibusdam tempora iste.', 'https://via.placeholder.com/200x200.png/00eebb?text=photo+nostrum', '2022-05-12 11:58:38', '2022-09-01 09:16:18', 1),
-(7, 434, 'Est voluptatem qui.', 'Perspiciatis voluptas inventore dolores deserunt. Alias quam voluptates labore molestiae nisi esse porro ipsam. Qui rerum deleniti debitis et neque.', 'https://via.placeholder.com/200x200.png/001122?text=photo+est', '2022-09-06 08:01:49', '2022-09-20 00:07:15', 0),
-(8, 435, 'Voluptate fuga eos provident.', 'Dolorem voluptatem animi ipsa occaecati architecto. Tenetur odit soluta explicabo. Perferendis eum quasi alias reiciendis et eum.', 'https://via.placeholder.com/200x200.png/004488?text=photo+ut', '2022-08-11 09:21:56', '2022-10-01 16:12:31', 0),
-(9, 429, 'Itaque adipisci consequatur.', 'Aspernatur sapiente inventore et totam quod natus. Et aperiam aliquid aut incidunt et officiis quo ut. Quia impedit laborum est et illum.', 'https://via.placeholder.com/200x200.png/00aaff?text=photo+explicabo', '2022-01-11 12:12:21', '2022-04-07 23:33:20', 0),
-(10, 427, 'Reiciendis enim exercitationem.', 'Et pariatur officiis nostrum accusantium vitae perspiciatis. Soluta ut et odio id sunt. Consequatur magnam autem dolore architecto dolore. Aliquam mollitia quis voluptas.', 'https://via.placeholder.com/200x200.png/0066ee?text=photo+eum', '2021-12-09 11:32:15', '2022-03-12 17:13:36', 0),
-(11, 429, 'Fuga sint ut tempora.', 'Mollitia aut repellendus laboriosam dignissimos. At et suscipit sit exercitationem consequatur fugiat. In provident nesciunt est eos architecto.', 'https://via.placeholder.com/200x200.png/00ff44?text=photo+deleniti', '2022-07-09 13:10:40', '2022-10-02 01:43:44', 1),
-(12, 428, 'Aliquid voluptates maiores.', 'Illo aut iure aut quis quisquam. Consequatur quia quia debitis doloremque et ratione quisquam. Sit accusamus soluta ratione saepe inventore delectus.', 'https://via.placeholder.com/200x200.png/00bbee?text=photo+non', '2022-07-03 21:49:58', '2022-09-23 05:20:36', 0),
-(13, 428, 'Nemo occaecati ab rerum minima.', 'Quasi voluptas veritatis et debitis error recusandae. Cumque adipisci voluptatum dolore omnis accusantium. Perspiciatis harum praesentium eos perferendis consectetur est consequatur ut.', 'https://via.placeholder.com/200x200.png/0055aa?text=photo+voluptatem', '2021-12-16 08:06:12', '2022-10-02 13:43:59', 1),
-(14, 426, 'Consequatur dolore voluptates error.', 'Maxime voluptatum vel dolore earum. Ad sunt qui maiores recusandae aut neque dolores similique. Soluta autem aut laboriosam vero eaque voluptas rem.', 'https://via.placeholder.com/200x200.png/0000ff?text=photo+quo', '2022-03-01 22:58:50', '2022-06-01 03:21:29', 1),
-(15, 437, 'Quo ut totam.', 'Necessitatibus aut pariatur provident et. Voluptas ab rerum sed non. Labore et aperiam consequatur similique. Dolore quia rerum consequatur ratione sed.', 'https://via.placeholder.com/200x200.png/00bb99?text=photo+in', '2021-12-03 19:03:09', '2022-09-20 02:49:04', 0),
-(16, 438, 'Aperiam sit totam esse.', 'Suscipit voluptas explicabo esse consequatur soluta facilis. Cupiditate quam asperiores facere ipsa id accusantium tempore. Voluptates ea dicta corporis qui culpa porro quisquam aperiam.', 'https://via.placeholder.com/200x200.png/00ff99?text=photo+ut', '2022-03-11 01:05:01', '2022-09-24 15:31:23', 0),
-(17, 439, 'Dignissimos labore occaecati.', 'Sed blanditiis eveniet quibusdam neque vel. Quo nam molestiae quos earum architecto. Voluptatem et nihil ipsum dolor.', 'https://via.placeholder.com/200x200.png/00dd00?text=photo+quos', '2022-03-19 12:07:22', '2022-08-13 14:16:02', 0),
-(18, 432, 'Ratione qui nobis.', 'Doloremque omnis qui et. Optio inventore aut cum consequuntur qui. Ut explicabo unde rerum ut. Non vel adipisci sint rerum.', 'https://via.placeholder.com/200x200.png/009966?text=photo+error', '2022-01-27 08:14:51', '2022-07-19 15:11:56', 1),
-(19, 421, 'Est aut excepturi voluptas.', 'Eligendi sunt est natus in est voluptatibus natus qui. Rerum dolorem excepturi labore eos nobis.', 'https://via.placeholder.com/200x200.png/000066?text=photo+aut', '2022-04-12 01:54:03', '2022-05-27 22:09:16', 1),
-(20, 429, 'Delectus officia tempora.', 'Commodi sit fugiat aliquam dolor. Reiciendis voluptatem aliquam omnis rerum sit tempora. Eos ad assumenda aut enim totam velit dolorem. Ut doloribus cumque modi porro sit.', 'https://via.placeholder.com/200x200.png/00eecc?text=photo+sed', '2021-12-29 04:14:04', '2022-02-16 00:27:58', 0);
+(105, 158, 'Sit deserunt consequatur quia.', 'Fugit placeat nostrum repellendus fuga. At placeat quaerat molestias vel dolores aut qui. Labore ex dolorem ut sint ut accusantium minima fugiat.', 'https://via.placeholder.com/100x100.png/002200?text=photo+quae', '2022-08-21 01:02:58', NULL, 0),
+(106, 162, 'Nam repellendus dolorem.', 'Atque et vitae quidem ut. Reiciendis et et delectus necessitatibus provident. Fuga qui occaecati consequatur corrupti in aliquid natus est. Magni qui temporibus qui in quisquam tenetur qui.', 'https://via.placeholder.com/100x100.png/007733?text=photo+id', '2022-05-10 00:18:58', NULL, 0),
+(107, 164, 'Consequatur rerum aut.', 'Id et commodi ut similique. Repudiandae provident repellat consequuntur est dolorem. Labore commodi adipisci omnis.', 'https://via.placeholder.com/100x100.png/00dd99?text=photo+eum', '2022-09-13 15:47:58', NULL, 0),
+(108, 163, 'Ut et officiis quia.', 'Et non facilis quas quod. Animi necessitatibus rerum maxime doloremque. Vitae quam exercitationem porro. Asperiores quo debitis delectus fuga placeat eligendi quod molestias.', 'https://via.placeholder.com/100x100.png/00dd44?text=photo+non', '2022-10-13 14:09:47', NULL, 1),
+(109, 154, 'Quia error accusantium.', 'Alias maxime maxime provident dolores fugit hic. Quia a fugit sed. Harum molestias tenetur dolore nostrum. Consectetur praesentium ipsa qui voluptatem provident. Et nobis error voluptatem quidem.', 'https://via.placeholder.com/100x100.png/009977?text=photo+veritatis', '2022-07-23 14:09:47', NULL, 1),
+(110, 147, 'Totam et delectus.', 'Laudantium deserunt quidem quisquam libero unde rerum. Ipsam autem veniam deleniti. Voluptatibus soluta commodi ea. Tenetur esse corrupti debitis. Esse voluptatem ad eveniet velit porro qui.', 'https://via.placeholder.com/100x100.png/0088dd?text=photo+id', '2022-07-20 06:24:59', NULL, 1),
+(111, 149, 'Sit accusantium illo.', 'Quis tenetur et velit architecto qui amet nemo. At explicabo voluptatem suscipit. Dolor quam facilis aut est eaque.', 'https://via.placeholder.com/100x100.png/0011cc?text=photo+velit', '2022-06-23 21:55:52', NULL, 0),
+(112, 146, 'Error incidunt quia placeat eum.', 'Eaque consectetur dolore eius. Voluptates aliquid consequatur ducimus rerum culpa nihil voluptatem. Est facilis laboriosam iste repellendus. Accusamus autem aliquam ratione non recusandae.', 'https://via.placeholder.com/100x100.png/006611?text=photo+quaerat', '2022-04-01 08:24:25', '2022-10-09 14:09:16', 0),
+(113, 157, 'Pariatur aliquid asperiores aut.', 'Aut ea esse fugiat id sint voluptas. Et beatae blanditiis cumque blanditiis consequatur ducimus veniam. Animi incidunt voluptates et consequatur.', 'https://via.placeholder.com/100x100.png/00ccbb?text=photo+eaque', '2021-12-05 20:25:28', '2022-09-24 01:36:24', 1),
+(114, 152, 'Vitae minus optio occaecati.', 'Pariatur error rerum vitae. Vero veritatis earum nostrum quam velit iste. Animi rerum corporis vel.', 'https://via.placeholder.com/100x100.png/0011ff?text=photo+nesciunt', '2022-08-14 09:16:34', NULL, 1),
+(115, 163, 'Consequuntur sunt rerum aliquam impedit.', 'Qui aut quidem a nihil minima maxime. Suscipit sunt laboriosam quia. Eum quia eos vel consequuntur.', 'https://via.placeholder.com/100x100.png/00dd66?text=photo+sed', '2022-05-04 02:32:21', '2022-07-30 11:02:58', 0),
+(116, 161, 'Quas architecto.', 'Qui nihil rerum aut veniam magnam nostrum quia. Facere nemo facere eum quia. Autem natus fugit ex voluptatum quidem.', 'https://via.placeholder.com/100x100.png/00bbee?text=photo+nostrum', '2022-01-06 02:38:44', '2022-08-15 06:39:21', 1),
+(117, 150, 'Et quas magni.', 'Dolor perspiciatis quia occaecati pariatur porro sit maxime. Et inventore dolor impedit iure esse sit non. Eos dolor soluta harum natus veniam labore distinctio.', 'https://via.placeholder.com/100x100.png/00ccdd?text=photo+sint', '2021-12-15 03:45:53', '2022-09-28 14:50:30', 1),
+(118, 153, 'Aperiam perspiciatis.', 'Et minima voluptatem qui atque adipisci doloremque autem. Odit tenetur cumque error. Aut rem nam quis sed numquam.', 'https://via.placeholder.com/100x100.png/009900?text=photo+quam', '2022-03-08 13:09:20', '2022-10-05 01:14:12', 0),
+(119, 155, 'Quia voluptate doloribus quas.', 'Voluptatibus ut fugiat placeat nemo. Numquam ullam quia et temporibus. Aliquid sit aut modi adipisci beatae cum repellendus veritatis.', 'https://via.placeholder.com/100x100.png/00ddee?text=photo+est', '2021-11-29 21:24:45', '2022-10-05 22:03:17', 0),
+(120, 158, 'Earum quam est omnis.', 'Minima et sint occaecati possimus delectus ipsa quia ut. Omnis qui qui sint est qui maiores. Reprehenderit dolorem recusandae quia et.', 'https://via.placeholder.com/100x100.png/005599?text=photo+consequuntur', '2022-08-10 12:21:14', NULL, 1),
+(121, 146, 'Quis nostrum illum.', 'Animi cupiditate facere et amet deserunt. Libero libero qui veniam recusandae ipsam et corporis rerum. Iusto ea architecto fugiat enim.', 'https://via.placeholder.com/100x100.png/00ff66?text=photo+eos', '2022-03-02 00:15:38', '2022-08-12 19:37:06', 0),
+(122, 160, 'Tempora error hic.', 'Quidem eaque et aliquid optio. Officiis dolorum omnis sit quia tempora. Illo et et quia deleniti natus quia velit non. Voluptates accusantium nobis eaque alias nobis quidem.', 'https://via.placeholder.com/100x100.png/00dddd?text=photo+ipsa', '2022-09-10 20:57:43', NULL, 0),
+(123, 157, 'Et magni corrupti.', 'Eius vitae rerum id omnis voluptas voluptatem culpa. Nam iste nam minus reiciendis vero sed itaque ratione. Maxime eligendi perferendis et praesentium.', 'https://via.placeholder.com/100x100.png/0077aa?text=photo+omnis', '2022-07-23 19:37:31', NULL, 1),
+(124, 154, 'Sapiente magni eos.', 'In quo modi dicta ipsa officia. Saepe dolore necessitatibus doloremque quam ab excepturi atque. Qui maiores non ut.', 'https://via.placeholder.com/100x100.png/0088cc?text=photo+et', '2022-07-14 11:03:49', NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -165,26 +180,26 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `email`, `roles`, `password`, `pseudo`, `location`, `photo`) VALUES
-(421, 'alexandre56@wanadoo.fr', '[]', '$2y$13$zf4IWKpjOUQaoXqqLn9PGO6WosAwvVfZ1SDGXyUj8T0rXZK84YfLK', 'Théodore', 'Somme', 'https://via.placeholder.com/200x200.png/005533?text=photo+voluptates'),
-(422, 'duhamel.theophile@hotmail.fr', '[]', '$2y$13$5rXq8w/qU7Qu2TcL4FPeO.R5y9J.UwZRRCtwvDtZ0G6jQaabdhth6', 'Zacharie', 'Savoie', 'https://via.placeholder.com/200x200.png/001166?text=photo+quibusdam'),
-(423, 'dominique30@labbe.fr', '[]', '$2y$13$/Fwp7ibCKx3XzcoWYRHQceZ8kERuH2hBIoF/s/7F6Xd8uQzrc3yne', 'Thierry', 'Indre-et-Loire', 'https://via.placeholder.com/200x200.png/0088cc?text=photo+maiores'),
-(424, 'elise38@laposte.net', '[]', '$2y$13$AgxMWUG.91689qjZ/X2PS.drpeLVgTM0Vr2/862b.EJeNttMvjfIi', 'Roland', 'Haute-Loire', 'https://via.placeholder.com/200x200.png/006688?text=photo+dolorem'),
-(425, 'alexandre83@dbmail.com', '[]', '$2y$13$W5eHr5LPkisUxdiu8O8.5uUZRf4VAtkb.typWBVXQD6ZEriznGbQm', 'Honoré', 'Lot', 'https://via.placeholder.com/200x200.png/008855?text=photo+tempore'),
-(426, 'benoit.renault@voisin.com', '[]', '$2y$13$dAp54FhYp7ONd6ymLuI0L.vKpTOnVsmSUGwgA0u/REcRKSQowHGBC', 'Virginie', 'Loire-Atlantique', 'https://via.placeholder.com/200x200.png/006688?text=photo+ratione'),
-(427, 'eugene.valette@garnier.com', '[]', '$2y$13$PUEh511x0SfTQxkXTSO1RuLMlcbRY9nkdjPGIWuq3wG3rGiylIPpa', 'Jacques', 'Yvelines', 'https://via.placeholder.com/200x200.png/003388?text=photo+est'),
-(428, 'vrobin@guilbert.com', '[]', '$2y$13$SXO15Df7JKMpHy52MOAydupD6w078X/NRiuvWcsHptIZqqk16lYI6', 'Tristan', 'Doubs', 'https://via.placeholder.com/200x200.png/00aa99?text=photo+voluptate'),
-(429, 'alain.lacombe@dbmail.com', '[]', '$2y$13$LWvny5SIqli16.GF9jKJme9E1wx.zZy7wl7i4e5WJ7U22kZvkh4yq', 'Constance', 'Bouches-du-Rhône', 'https://via.placeholder.com/200x200.png/0011cc?text=photo+asperiores'),
-(430, 'marianne.hernandez@marion.com', '[]', '$2y$13$eFbccjh5foStnpKaJOZ2BePBd2SodbdyMhipUSOcDqfkVcIGK58Ei', 'Camille', 'Territoire de Belfort', 'https://via.placeholder.com/200x200.png/0033dd?text=photo+voluptatum'),
-(431, 'becker.noemi@noos.fr', '[]', '$2y$13$.JlBdnkx2qdnuAFEsrMFV.tcYuIoS96bDImc.G//hIkFRwuIRP4vO', 'Olivier', 'Seine-Saint-Denis', 'https://via.placeholder.com/200x200.png/00eebb?text=photo+tempore'),
-(432, 'thomas66@barre.com', '[]', '$2y$13$.geIrZU4kawDYA7jJCxWYe2yHLaDCXnzsbf9Bv6.iq8Gdd/M7w2tW', 'Stéphanie', 'Landes', 'https://via.placeholder.com/200x200.png/00aa66?text=photo+ut'),
-(433, 'philippine.boulay@faure.org', '[]', '$2y$13$WjbNW4c2fstNXP0/OkvvkehJCYwJy6.Lbh4WDkN7U8bOcrcoH5FaW', 'Éléonore', 'Gard', 'https://via.placeholder.com/200x200.png/003399?text=photo+magnam'),
-(434, 'denis97@sfr.fr', '[]', '$2y$13$GVIOawFO0NtJe8J8DIzuf.vwexxTLzh0j62mZLQivpLM931KML/cu', 'Chantal', 'Territoire de Belfort', 'https://via.placeholder.com/200x200.png/001100?text=photo+voluptas'),
-(435, 'martin.joubert@hotmail.fr', '[]', '$2y$13$MOENS4gEcmT866YrSRNMFuBII9pxaO2rGL/pHnYEEYKSTFxMKT3wS', 'Henri', 'Hautes-Alpes', 'https://via.placeholder.com/200x200.png/007799?text=photo+tenetur'),
-(436, 'jjoubert@morel.com', '[]', '$2y$13$q1UK92UT0IvFU8WYhFFXnOQdKWQy3MSCv012Mv4fTJ7zqNP0oW4J6', 'Vincent', 'Val-d\'Oise', 'https://via.placeholder.com/200x200.png/0077bb?text=photo+laudantium'),
-(437, 'marcel.paris@orange.fr', '[]', '$2y$13$oHnzkPqE/75n7Seapz9Spe0UKu8KYR/uEHU80f/pA3tAiCTW7N/jy', 'Patricia', 'Côte-d\'Or', 'https://via.placeholder.com/200x200.png/003388?text=photo+sequi'),
-(438, 'aurore50@blanchard.com', '[]', '$2y$13$uAZ/PTw8p57sAw6shFXupudYTtGjONbUEvlGrru/dTfGJAR8p7b2O', 'Océane', 'Finistère', 'https://via.placeholder.com/200x200.png/00aa66?text=photo+dolore'),
-(439, 'sroger@riviere.com', '[]', '$2y$13$pvQnkW4jG3dZd/86DExa3.Fpg40TtMBgnYCb9UlxnhZUKyXpBXL2G', 'Bernard', 'Hautes-Alpes', 'https://via.placeholder.com/200x200.png/005555?text=photo+numquam'),
-(440, 'kbenard@orange.fr', '[]', '$2y$13$HPqw/WXTOKM1NUVXmj5lnuJNd5HyvxUDRO2GWVmyyunSJGpIWbhd.', 'Thierry', 'Loir-et-Cher', 'https://via.placeholder.com/200x200.png/008822?text=photo+ut');
+(145, 'mathilde48@robert.fr', '[]', '$2y$13$YuXUZsWyZzWlG1fEuKw00eyViVeNMMD9eR/0avupZNdMVVHnOx9k.', 'Dominique', 'Ariège', 'https://via.placeholder.com/100x100.png/0044bb?text=photo+magni'),
+(146, 'lucas.christine@wanadoo.fr', '[]', '$2y$13$DM55oQuHyzZc69BLmB5aCOCKSzZPi1IRoDh.q9f5CwA/QH7CoBrLq', 'Christophe', 'Haute-Savoie', 'https://via.placeholder.com/100x100.png/0055dd?text=photo+exercitationem'),
+(147, 'glaine@fabre.fr', '[]', '$2y$13$90iS9YPFTut7eQfwPy/H9OsBBAVTnUKeW8UYxC8ONlGR/Uf95qP9G', 'Robert', 'Hauts-de-Seine', 'https://via.placeholder.com/100x100.png/0000bb?text=photo+qui'),
+(148, 'andre.baron@normand.fr', '[]', '$2y$13$xhQZkt8X0jxjRDp8c46Bu.d6wTKRKQUaZHLiFErLPziRbZA7A.v6S', 'Alexandrie', 'Gard', 'https://via.placeholder.com/100x100.png/008877?text=photo+ratione'),
+(149, 'bbaron@live.com', '[]', '$2y$13$JHpd0wWbMf9vCSLROhuBV.899C5jpFopj/cSmIoy77OKG2UjfY396', 'Philippine', 'Doubs', 'https://via.placeholder.com/100x100.png/004466?text=photo+excepturi'),
+(150, 'victor71@laposte.net', '[]', '$2y$13$m9B6wjxvl3jmmvmJGrSBqORXKg9ysDNphjGzwOSBYX9vhox6PeEPq', 'Sébastien', 'Seine-Maritime', 'https://via.placeholder.com/100x100.png/009944?text=photo+dolorum'),
+(151, 'zlebrun@sfr.fr', '[]', '$2y$13$scraZveQZbkWjemjhGSQauLxnxIB85zrtg5GsIbZSLOSxkvg8lZwK', 'Adrien', 'Val-d\'Oise', 'https://via.placeholder.com/100x100.png/001111?text=photo+iure'),
+(152, 'nicole00@gosselin.net', '[]', '$2y$13$abAx9XKQjDPsP7lM79CRZ.rZSg2RiJzSHErLLkihvG2q7ePaL.wHm', 'Hortense', 'Val-d\'Oise', 'https://via.placeholder.com/100x100.png/000055?text=photo+omnis'),
+(153, 'gabriel56@thierry.fr', '[]', '$2y$13$xOkYlZB2FbX27DXY5V61ye7ghdz0eoeunC7xO92uaSFaKpBGF0smS', 'Anastasie', 'Mayenne', 'https://via.placeholder.com/100x100.png/00ee88?text=photo+odio'),
+(154, 'gros.leon@orange.fr', '[]', '$2y$13$B2wCFprPJxEwYPVBhH4vmefGYZhWDj/sg7C3X7oRiiGtWHV0GboB.', 'Aimée', 'Doubs', 'https://via.placeholder.com/100x100.png/008844?text=photo+facere'),
+(155, 'besnard.yves@wanadoo.fr', '[]', '$2y$13$NQU4xPUhl4ggLhY/BYkSnuc34qrYF1TQstF5PqfXno68Waj33wZeq', 'Guillaume', 'Charente-Maritime', 'https://via.placeholder.com/100x100.png/0099bb?text=photo+quos'),
+(156, 'amelie.brunet@hotmail.fr', '[]', '$2y$13$Uqcen4meu816KBm9jF7oqOOUWUBq48w4we5kU3JHdHaIUmH/t2Zqe', 'Bertrand', 'Haute-Loire', 'https://via.placeholder.com/100x100.png/00ddee?text=photo+dolor'),
+(157, 'mathilde77@rossi.fr', '[]', '$2y$13$YKHyM.Isj0a1IA30Ik72FukRhKJrBTTgDlL4CCmmAZmWN8fjRtZ1C', 'Martin', 'Meurthe-et-Moselle', 'https://via.placeholder.com/100x100.png/00aa33?text=photo+perferendis'),
+(158, 'gilbert71@bertrand.com', '[]', '$2y$13$5M832VLGs9aFlW9oo5TAfO5zkws8waA2RuOhvZO2mh/oopSxdChJW', 'Yves', 'Aude', 'https://via.placeholder.com/100x100.png/00ddaa?text=photo+incidunt'),
+(159, 'augustin25@laposte.net', '[]', '$2y$13$3GbeeihlRYMkBMhJosuCS.An8siBzRxBKxBrkqwGfT/fS6iZVy5ZW', 'Stéphane', 'Guyane', 'https://via.placeholder.com/100x100.png/002222?text=photo+praesentium'),
+(160, 'rbonnet@boucher.com', '[]', '$2y$13$0TwedmME722zuAYFdESjp./vTiZt8HB65.hysi1dg5MpwZoYYBNNe', 'Luce', 'Somme', 'https://via.placeholder.com/100x100.png/008877?text=photo+dolore'),
+(161, 'remy.goncalves@live.com', '[]', '$2y$13$F3hk4axxu6Q64ctZT0qOh.xui3TXARfX6Dt9FJZ8inC13NXBsjGr.', 'Claudine', 'Seine-Saint-Denis', 'https://via.placeholder.com/100x100.png/0000bb?text=photo+rem'),
+(162, 'bailly.aimee@lebreton.com', '[]', '$2y$13$hFwPytSsLVuhso45816v6.l25SQpTfnI3ocwG7fwwwkZ..NsGFG3e', 'Martin', 'Guyane', 'https://via.placeholder.com/100x100.png/008822?text=photo+ut'),
+(163, 'ujacques@poulain.com', '[]', '$2y$13$m7XS8ojoDkA8LB/fojuDTe76iCyHbPVkzSz3UGPsngYy.9wQFmscy', 'Thibault', 'Paris', 'https://via.placeholder.com/100x100.png/000088?text=photo+aut'),
+(164, 'margaret.blanchet@levy.fr', '[]', '$2y$13$O5QxemuR/MItwmZ3GUqRqOKw9yEC90yDU3q2ZfqAojYsZ7vYrm.gy', 'Patrick', 'Hautes-Pyrénées', 'https://via.placeholder.com/100x100.png/000044?text=photo+laborum');
 
 --
 -- Index pour les tables déchargées
@@ -196,6 +211,14 @@ INSERT INTO `user` (`id`, `email`, `roles`, `password`, `pseudo`, `location`, `p
 ALTER TABLE `demand`
   ADD PRIMARY KEY (`id`),
   ADD KEY `IDX_428D7973A76ED395` (`user_id`);
+
+--
+-- Index pour la table `demand_relation`
+--
+ALTER TABLE `demand_relation`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `IDX_9D2957D75D022E59` (`demand_id`),
+  ADD KEY `IDX_9D2957D7A76ED395` (`user_id`);
 
 --
 -- Index pour la table `doctrine_migration_versions`
@@ -234,7 +257,13 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT pour la table `demand`
 --
 ALTER TABLE `demand`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=201;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=171;
+
+--
+-- AUTO_INCREMENT pour la table `demand_relation`
+--
+ALTER TABLE `demand_relation`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT pour la table `messenger_messages`
@@ -246,13 +275,13 @@ ALTER TABLE `messenger_messages`
 -- AUTO_INCREMENT pour la table `proposal`
 --
 ALTER TABLE `proposal`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=125;
 
 --
 -- AUTO_INCREMENT pour la table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=441;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=165;
 
 --
 -- Contraintes pour les tables déchargées
@@ -263,6 +292,13 @@ ALTER TABLE `user`
 --
 ALTER TABLE `demand`
   ADD CONSTRAINT `FK_428D7973A76ED395` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
+
+--
+-- Contraintes pour la table `demand_relation`
+--
+ALTER TABLE `demand_relation`
+  ADD CONSTRAINT `FK_9D2957D75D022E59` FOREIGN KEY (`demand_id`) REFERENCES `demand` (`id`),
+  ADD CONSTRAINT `FK_9D2957D7A76ED395` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
 
 --
 -- Contraintes pour la table `proposal`

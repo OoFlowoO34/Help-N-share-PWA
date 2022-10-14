@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\DemandRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -35,6 +37,14 @@ class Demand
     #[ORM\ManyToOne(inversedBy: 'demands')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
+
+    #[ORM\OneToMany(mappedBy: 'demand', targetEntity: DemandRelation::class)]
+    private Collection $demandRelations;
+
+    public function __construct()
+    {
+        $this->demandRelations = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -121,6 +131,39 @@ class Demand
     public function setUser(?User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function __toString(){
+    return $this->id;
+    }
+    /**
+     * @return Collection<int, DemandRelation>
+     */
+    public function getDemandRelations(): Collection
+    {
+        return $this->demandRelations;
+    }
+
+    public function addDemandRelation(DemandRelation $demandRelation): self
+    {
+        if (!$this->demandRelations->contains($demandRelation)) {
+            $this->demandRelations->add($demandRelation);
+            $demandRelation->setDemand($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDemandRelation(DemandRelation $demandRelation): self
+    {
+        if ($this->demandRelations->removeElement($demandRelation)) {
+            // set the owning side to null (unless already changed)
+            if ($demandRelation->getDemand() === $this) {
+                $demandRelation->setDemand(null);
+            }
+        }
 
         return $this;
     }

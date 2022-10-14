@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}DemandRelation{% endblock %}
+
+{% block body %}
+    <h1>DemandRelation</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ demand_relation.id }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_demand_relation_index') }}">back to list</a>
+
+    <a href="{{ path('app_demand_relation_edit', {'id': demand_relation.id}) }}">edit</a>
+
+    {{ include('demand_relation/_delete_form.html.twig') }}
+{% endblock %}

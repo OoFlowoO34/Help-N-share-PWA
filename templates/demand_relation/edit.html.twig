@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit DemandRelation{% endblock %}
+
+{% block body %}
+    <h1>Edit DemandRelation</h1>
+
+    {{ include('demand_relation/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_demand_relation_index') }}">back to list</a>
+
+    {{ include('demand_relation/_delete_form.html.twig') }}
+{% endblock %}
