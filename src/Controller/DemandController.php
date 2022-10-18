@@ -17,6 +17,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
+
 #[Route('/demand')]
 class DemandController extends AbstractController
 {
@@ -43,7 +44,6 @@ class DemandController extends AbstractController
         {
             return $this->redirectToRoute('app_login');
         }
-
     }
 
     #[Route('/new', name: 'app_demand_new', methods: ['GET', 'POST'])]
@@ -94,13 +94,38 @@ class DemandController extends AbstractController
             'form' => $form,
         ]);
     }
-
+    
+    // The parametter in the route must be 'id' so symfony will be able to get an instance from the request for "demand" 
     #[Route('/{id}', name: 'app_demand_show', methods: ['GET'])]
-    public function show(Demand $demand, DemandRelationRepository $demandRelationRepository): Response
+    public function show(Request $request,Demand $demand, DemandRelationRepository $demandRelationRepository, DemandRepository $demandRepository, Security $security): Response
     {
+        $user = $security->getUser();
+        $demandId = $demand->getId();
+
+        // $user = $demand->getUser();
+
+        //find the connected user's demandRelation on this demand instance if there is one 
+        //check if connnected user already contacted the demand
+        $hasRelations = $demandRelationRepository->findBy(['demand' => $demandId,]);
+
+        // $hasRelation2 = $demandRelationRepository->findOneBy(['demandUser' => $demandUser,'demand' => $demandId,]);
+      
+
+        //find the user's demand only if it is this demand instance
+        //check if it is the connected user's demand
+        $myDemand = $demandRepository->findOneBy(['user' => $user,'id' => $demandId,]);
+        if($myDemand){
+                $myDemand=true;
+            }
+            else{
+                $myDemand=false;
+            }
+        
         return $this->render('demand/show.html.twig', [
             'demand' => $demand,
             'demand_relations' => $demandRelationRepository->findAll(),
+            'hasRelations' => $hasRelations,
+            'myDemand' => $myDemand,
         ]);
     }
 
@@ -126,9 +151,15 @@ class DemandController extends AbstractController
     #[Route('/{id}', name: 'app_demand_delete', methods: ['POST'])]
     public function delete(Request $request, Demand $demand, DemandRepository $demandRepository): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$demand->getId(), $request->request->get('_token'))) {
-            $demandRepository->remove($demand, true);
-        }
+        $demandId = $request->get('id');
+        $demand = $demandRepository->findOneBy(['id' => $demandId,]);
+        $demand->setDeleted(true);
+        $demandRepository->save($demand, true);
+
+        // if ($this->isCsrfTokenValid('delete'.$demand->getId(), $request->request->get('_token'))) {
+            
+        //     $demandRepository->remove($demand, true);
+        // }
 
         return $this->redirectToRoute('app_demand_index', [], Response::HTTP_SEE_OTHER);
     }

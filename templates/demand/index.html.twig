@@ -2,34 +2,38 @@
 
 
 
-{% block title %}Demand index{% endblock %}
+{% block title %}Demandes{% endblock %}
 
 {% block body %}
 
+    <h1>Consultez les demandes de la commnauté Help and Share</h1>
     {% if app.user %}
-        <a href="{{ path('app_demand_new') }}">Create new</a>
+    <div  class="text-center"> 
+    <a href="{{ path('app_demand_new') }}"><button class="btn btn-primary">Créér une demande</button></a>
+    </div>
+       
     {% endif %}
-
-    <h1>Demand index</h1>
-
-    <table class="table">
-        <tbody>
         {% for demand in demands %}
 
             {# Don't show the demand if is from the connected user and if he has deleted it #}
             {% if demand.user != app.user and demand.deleted == 0 %} 
-                <tr>
-                    <td>{{ demand.user.pseudo }}</td>
-                    <td>{{ demand.user.location }}</td>
-                    <td>{{ demand.title }}</td>
-                    <td>{{ demand.text }}</td>
-                    <td><img class="w-25" src="{{ asset('uploads/brochures/' ~ demand.photo) }}" alt=""></td>
-                    <td>{{ demand.dateCreated ? demand.dateCreated|date('Y-m-d H:i:s') : '' }}</td>
-                    <td>{{ demand.dateModified ? demand.dateModified|date('Y-m-d H:i:s') : '' }}</td>
-                    <td>
+                
+                <div class="card ml-auto mr-auto mt-5" style="width: 50%;">
+                    <img class="card-img-top w-25" src="{{ demand.getUser().photo }}" alt="">
+                    <div class="card-body">
+                        <span class="card-title">{{ demand.user.pseudo }}</span>
+                        <h5 class="card-title">{{ demand.title }}</h5>
+                        <p class="card-text">{{ demand.text }}</p>
+                        {% if demand.dateModified %}
+                        <small>Modifié {{ demand.dateModified ? demand.dateModified|date('d-m-Y') : '' }}</small>
+                        {% else %}
+                        <small>Créé {{ demand.dateCreated ? demand.dateCreated|date('d-m-Y') : '' }}</small><br>
+                        {% endif %}
+                        
+                     
                         <a href="{{ path('app_demand_show', {'id': demand.id}) }}">show</a>
-                    </td>
-                </tr>
+                    </div>
+                </div>
             {% endif %}   
 
         {% else %}
@@ -37,7 +41,6 @@
                 <td colspan="8">no records found</td>
             </tr>
         {% endfor %}
-        </tbody>
-    </table>
+
     
 {% endblock %}

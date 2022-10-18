@@ -1,72 +1,114 @@
+{# 
+Sent by DemandController : 
+            'demand' => $demand, ( ENTITY return the instance from the request for "demand" )
+            'hasRelation' => $hasRelation, ( ARRAY return all the demandRelation of this demand instance )
+            'myDemand' => $myDemand, ( BOOL return true if the demand is from the connected user else false)
+#}
+
 {% extends 'base.html.twig' %}
 
 {% block title %}Demand{% endblock %}
 
 {% block body %}
+
+{# {{  dump(demand) }} #}
+{# {{  dump(hasRelations) }} #}
+{# {{  dump(myDemand) }} #}
+
     <h1>Demand</h1>
 
-    <table class="table">
-        <tbody>
 
-            <tr>
-                <th>Pseudo</th>
+            <div class="card" style="width: 18rem;">
+                <img class="card-img-top" src="{{ asset('uploads/brochures/' ~ demand.photo) }}" alt="">
+                <div class="card-body">
+                    <span class="card-title">{{ demand.user.pseudo }}</span>
+                    <h5 class="card-title">{{ demand.title }}</h5>
+                    <p class="card-text">{{ demand.text }}</p>
+
+                    {% if not hasRelations and not myDemand %}
+                    <form action="{{ path('app_demand_relation_new') }}" method="POST">
+                    
+                        <input name="demandId" type="hidden" value= "{{ demand.id }}">
+
+                        <div class="form-group">
+                            <label for="exampleFormControlTextarea1">Ecrivez un message à {{demand.user.pseudo}}</label>
+                            <textarea name="text" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-outline-primary">
+                            <span>Contacter</span>
+                        </button>
+                    </form>
+                    
+                    {% elseif myDemand %}
+
+                        <div class="row">
+                            <div class="col">
+                            <a href="{{ path('app_demand_edit', {'id': demand.id}) }}"><button type="button" class="btn btn-secondary">edit</button></a>
+                            </div>
+                            <div class="col">
+                            {{ include('demand/_delete_form.html.twig', {'id': demand.id}) }}
+                            </div>
+                        </div>
+                
+                    
+                    {% endif %}
+                </div>
+            </div>
+            {# <tr>
+                
                 <td>{{ demand.user.pseudo }}</td>
             </tr>
             <tr>
-                <th>Location</th>
+               
                 <td>{{ demand.user.location }}</td>
             </tr>
             <tr>
-                <th>Title</th>
+                
                 <td>{{ demand.title }}</td>
             </tr>
             <tr>
-                <th>Text</th>
+                
                 <td>{{ demand.text }}</td>
             </tr>
             <tr>
-                <th>Photo</th>
-                <td><img src="{{ demand.photo }}" alt=""></td>
+            
+                <td><img class="w-25" src="{{ asset('uploads/brochures/' ~ demand.photo) }}" alt=""></td>
             </tr>
             <tr>
-                <th>Date_created</th>
                 <td>{{ demand.dateCreated ? demand.dateCreated|date('Y-m-d H:i:s') : '' }}</td>
             </tr>
             <tr>
-                <th>Date_modified</th>
+               
                 <td>{{ demand.dateModified ? demand.dateModified|date('Y-m-d H:i:s') : '' }}</td>
             </tr>
             <tr>
-                <th>Deleted</th>
                 <td>{{ demand.deleted ? 'Yes' : 'No' }}</td>
-            </tr>
-        </tbody>
-    </table>
+            </tr> #} 
 
 
-    {# <a href="{{ path('app_demand_relation_new') }}">contact</a> #}
-        <form action="{{ path('app_demand_relation_new') }}" method="POST">
-            <input name="demandId" type="hidden" name="demandId" value= "{{ demand.id }}">
-            <button type="submit" class="btn btn-outline-primary">
-                <span>Contacter</span>
-            </button>
-        </form>
 
-    
-    <a href="{{ path('app_demand_index') }}">back to list</a>
+    {# If this demand has relation #}
+    {% if hasRelations %}
 
-    {% if app.user == demand.user %}
-    <a href="{{ path('app_demand_edit', {'id': demand.id}) }}">edit</a>
-    {{ include('demand/_delete_form.html.twig', {'id': demand.id}) }}
+        {#  And if this is NOT my demand #}
+        {% if not myDemand %}
+            <span>Vous avez contacté: {{demand.user.pseudo}} </span> 
+
+        {#  Else  #}    
+        {% else %}
+            <ul>Vous avez été contacté par:
+            
+                {#  Display all this demand's relations   #}  
+                {% for hasRelation in hasRelations %}
+        
+                <li> {{hasRelation.user.pseudo}} </li>
+
+                {% endfor %}
+
+            </ul>
+        {% endif %}
     {% endif %}
 
-    {% for demand_relation in demand_relations %}
+    <a href="{{ path('app_demand_index') }}">back to list</a>
 
-        {% if demand_relation.user == app.user and demand.id == demand_relation.demand.id  %} 
-            <span>Vous avez contacté: {{demand.user.pseudo}} </span>
-        {% endif %}
-
-    {% endfor %}
-
-   
 {% endblock %}
