@@ -2,7 +2,14 @@
 
 {% block title %}Log in!{% endblock %}
 
+
+
 {% block body %}
+{% for message in app.flashes('success') %}
+    <div class="flash-notice">
+        {{ message }}
+    </div>
+{% endfor %}
 <div class="container col-6 p-5">
 <form class="form-signin" method="post">
     {% if error %}
