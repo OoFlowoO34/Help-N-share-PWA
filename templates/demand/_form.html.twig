@@ -1,4 +1,17 @@
-{{ form_start(form) }}
+{# {{ form_start(form) }}
     {{ form_widget(form) }}
     <button class="btn">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}
+ #}
+
+{{ form_start(form) }}
+    {{ form_errors(form) }}
+
+    {{ form_row(form.title) }}
+    {{ form_row(form.text) }}
+    <img class="card-img-top " style="width: 200px"src="{{ asset('photos/' ~ demand.photo) }}" alt="">
+    {{ form_row(form.photo) }}
+
+    <button class="btn">{{ button_label|default('Save') }}</button>
+{{ form_end(form) }}
+

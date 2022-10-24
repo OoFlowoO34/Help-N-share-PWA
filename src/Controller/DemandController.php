@@ -6,21 +6,30 @@ namespace App\Controller;
 use DateTime;
 use App\Entity\Demand;
 use App\Form\DemandType;
-use App\Repository\DemandRelationRepository;
+use App\Service\FileUploader;
 use App\Repository\DemandRepository;
+use App\Repository\DemandRelationRepository;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\File\Exception\FileException;
-use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+
+
+
 
 
 #[Route('/demand')]
 class DemandController extends AbstractController
 {
+
+    /*______________________________________________________________________________
+
+                                        INDEX
+     ↓↓↓↓↓↓↓↓↓↓↓↓↓                                                       ↓↓↓↓↓↓↓↓↓↓↓↓                                   
+    _________________________________________________________________________________*/
     #[Route('/', name: 'app_demand_index', methods: ['GET'])]
     public function index(DemandRepository $demandRepository): Response
     {
@@ -29,8 +38,14 @@ class DemandController extends AbstractController
         ]);
     }
 
+
+    /*______________________________________________________________________________
+
+                                        MY_DEMANDS
+    ↓↓↓↓↓↓↓↓↓↓↓↓↓                                                       ↓↓↓↓↓↓↓↓↓↓↓↓	
+    _________________________________________________________________________________*/
     #[Route('/mes_demandes', name: 'my_demands', methods: ['GET'])]
-    public function demandUser(DemandRepository $demandRepository,AuthenticationUtils $authenticationUtilsuthenticationUtils): Response
+    public function demandUser(DemandRepository $demandRepository): Response
     {
         if ($this->getUser())
         {
@@ -46,8 +61,14 @@ class DemandController extends AbstractController
         }
     }
 
+
+    /*______________________________________________________________________________
+
+                                        NEW
+     ↓↓↓↓↓↓↓↓↓↓↓↓↓                                                       ↓↓↓↓↓↓↓↓↓↓↓↓	
+    _________________________________________________________________________________*/
     #[Route('/new', name: 'app_demand_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, DemandRepository $demandRepository, Security $security, SluggerInterface $slugger): Response
+    public function new(Request $request, DemandRepository $demandRepository, Security $security, FileUploader $fileUploader ): Response
     {
         $user = $security->getUser();
         $demand = new Demand();
@@ -60,31 +81,25 @@ class DemandController extends AbstractController
             $demand->setDateCreated(new DateTime('Europe/Paris'));
             $demand->setDeleted(false);
             
-            
+            /*xxxxxxxxxxxxxxx
+            x    PHOTO      x
+            xxxxxxxxxxxxxxxx*/
+
+            /** @var UploadedFile $photoFile */
             $photoFile = $form->get('photo')->getData();
 
-            // this condition is needed because the 'photo' field is not required
-            // so the PDF file must be processed only when a file is uploaded
+            /*__________________________________________________________________________
+            This condition is needed because the 'photo' field is not required
+            so the photo file must be processed only when a file is uploaded         ↓ */
             if ($photoFile) {
-                $originalFilename = pathinfo($photoFile->getClientOriginalName(), PATHINFO_FILENAME);
-                // this is needed to safely include the file name as part of the URL
-                $safeFilename = $slugger->slug($originalFilename);
-                $newFilename = $safeFilename.'-'.uniqid().'.'.$photoFile->guessExtension();
-
-                // Move the file to the directory where photos are stored
-                try {
-                    $photoFile->move(
-                        $this->getParameter('photos_directory'),
-                        $newFilename
-                    );
-                } catch (FileException $e) {
-                    // ... handle exception if something happens during file upload
-                }
-
-                // updates the 'photoFilename' property to store the PDF file name
+                                
+                // Updates the 'photoFilename' property to store the photo file name
                 // instead of its contents
-                $demand->setPhoto($newFilename);
+                $photoFileName = $fileUploader->upload($photoFile);
+
+                $demand->setPhoto($photoFileName);
             }
+
             $demandRepository->save($demand, true);
             return $this->redirectToRoute('app_demand_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -95,48 +110,96 @@ class DemandController extends AbstractController
         ]);
     }
     
+
+    /*______________________________________________________________________________
+
+                                        SHOW
+     ↓↓↓↓↓↓↓↓↓↓↓↓↓                                                       ↓↓↓↓↓↓↓↓↓↓↓↓                                   
+    _________________________________________________________________________________*/
     // The parametter in the route must be 'id' so symfony will be able to get an instance from the request for "demand" 
+    // Nous permet de ne pas mettre Request en paramettre et d'aller chercher la demande correspondante avec l'id :
+    //$id = $request->get('id');
+    //$demand = $demandRepository->findOneBy(['id'=>$id]);
     #[Route('/{id}', name: 'app_demand_show', methods: ['GET'])]
-    public function show(Request $request,Demand $demand, DemandRelationRepository $demandRelationRepository, DemandRepository $demandRepository, Security $security): Response
+    public function show(Demand $demand, DemandRelationRepository $demandRelationRepository, DemandRepository $demandRepository, Security $security): Response
     {
         $user = $security->getUser();
         $demandId = $demand->getId();
 
-        // $user = $demand->getUser();
-
         //find the connected user's demandRelation on this demand instance if there is one 
         //check if connnected user already contacted the demand
-        $hasRelations = $demandRelationRepository->findBy(['demand' => $demandId,]);
+        $relations = $demandRelationRepository->findBy(['demand' => $demandId,]);
 
-        // $hasRelation2 = $demandRelationRepository->findOneBy(['demandUser' => $demandUser,'demand' => $demandId,]);
-      
+        //Check if the user connected is related to the demand
+        $related = false;
+        foreach($relations as $relation){
+           
+            //If related user = user connected
+            if($relation->getUser() == $user){
+                $related = true;
+                break;
+            }
+        }
 
-        //find the user's demand only if it is this demand instance
+        //Find the user's demand only if it is this demand instance
         //check if it is the connected user's demand
         $myDemand = $demandRepository->findOneBy(['user' => $user,'id' => $demandId,]);
-        if($myDemand){
-                $myDemand=true;
-            }
-            else{
-                $myDemand=false;
-            }
-        
+ 
+        $mine = $myDemand ? true : false;
+
         return $this->render('demand/show.html.twig', [
             'demand' => $demand,
-            'demand_relations' => $demandRelationRepository->findAll(),
-            'hasRelations' => $hasRelations,
-            'myDemand' => $myDemand,
+            'relations' => $relations,
+            'related' => $related,
+            'mine' => $mine,
         ]);
     }
 
+
+    /*______________________________________________________________________________
+
+                                        EDIT
+     ↓↓↓↓↓↓↓↓↓↓↓↓↓                                                       ↓↓↓↓↓↓↓↓↓↓↓↓	
+    _________________________________________________________________________________*/
     #[Route('/{id}/edit', name: 'app_demand_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Demand $demand, DemandRepository $demandRepository): Response
+    public function edit(Request $request, Demand $demand, DemandRepository $demandRepository, Filesystem $filesystem, FileUploader $fileUploader ): Response
     {
+       
         $form = $this->createForm(DemandType::class, $demand);
         $form->handleRequest($request);
-
+      
         if ($form->isSubmitted() && $form->isValid()) {
+
             $demand->setDateModified(new DateTime('Europe/Paris'));
+
+            /*xxxxxxxxxxxxxxx
+            x    PHOTO      x
+            xxxxxxxxxxxxxxxx*/
+
+            /** @var UploadedFile $photoFile */
+            $photoFile = $form->get('photo')->getData();
+
+            /*__________________________________________________________________________
+            This condition is needed because the 'photo' field is not required
+            so the photo file must be processed only when a file is uploaded         ↓ */
+            if ($photoFile) {
+                
+                // Get the route and the filename to delete
+                $photo = $demand->getPhoto();
+                $TargetDirectory = $fileUploader->getTargetDirectory();
+                $photo_pointer = $TargetDirectory.'/'.$photo;
+
+                // Delete the photo to be replaced, like unlink($photo_pointer);
+                $filesystem->remove($photo_pointer);
+
+                // To avoid logic in controllers, making them big, I extracted the upload logic to a separate service ( fileUploader ).
+                // Store the photo and return a new uniq name.
+                $photoFileName = $fileUploader->upload($photoFile);
+                
+                // Store the photo file name instead of its contents
+                $demand->setPhoto($photoFileName);
+            }
+
             $demandRepository->save($demand, true);
             
             return $this->redirectToRoute('app_demand_index', [], Response::HTTP_SEE_OTHER);
@@ -148,11 +211,32 @@ class DemandController extends AbstractController
         ]);
     }
 
+
+    /*______________________________________________________________________________
+
+                                        DELETE
+     ↓↓↓↓↓↓↓↓↓↓↓↓↓                                                       ↓↓↓↓↓↓↓↓↓↓↓↓                                   
+    _________________________________________________________________________________*/
     #[Route('/{id}', name: 'app_demand_delete', methods: ['POST'])]
-    public function delete(Request $request, Demand $demand, DemandRepository $demandRepository): Response
+    public function delete(Request $request, Demand $demand, DemandRepository $demandRepository, FileUploader $fileUploader, Filesystem $filesystem): Response
     {
         $demandId = $request->get('id');
         $demand = $demandRepository->findOneBy(['id' => $demandId,]);
+
+        /*xxxxxxxxxxxxxxx
+        x    PHOTO      x
+        xxxxxxxxxxxxxxxx*/
+        // Get the route and the filename to delete
+        $photo = $demand->getPhoto();
+        $TargetDirectory = $fileUploader->getTargetDirectory();
+        $photo_pointer = $TargetDirectory.'/'.$photo;
+
+        // As it takes a lot of data space and we won't need it any more, 
+        // Delete the photo, like unlink($photo_pointer);
+        $filesystem->remove($photo_pointer);
+
+        // Set Deleted to true so the demand disappear for the users 
+        // but is still in the database for further uses;
         $demand->setDeleted(true);
         $demandRepository->save($demand, true);
 

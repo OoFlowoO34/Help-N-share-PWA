@@ -8,16 +8,25 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class DemandType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('title')
+            ->add('title' , TextType::class, [
+    'label' => 'Titre',
+    'attr' => [
+        'placeholder' => 'test',
+    ],
+    'row_attr' => [
+        'class' => 'form-floating',
+    ],
+])
             ->add('text')
             ->add('photo', FileType::class, [
-                'label' => 'Brochure (PDF file)',
+                'label' => 'Image',
 
                 // unmapped means that this field is not associated to any entity property
                 'mapped' => false,
@@ -36,13 +45,14 @@ class DemandType extends AbstractType
                             'application/pdf',
                             'application/x-pdf',
                         ],
-                        'mimeTypesMessage' => 'Please upload a valid PDF document',
+                        'mimeTypesMessage' => 'Veuillez choisir un fichier image valide ( ex: jpeg,png )',
                     ])
                 ],
             ])
         ;
     }
 
+    
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([

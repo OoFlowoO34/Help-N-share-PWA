@@ -2,7 +2,6 @@
 
 namespace App\DataFixtures;
 
-use DateInterval;
 use Faker\Factory;
 use App\Entity\User;
 use Faker\Generator;
@@ -46,8 +45,10 @@ class AppFixtures extends Fixture
 
 
 
+        //Photos fixtures from Unsplash, website to share photos under free licence.
+        $photosTab = ["fixture_photo_1.jpg","fixture_photo_2.jpg","fixture_photo_3.jpg","'.jpg","fixture_photo_5.jpg","fixture_photo_6.jpg"];
+        
 
-        $photosTab = ["Capture-d-ecran-2022-09-27-a-15-29-55-1-6348110e27b1e.png","ERGO-Tour-white-634810f718280.png","kisspng-sass-style-sheet-language-cascading-style-sheets-l-sass-5b4621924f1d20-6170390015313227703241-6348171582274.png"];
         /**
          * Generate fake Demands
          */

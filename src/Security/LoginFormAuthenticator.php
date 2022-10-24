@@ -2,7 +2,6 @@
 
 namespace App\Security;
 
-use Exception;
 use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Security;
@@ -11,7 +10,6 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
-use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\CsrfTokenBadge;
@@ -19,8 +17,12 @@ use Symfony\Component\Security\Http\Authenticator\AbstractLoginFormAuthenticator
 use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
 use Symfony\Component\Security\Http\Authenticator\Passport\Credentials\PasswordCredentials;
 
+
 class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
 {
+    /**
+    * Trait using session to get (and set) the URL the user last visited before being forced to authenticate.
+    */
     use TargetPathTrait;
 
     public const LOGIN_ROUTE = 'app_login';
@@ -31,22 +33,21 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
     {
         $this->userRepository = $userRepository;
     }
-
+    
+    // https://symfony.com/doc/current/security/custom_authenticator.html#security-passports
     public function authenticate(Request $request): Passport
     {
-        
         $email = $request->request->get('email', '');
         $passport = new Passport(
             new UserBadge($email, function (string $userIdentifier) {
             return $this->userRepository->findOneBy(['email' => $userIdentifier]);
             }),
             new PasswordCredentials($request->request->get('password', '')),
-            [
+            [ 
                 new CsrfTokenBadge('authenticate', $request->request->get('_csrf_token')),
             ],
-
         );
-
+       
         /**
          * @var $user User
          */     
