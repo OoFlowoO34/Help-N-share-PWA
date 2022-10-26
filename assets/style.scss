@@ -1,3 +1,72 @@
-.body {
-  color: rgb(79, 26, 26);
+p,
+a,
+small,
+span,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+button {
+  font-family: "Roboto", sans-serif;
+}
+
+@mixin media-breakpoint-up($break) {
+  @if $break == "xs" {
+    @media (max-width: 575.98px) {
+      @content;
+    }
+  } @else if $break == "sm" {
+    @media (max-width: 767.98px) {
+      @content;
+    }
+  } @else if $break == "md" {
+    @media (max-width: 991.98px) {
+      @content;
+    }
+  } @else if $break == "lg" {
+    @media (max-width: 1199.98px) {
+      @content;
+    }
+  }
+}
+
+.navbar {
+  background-color: rgba(0, 0, 0, 0.5);
+  position: fixed;
+  width: 100%;
+  z-index: 0;
+
+  /* If < xs, place the navbar at the bottom of the page, and make it stick */
+  @include media-breakpoint-up(xs) {
+    background-color: rgba(0, 0, 0, 0.9);
+    position: fixed;
+    bottom: 0px;
+    width: 100%;
+    z-index: 2;
+  }
+}
+
+header {
+  background-image: url("/photos/hammer_bg.jpg");
+  background-size: cover;
+  background-position: center;
+  h1 {
+    background: linear-gradient(
+      0deg,
+      rgba(0, 0, 0, 0) 0%,
+      rgba(0, 0, 0, 0.5) 30%,
+      rgba(0, 0, 0, 0.5) 70%,
+      rgba(0, 0, 0, 0) 100%
+    );
+    // backdrop-filter: blur(2px);
+    color: white;
+  }
+}
+
+.test {
+  position: relative;
+  z-index: 1;
+  background-color: #fafafa;
 }

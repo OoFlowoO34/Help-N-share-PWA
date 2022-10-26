@@ -16,15 +16,23 @@ class DemandType extends AbstractType
     {
         $builder
             ->add('title' , TextType::class, [
-    'label' => 'Titre',
-    'attr' => [
-        'placeholder' => 'test',
-    ],
-    'row_attr' => [
-        'class' => 'form-floating',
-    ],
-])
-            ->add('text')
+                'label' => 'Titre',
+                'attr' => [
+                    'placeholder' => 'Titre',
+                ],
+                'row_attr' => [
+                    'class' => 'form-floating mb-3',
+                ],
+            ])
+            ->add('text' , TextType::class, [
+                'label' => 'Texte',
+                'attr' => [
+                    'placeholder' => 'text',
+                ],
+                'row_attr' => [
+                    'class' => 'form-floating mb-3',
+                ],
+            ])
             ->add('photo', FileType::class, [
                 'label' => 'Image',
 

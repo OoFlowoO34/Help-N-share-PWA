@@ -3,9 +3,19 @@
 {% block title %}New Demand{% endblock %}
 
 {% block body %}
-    <h1>Create new Demand</h1>
+
+<div class="p-5">
+
+    <div class="p-3">  
+        <div  class="text-center"> 
+            <a class="btn btn-primary m-3" href="{{ path('my_demands') }}">Mes demandes</a>
+            <a class="btn btn-secondary m-3" href="{{ path('app_demand_index') }}">Voir demandes</a>
+        </div>
+        <h1 class="text-center m-5">Créez votre demande</h1>
+    </div>
 
     {{ include('demand/_form.html.twig') }}
 
     <a href="{{ path('app_demand_index') }}">back to list</a>
+</div>
 {% endblock %}

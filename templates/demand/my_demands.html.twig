@@ -6,48 +6,55 @@
 
 {% block body %}
 
-    <h1>Mes Demandes</h1>
-    <a href="{{ path('app_demand_new') }}">Create new</a>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Location</th>
-                <th>Title</th>
-                <th>Text</th>
-                <th>Photo</th>
-                <th>Date_created</th>
-                <th>Date_modified</th>
-                <th>Deleted</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
+
+<div class="p-5">
+
+    <div class="p-3">  
+        <div  class="text-center"> 
+            <a class="btn btn-success m-3" href="{{ path('app_demand_new') }}">Créér une demande</a>
+            <a class="btn btn-secondary m-3" href="{{ path('app_demand_index') }}">Voir demandes</a>
+        </div>
+        <h1 class="text-center m-5">Mes Demandes</h1>
+    </div>
+
+
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-5 ">
+
         {% for demand in demands %}
 
             {# Don't show the demand if is from the connected user and if he has deleted it #}
             {% if demand.deleted == 0 %} 
-                <tr>
-                    <td>{{ demand.user.pseudo }}</td>
-                    <td>{{ demand.user.location }}</td>
-                    <td>{{ demand.title }}</td>
-                    <td>{{ demand.text }}</td>
-                    <td><img class="w-25" src="{{ asset('photos/' ~ demand.photo) }}" alt=""></td>
-                    <td>{{ demand.dateCreated ? demand.dateCreated|date('Y-m-d H:i:s') : '' }}</td>
-                    <td>{{ demand.dateModified ? demand.dateModified|date('Y-m-d H:i:s') : '' }}</td>
-                    <td>{{ demand.deleted ? 'Yes' : 'No' }}</td>
-                    <td>
-                        <a href="{{ path('app_demand_show', {'id': demand.id}) }}">show</a>
-                    </td>
-                </tr>
-            {% endif %}   
 
+                <div class="col">
+                    <div class="card shadow border-0">
+                        <div class="card-body ">
+                            <img class="card-img-top w-25 rounded-circle mt-3 mb-3"style="max-width: 100px" src="{{ demand.getUser().photo }}" alt="">
+                            <span class="card-text p-2">{{ demand.getUser().pseudo }}</span>
+                            <h5 class="card-title m-0">{{ demand.title }}</h5>
+                            <small class="text-muted"> {{ demand.getUser().location }}</small>
+                            <p class="card-text mt-3 mb-3 overflow-hidden" style="height: 100px;">{{ demand.text }}</p>
+                        </div>
+                        <div class="card-footer d-flex flex-wrap justify-content-between ">
+                        <a class="btn btn-primary stretched-link mt-3 mb-3" href="{{ path('app_demand_show', {'id': demand.id}) }}">Consulter</a>
+                        {% if demand.dateModified %}
+            
+                            <small class="text-muted align-self-end">Modifié le {{ demand.dateModified ? demand.dateModified|date('d-m-Y') : '' }}</small>
+                        {% else %}
+            
+                            <small class="text-muted align-self-end">Créé le {{ demand.dateCreated ? demand.dateCreated|date('d-m-Y') : '' }}</small>
+                        {% endif %}
+            
+                        </div>
+                    </div>   
+                </div>              
+            {% endif %}
         {% else %}
-            <tr>
-                <td colspan="8">no records found</td>
-            </tr>
+      
+            <span>Aucun résultat</span>
+                
         {% endfor %}
-        </tbody>
-    </table>
+    </div>
+</div>
+    
 
 {% endblock %}

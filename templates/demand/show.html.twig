@@ -20,7 +20,7 @@ Sent by DemandController :
     <h1>Demand</h1>
 
 
-    <div class="card" style="width: 18rem;">
+    {# <div class="card" style="width: 18rem;">
         <img class="card-img-top " style="width: 200px"src="{{ asset('photos/' ~ demand.photo) }}" alt="">
         <div class="card-body">
             <span class="card-title">{{ demand.user.pseudo }}</span>
@@ -57,30 +57,108 @@ Sent by DemandController :
             {% endif %}
 
         </div>
+    </div> #}
+
+    <div class="p-5">
+    <div class="row ">
+
+    
+
+            {# Don't show the demand if the demand is deleted #}
+            {% if demand.deleted == 0 %} 
+
+                <div class="col">
+                    <div class="card shadow border-0">
+                        <div class="card-body ">
+                            <img class="card-img-top w-25 rounded-circle mt-3 mb-3"style="max-width: 100px" src="{{ demand.getUser().photo }}" alt="">
+                            <span class="card-text p-2">{{ demand.getUser().pseudo }}</span>
+                            <h5 class="card-title m-0">{{ demand.title }}</h5>
+                            <small class="text-muted"> {{ demand.getUser().location }}</small>
+                            <p class="card-text mt-3 mb-3 overflow-hidden" style="height: 100px;">{{ demand.text }}</p>
+                            <img class="card-img-bottom " style="width: 200px"src="{{ asset('photos/' ~ demand.photo) }}" alt="">
+
+                            {% if app.user %}
+
+                                {% if not related and not mine %}
+
+                                {# Form to send the id of the demand to create the relation and the message for the Email #}
+                                <form action="{{ path('app_demand_relation_new') }}" method="POST">
+                                
+                                    <input name="demandId" type="hidden" value= "{{ demand.id }}">
+
+                                    <div class="form-group">
+                                        <label for="exampleFormControlTextarea1">Ecrivez un message à {{demand.user.pseudo}}</label>
+                                        <textarea name="text" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-outline-primary">
+                                        <span>Contacter</span>
+                                    </button>
+                                </form>
+                            
+                                {% elseif mine %}
+
+                                <div class="row">
+                                    <div class="col">
+                                    <a href="{{ path('app_demand_edit', {'id': demand.id}) }}"><button type="button" class="btn btn-secondary">edit</button></a>
+                                    </div>
+                                    <div class="col">
+                                    {{ include('demand/_delete_form.html.twig', {'id': demand.id}) }}
+                                    </div>
+                                </div>
+
+                                {% endif %}
+
+                            {% endif %}
+                        </div>
+                        
+                        <div class="card-footer d-flex flex-wrap justify-content-between ">
+                       
+                        {# If this demand has relation #}
+                        {#  And if this is NOT my demand #} 
+                        {% if app.user %}
+                                
+                            {% if related and not mine %}
+
+                                <span class="mt-3 mb-3">Vous avez contacté: {{demand.user.pseudo}} </span> 
+
+                            {#  Else  #}    
+                            {% elseif relations and mine %}
+
+                                <ul class="mt-3 mb-3">Vous avez été contacté par:
+                                
+                                    {#  Display all this demand's relations   #}  
+                                    {% for relation in relations %}
+                            
+                                    <li> {{relation.user.pseudo}} </li>
+
+                                    {% endfor %}
+
+                                </ul>
+
+                            {% endif %}
+
+                        {% endif %}
+                        
+                        {% if demand.dateModified %}
+            
+                            <small class="text-muted align-self-end">Modifié le {{ demand.dateModified ? demand.dateModified|date('d-m-Y') : '' }}</small>
+
+                        {% else %}
+            
+                            <small class="text-muted align-self-end">Créé le {{ demand.dateCreated ? demand.dateCreated|date('d-m-Y') : '' }}</small>
+
+                        {% endif %}
+            
+                        </div>
+                    </div>   
+                </div>
+
+            {% endif %}                
+       
     </div>
+</div>
 
-    {# If this demand has relation #}
-    {#  And if this is NOT my demand #} 
-    {% if app.user %}
-            
-        {% if related and not mine %}
-            <span>Vous avez contacté: {{demand.user.pseudo}} </span> 
-
-        {#  Else  #}    
-        {% elseif relations and mine %}
-            <ul>Vous avez été contacté par:
-            
-                {#  Display all this demand's relations   #}  
-                {% for relation in relations %}
-        
-                <li> {{relation.user.pseudo}} </li>
-
-                {% endfor %}
-
-            </ul>
-        {% endif %}
-
-    {% endif %}
+   
         
     <a href="{{ path('app_demand_index') }}">back to list</a>
 
