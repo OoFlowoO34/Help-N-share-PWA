@@ -26,10 +26,10 @@
         </li>
         {% endif %} #}
       </ul>
-      <form class="d-flex">
+      {# <form class="d-flex">
         <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
         <button class="btn btn-outline-primary" type="submit">Search</button>
-      </form>
+      </form> #}
       {# Display the pseudo of the connected user and a link to logout only to connected users #}
       {% if app.user %}
       <ul class="navbar-nav mb-2 mb-lg-0">
@@ -57,7 +57,7 @@
       {% endif %}
 
       {% if not app.user %}
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+      <ul class="navbar-nav mb-2 mb-lg-0">
         <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="{{path("app_register")}}">S'inscrire</a>
           </li>

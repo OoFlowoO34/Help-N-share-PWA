@@ -36,7 +36,7 @@ button {
   background-color: rgba(0, 0, 0, 0.5);
   position: fixed;
   width: 100%;
-  z-index: 0;
+  z-index: 2;
 
   /* If < xs, place the navbar at the bottom of the page, and make it stick */
   @include media-breakpoint-up(xs) {
@@ -44,7 +44,7 @@ button {
     position: fixed;
     bottom: 0px;
     width: 100%;
-    z-index: 2;
+    z-index: 4;
   }
 }
 
@@ -65,8 +65,70 @@ header {
   }
 }
 
-.test {
+main {
   position: relative;
-  z-index: 1;
+  z-index: 3;
   background-color: #fafafa;
 }
+
+.btn-my {
+  position: relative;
+  .btn {
+    position: relative;
+    z-index: 1;
+  }
+  .my-img-button {
+    transition: all 0.5s ease;
+    z-index: 0;
+    position: absolute;
+    bottom: 0px;
+    right: 38%;
+  }
+}
+.btn-my:hover {
+  .my-img-button {
+    transition: all 0.5s ease;
+    bottom: -30px;
+  }
+}
+
+textarea {
+  height: 200px !important;
+}
+
+// Fix the problem form-floating on textarea /////////////////////
+.form-floating > .form-control:not(:-moz-placeholder-shown) ~ label {
+  opacity: 1;
+  color: rgba(0, 0, 0, 0.5);
+  background-color: #fff;
+  height: auto;
+  padding: 0px;
+  padding: 0px 0px 0px 10px;
+  width: 100%;
+  transform: scale(0.982) translateY(0.045rem) translateX(0.1rem);
+  border-radius: 5px 0 0 0;
+}
+.form-floating > .form-control:focus ~ label,
+.form-floating > .form-control:not(:placeholder-shown) ~ label,
+.form-floating > .form-select ~ label {
+  opacity: 1;
+  color: rgba(0, 0, 0, 0.5);
+  background-color: #fff;
+  height: auto;
+  padding: 0px 0px 0px 10px;
+  width: 100%;
+  transform: scale(0.982) translateY(0.045rem) translateX(0.1rem);
+  border-radius: 5px 0 0 0;
+}
+.form-floating > .form-control:-webkit-autofill ~ label {
+  opacity: 1;
+  color: rgba(0, 0, 0, 0.5);
+  background-color: #fff;
+  height: auto;
+  padding: 0px;
+  padding: 0px 0px 0px 10px;
+  width: 100%;
+  transform: scale(0.982) translateY(0.045rem) translateX(0.1rem);
+  border-radius: 5px 0 0 0;
+}
+////////////////////////////////////////////////////////////////////

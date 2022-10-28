@@ -3,11 +3,24 @@
 {% block title %}Edit Demand{% endblock %}
 
 {% block body %}
-    <h1>Edit Demand</h1>
+<header class="pt-5 pb-5 d-flex flex-column">
+        {% if app.user %}
 
+            <div class="text-center mt-5"> 
+                <a class="btn btn-success m-3" href="{{ path('app_demand_new') }}">Créér une demande</a>
+                <a class="btn btn-primary m-3" href="{{ path('app_demand_index') }}">Voir demandes</a>
+            </div>
+    
+        {% endif %}
+        <h1 class="text-center p-5" >Mes demandes</h1>
+        <img class="align-self-center card-img-top w-25 rounded-circle mt-3 mb-3"style="max-width: 200px" src="{{ app.user.photo }}" alt="">
+</header>
+<div class="p-5">
+    
     {{ include('demand/_form.html.twig', {'button_label': 'Update'}) }}
 
     <a href="{{ path('app_demand_index') }}">back to list</a>
     
     {{ include('demand/_delete_form.html.twig') }}
+</div>
 {% endblock %}

@@ -9,6 +9,7 @@ use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class DemandType extends AbstractType
 {
@@ -24,13 +25,13 @@ class DemandType extends AbstractType
                     'class' => 'form-floating mb-3',
                 ],
             ])
-            ->add('text' , TextType::class, [
+            ->add('text' , TextareaType::class, [
                 'label' => 'Texte',
                 'attr' => [
                     'placeholder' => 'text',
                 ],
                 'row_attr' => [
-                    'class' => 'form-floating mb-3',
+                    'class' => 'form-floating mb-3 h',
                 ],
             ])
             ->add('photo', FileType::class, [

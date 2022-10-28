@@ -18,9 +18,6 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 
-
-
-
 #[Route('/demand')]
 class DemandController extends AbstractController
 {
@@ -30,9 +27,18 @@ class DemandController extends AbstractController
                                         INDEX
      ↓↓↓↓↓↓↓↓↓↓↓↓↓                                                       ↓↓↓↓↓↓↓↓↓↓↓↓                                   
     _________________________________________________________________________________*/
-    #[Route('/', name: 'app_demand_index', methods: ['GET'])]
-    public function index(DemandRepository $demandRepository): Response
+    #[Route('/', name: 'app_demand_index', methods: ['GET','POST'])]
+    public function index(Request $request,DemandRepository $demandRepository): Response
     {
+        $request = Request::createFromGlobals();
+        
+        $search = $request->request->get('search');
+       
+        if ($search) {
+            return $this->render('demand/index.html.twig', [
+            'demands' => $demandRepository->search($search),
+            ]);
+        }
         return $this->render('demand/index.html.twig', [
             'demands' => $demandRepository->findAll(),
         ]);
