@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit User{% endblock %}
+
+{% block body %}
+<div class="p-5">
+   
+    <div class="card-img-top photo-profile mt-3 mb-3">
+
+        {% if  app.getUser().photo %}
+            <img src="{{ asset('photos/' ~ app.getUser().photo) }}" alt="">
+        {% else %}
+            <img src="{{ asset('photos/default_photo_profil.png') }}" alt="">
+        {% endif %}
+
+        {# <img class="card-img-top w-25 rounded-circle mt-3 mb-3" src="{{ demand.getUser().photo }}" alt=""> #}   
+    
+    </div>
+
+    {{ include('user/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_user_index') }}">back to list</a>
+
+    {{ include('user/_delete_form.html.twig') }}
+</div>
+{% endblock %}

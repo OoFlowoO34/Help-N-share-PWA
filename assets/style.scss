@@ -49,7 +49,7 @@ button {
 }
 
 header {
-  background-image: url("/photos/hammer_bg.jpg");
+  background-image: url("/photos/bg-hammer.jpg");
   background-size: cover;
   background-position: center;
   h1 {
@@ -71,29 +71,57 @@ main {
   background-color: #fafafa;
 }
 
-.btn-my {
-  position: relative;
-  .btn {
-    position: relative;
-    z-index: 1;
-  }
-  .my-img-button {
-    transition: all 0.5s ease;
-    z-index: 0;
-    position: absolute;
-    bottom: 0px;
-    right: 38%;
-  }
-}
-.btn-my:hover {
-  .my-img-button {
-    transition: all 0.5s ease;
-    bottom: -30px;
-  }
-}
+//Sliding little profile image effect
+// .btn-my {
+//   position: relative;
+//   .btn {
+//     position: relative;
+//     z-index: 1;
+//   }
+//   .my-img-button {
+//     height: 40px;
+//     width: 40px;
+//     transition: all 0.5s ease;
+//     z-index: 0;
+//     position: absolute;
+//     bottom: 0px;
+//     right: 38%;
+//   }
+// }
+// .btn-my:hover {
+//   .my-img-button {
+//     transition: all 0.5s ease;
+//     bottom: -30px;
+//   }
+// }
 
 textarea {
   height: 200px !important;
+}
+
+.photo-profile {
+  height: 100px;
+  width: 100px;
+  border-radius: 50%;
+  overflow: hidden;
+  position: relative;
+  img {
+    width: 100%;
+    position: absolute;
+    // right: -30px;
+    // bottom: 0px;
+  }
+}
+
+.navbar-nav .nav-item .nav-link {
+  text-decoration: underline 0px;
+  text-decoration-color: rgba(255, 255, 255, 0);
+  text-underline-offset: 8px;
+  transition: all 0.5s ease;
+}
+.navbar-nav .nav-item .nav-link:hover {
+  text-decoration: underline 2px;
+  text-decoration-color: #fff;
 }
 
 // Fix the problem form-floating on textarea /////////////////////

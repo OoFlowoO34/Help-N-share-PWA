@@ -131,6 +131,8 @@ class DemandController extends AbstractController
     {
         $user = $security->getUser();
         $demandId = $demand->getId();
+        
+        // $toto = $demandRepository->findBy(['user' => $user,'demandId' => $demandId ]);
 
         //find the connected user's demandRelation on this demand instance if there is one 
         //check if connnected user already contacted the demand
@@ -138,11 +140,13 @@ class DemandController extends AbstractController
 
         //Check if the user connected is related to the demand
         $related = false;
+        $relatedInfos = Null;
         foreach($relations as $relation){
            
             //If related user = user connected
             if($relation->getUser() == $user){
                 $related = true;
+                $relatedInfos = $relation;
                 break;
             }
         }
@@ -153,11 +157,30 @@ class DemandController extends AbstractController
  
         $mine = $myDemand ? true : false;
 
+        $replies = $relatedInfos->getMessages()->getValues();
+
+     
+         
+
+        // foreach($relatedInfos as $relatedInfo){
+           
+        //     //If related user = user connected
+        //     if($relatedInfos->getUser() == $user){
+        //         $related = true;
+        //         $relatedInfos = $relation;
+        //         break;
+        //     }
+        // }
+
+
+
+
         return $this->render('demand/show.html.twig', [
             'demand' => $demand,
             'relations' => $relations,
             'related' => $related,
             'mine' => $mine,
+            'replies' => $replies,
         ]);
     }
 

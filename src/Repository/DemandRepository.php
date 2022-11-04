@@ -50,19 +50,24 @@ class DemandRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult()
        ;
+   }
+
+
+
+
 
         // Same as :
         /*
-        SELECT * FROM demand d 
-        INNER JOIN user u ON d.id = u.id 
-        WHERE  d.title LIKE '%'.$search.'%' 
-            OR d.text LIKE '%'.$search.'%' 
-            OR u.location LIKE '%'.$search.'%' 
-        ORDER BY d.date_created, 'DESC'
-         */
-   }
-  
-  
+       SELECT * FROM demand d
+       INNER JOIN user u ON d.id = u.id
+       WHERE  d.title LIKE '%'.$search.'%'
+           OR d.text LIKE '%'.$search.'%'
+           OR u.location LIKE '%'.$search.'%'
+       ORDER BY d.date_created, 'DESC'
+        */
+
+
+
 //    /**
 //     * @return Demand[] Returns an array of Demand objects
 //     */

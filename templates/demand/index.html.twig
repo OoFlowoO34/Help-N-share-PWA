@@ -7,14 +7,21 @@
 <header class="pt-5 pb-5">
         {% if app.user %}
 
-            <div class="d-flex justify-content-center mt-5"> 
+            {# <div class="d-flex flex-wrap justify-content-center mt-5"> 
                 <a class="btn btn-success m-3" href="{{ path('app_demand_new') }}"> + Créér une demande</a>
-                <div class="btn-my">
-                    <img class="card-img-top w-25 rounded-circle my-img-button"style="max-width: 48px" src="{{ app.user.photo }}" alt="">
-                    <a class="btn btn-primary m-3" href="{{ path('my_demands') }}">Mes demandes </a>
+                <div class="btn-my"> #}
+
+                            {# Sliding little profile image effect  #}
+                            {# {% if  app.getUser().photo %}
+                                <img class="my-img-button  rounded-circle" src="{{ asset('photos/' ~ app.getUser().photo) }}" alt="">
+                            {% else %}
+                                <img class="my-img-button rounded-circle" src="{{ asset('photos/default_photo_profil.png') }}" alt="">
+                            {% endif %}    #}
+
+                    {# <a class="btn btn-primary m-3" href="{{ path('my_demands') }}">Mes demandes </a>
                 </div>
                 
-            </div>
+            </div> #}
     
         {% endif %}
         <h1 class="text-center p-5" >Consultez les demandes de la commnauté Help and Share</h1>
@@ -49,7 +56,19 @@
                 <div class="col ">
                     <div class="card shadow border-0">
                         <div class="card-body ">
-                            <img class="card-img-top w-25 rounded-circle mt-3 mb-3" src="{{ demand.getUser().photo }}" alt="">
+           
+                            <div class="card-img-top photo-profile mt-3 mb-3">
+
+                            {% if  demand.getUser().photo %}
+                                <img src="{{ asset('photos/' ~ demand.getUser().photo) }}" alt="">
+                            {% else %}
+                                <img src="{{ asset('photos/default_photo_profil.png') }}" alt="">
+                            {% endif %}
+                
+                                {# <img class="card-img-top w-25 rounded-circle mt-3 mb-3" src="{{ demand.getUser().photo }}" alt=""> #}   
+                            
+                            </div>
+                            <span class="card-title m-0">{{ demand.getUser().pseudo}}</span>
                             <h5 class="card-title m-0">{{ demand.title }}</h5>
                             <small class="text-muted"> {{ demand.getUser().location }}</small>
                             <p class="card-text mt-3 mb-3 overflow-hidden" style="height: 100px;">{{ demand.text }}</p>

@@ -1,7 +1,7 @@
 {# 
 Sent by DemandController : 
-            'demand'    => ( ENTITY )   The instance from the request for "demand" )
-            'relations' => ( OBJ )      All the demandRelation of this demand instance )
+            'demand'    => ( ENTITY )   The instance from the request for "demand" 
+            'relations' => ( OBJ )      All the demandRelation of this demand instance 
             'related'   => ( BOOL )     True if user is related w/ the demand, else false 
             'mine'      => ( BOOL )     True if the demand is from the connected user, else false
 #}
@@ -17,8 +17,8 @@ Sent by DemandController :
 {# {{  dump(related) }} #}
 {# {{  dump(myDemand) }} #}
 
- <header class="pt-5 pb-5 d-flex flex-column">
-        {% if app.user %}
+{# <header class="pt-5 pb-5 d-flex flex-column">
+        {% if app.user and mine %}
 
             <div class="text-center mt-5"> 
                 <a class="btn btn-success m-3" href="{{ path('app_demand_new') }}">Créér une demande</a>
@@ -29,7 +29,7 @@ Sent by DemandController :
         {% else %}
             <h1 class="text-center p-5" >Demande</h1>
         {% endif %}
-</header>
+</header> #}
 <div class="p-5">
     <div class="row ">
 
@@ -40,15 +40,11 @@ Sent by DemandController :
                 <div class="card shadow border-0">
                     <div class="card-body ">
                         <img class="card-img-top w-25 rounded-circle mt-3 mb-3"style="max-width: 100px" src="{{ demand.getUser().photo }}" alt="">
-                        <span class="card-text p-2">{{ demand.getUser().pseudo }}</span>
+                        <span class="card-text">{{ demand.getUser().pseudo }}</span>
                         <h5 class="card-title m-0">{{ demand.title }}</h5>
                         <small class="text-muted"> {{ demand.getUser().location }}</small>
-                        <p class="card-text mt-3 mb-3 overflow-hidden" style="height: 100px;">{{ demand.text }}</p>
-                        <img class="card-img-bottom " style="width: 200px"src="{{ asset('photos/' ~ demand.photo) }}" alt="">
-
-                        
-
-        
+                        <p class="card-text mt-3 mb-3 overflow-hidden" style="height: fit-content;">{{ demand.text }}</p>
+                        <img class="card-img-bottom " style="width: 200px"src="{{ asset('photos/' ~ demand.photo) }}" alt=""> 
                     </div>
                     
                     <div class="card-footer d-flex flex-wrap justify-content-between ">
@@ -58,7 +54,7 @@ Sent by DemandController :
 
                         {#  If the connected user is NOT related w/ the demand #}
                         {#  And if the demand is NOT from the connected user #} 
-                        {% if not related and not mine %}
+                        {% if not related and not mine or replies %}
 
                             {# Form to send the id of the demand to create the relation and the message for the Email #}
                             <form class="w-100" action="{{ path('app_demand_relation_new') }}" method="POST">
@@ -66,12 +62,15 @@ Sent by DemandController :
                                 <input name="demandId" type="hidden" value= "{{ demand.id }}">
 
                                 <div class="form-group">
-                                    <label for="exampleFormControlTextarea1">Ecrivez un message à {{demand.user.pseudo}}</label>
+                                    <label class="pb-2" for="exampleFormControlTextarea1">Ecrivez un message à {{demand.user.pseudo}}</label>
                                     <textarea name="text" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
                                 </div>
                                 <div class="d-flex justify-content-between">
-                                <button type="submit" class="btn btn-outline-primary mt-3 mb-3">
-                                    <span>Contacter</span>
+                                <button name="email"  value="email" type="submit" class="btn btn-outline-primary mt-3 mb-3">
+                                    <span>Contacter par email</span>
+                                </button>
+                                <button name="hsMessage" value="hsMessage" type="submit" class="btn btn-outline-primary mt-3 mb-3">
+                                    <span>Contacer par Help and Share</span>
                                 </button>
 
                                 {% if demand.dateModified %}
@@ -104,9 +103,6 @@ Sent by DemandController :
 
                             {% endif %}
                     
-
-            
-                        
                             {#  If the connected user is related w/ the demand #}
                             {#  And if the demand is NOT from the connected user #}    
                             {% if related and not mine %}
@@ -143,8 +139,6 @@ Sent by DemandController :
                         {% endif %}
 
                     {% endif %}
-                    
-                
         
                     </div>
                 </div>   

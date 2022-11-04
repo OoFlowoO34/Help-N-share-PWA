@@ -6,20 +6,29 @@
     <h1>DemandRelation index</h1>
 
     <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>actions</th>
-            </tr>
-        </thead>
+
         <tbody>
+                    <tr>
+            <thead>
+            <td>Demandeur</td>
+            <td>Répondant</td>
+            
+            </thead>
         {% for demand_relation in demand_relations %}
-            <tr>
-                <td>{{ demand_relation.id }}</td>
+
+
+           
+                
+                <td>{{ demand_relation.getDemand().getUser().pseudo }}</td>
+                
+                <td>{{ demand_relation.getUser().pseudo }}</td>
+                <td>{{ demand_relation.getDemand().getUser().location }}</td>
+                <td>{{ demand_relation.getDemand().title }}</td>
                 <td>
-                    <a href="{{ path('app_demand_relation_show', {'id': demand_relation.id}) }}">show</a>
-                    <a href="{{ path('app_demand_relation_edit', {'id': demand_relation.id}) }}">edit</a>
+                    <a href="{{ path('app_my_message', {'id_demand_relation': demand_relation.id}) }}">show</a>
                 </td>
+
+            
             </tr>
         {% else %}
             <tr>
@@ -28,6 +37,4 @@
         {% endfor %}
         </tbody>
     </table>
-
-    <a href="{{ path('app_demand_relation_new') }}">Create new</a>
 {% endblock %}

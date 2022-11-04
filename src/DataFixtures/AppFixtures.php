@@ -24,11 +24,23 @@ class AppFixtures extends Fixture
     }
     public function load(ObjectManager $manager): void
     {
+
+        //Photos fixtures from freepng.fr and Unsplash, websites to share photos under free licence.
+        $photosProfileTab = ["fixture_photo_profile_1.jpg","fixture_photo_profile_6.jpg","fixture_photo_profile_7.jpg","fixture_photo_profile_8.jpg"
+                        ,"fixture_photo_profile_9.jpg","fixture_photo_profile_10.jpg","fixture_photo_profile_11.jpg","fixture_photo_profile_12.jpg"
+                    ,"fixture_photo_profile_14.jpg"];
+
+                    // "fixture_photo_profile_2.jpg","fixture_photo_profile_3.jpg","fixture_photo_profile_4.jpg",
+                    //"fixture_photo_profile_5.jpg","fixture_photo_profile_11.jpg","fixture_photo_profile_13.jpg",
+
+           
         /**
          * Generate fake Users, put it in a tab so it can be reused to generate the other related entities.
          */
         $users = [];
         for ($i = 0; $i< 20; ++$i) {
+            $randPhotosProfile = mt_rand(0,3);  
+
             $user = new User();
             $user->setEmail($this->faker->email());
             $user->setRoles([]);
@@ -38,7 +50,14 @@ class AppFixtures extends Fixture
             ));
             $user->setPseudo($this->faker->firstName());
             $user->setLocation($this->faker->departmentName());
-            $user->setPhoto($this->faker->imageUrl(100, 100, 'photo', true));
+            if( $randPhotosProfile == 3 ){
+                $user->setPhoto("");
+            }
+            else{
+                $user->setPhoto($photosProfileTab[mt_rand(0, count($photosProfileTab) - 1)]);
+            }
+            
+            // $user->setPhoto($this->faker->imageUrl(100, 100, 'photo', true));
             $users[] = $user;
             $manager->persist($user);
         }
@@ -46,7 +65,7 @@ class AppFixtures extends Fixture
 
 
         //Photos fixtures from Unsplash, website to share photos under free licence.
-        $photosTab = ["fixture_photo_1.jpg","fixture_photo_2.jpg","fixture_photo_3.jpg","'.jpg","fixture_photo_5.jpg","fixture_photo_6.jpg"];
+        $photosTab = ["fixture_photo_1.jpg","fixture_photo_2.jpg","fixture_photo_3.jpg","fixture_photo_4.jpg","fixture_photo_5.jpg","fixture_photo_6.jpg"];
         
 
         /**

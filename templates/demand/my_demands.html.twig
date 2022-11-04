@@ -5,17 +5,17 @@
 {% block title %}Mes demandes{% endblock %}
 
 {% block body %}
-<header class="pt-5 pb-5 d-flex flex-column">
+<header class="pt-5 pb-5 d-flex flex-wrap flex-column">
         {% if app.user %}
 
-            <div class="text-center mt-5"> 
+            {# <div class="text-center mt-5"> 
                 <a class="btn btn-success m-3" href="{{ path('app_demand_new') }}"> + Créér une demande</a>
                 <a class="btn btn-primary m-3" href="{{ path('app_demand_index') }}">Voir demandes</a>
-            </div>
+            </div> #}
     
         {% endif %}
         <h1 class="text-center p-5" >Mes demandes</h1>
-        <img class="align-self-center card-img-top w-25 rounded-circle mt-3 mb-3"style="max-width: 200px" src="{{ app.user.photo }}" alt="">
+        {# <img class="align-self-center card-img-top w-25 rounded-circle mt-3 mb-3"style="max-width: 200px" src="{{ app.user.photo }}" alt=""> #}
 </header>
 
 <div class="p-5">
@@ -30,8 +30,19 @@
                 <div class="col">
                     <div class="card shadow border-0">
                         <div class="card-body ">
-                            <img class="card-img-top w-25 rounded-circle mt-3 mb-3"style="max-width: 100px" src="{{ demand.getUser().photo }}" alt="">
-                            <span class="card-text p-2">{{ demand.getUser().pseudo }}</span>
+                            <div class="card-img-top photo-profile mt-3 mb-3">
+
+                                {% if  demand.getUser().photo %}
+                                    <img src="{{ asset('photos/' ~ demand.getUser().photo) }}" alt="">
+                                {% else %}
+                                    <img src="{{ asset('photos/default_photo_profil.png') }}" alt="">
+                                {% endif %}
+                    
+                                {# <img class="card-img-top w-25 rounded-circle mt-3 mb-3" src="{{ demand.getUser().photo }}" alt=""> #}   
+                            
+                            </div>
+                            {# <img class="card-img-top w-25 rounded-circle mt-3 mb-3"style="max-width: 100px" src="{{ demand.getUser().photo }}" alt=""> #}
+                            <span class="card-text">{{ demand.getUser().pseudo }}</span>
                             <h5 class="card-title m-0">{{ demand.title }}</h5>
                             <small class="text-muted"> {{ demand.getUser().location }}</small>
                             <p class="card-text mt-3 mb-3 overflow-hidden" style="height: 100px;">{{ demand.text }}</p>

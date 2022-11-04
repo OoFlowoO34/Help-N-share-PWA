@@ -3,63 +3,71 @@
 namespace App\Controller;
 
 use App\Entity\Demand;
+
+use App\Entity\Message;
 use App\Entity\DemandRelation;
 use App\Form\DemandRelationType;
 use Symfony\Component\Mime\Email;
 use App\Repository\DemandRepository;
+use App\Repository\MessageRepository;
 use App\Repository\DemandRelationRepository;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Mailer\MailerInterface;
 
-#[Route('/demand/relation')]
+#[Route('/demand_relation')]
 class DemandRelationController extends AbstractController
 {
-    #[Route('/', name: 'app_demand_relation_index', methods: ['GET'])]
-    public function index(DemandRelationRepository $demandRelationRepository): Response
+    // #[Route('/', name: 'app_demand_relation_index', methods: ['GET'])]
+    // public function index(DemandRelationRepository $demandRelationRepository): Response
+    // {
+    //     return $this->render('demand_relation/index.html.twig', [
+    //         'demand_relations' => $demandRelationRepository->findAll(),
+    //     ]);
+    // }
+
+
+
+    #[Route('/', name: 'app_my_demand_relations', methods: ['GET'])]
+    public function myDemandRelations(DemandRelationRepository $demandRelationRepository, DemandRepository $demandRepository, Security $security): Response
     {
+
+        $user = $security->getUser();
+        $demands = $demandRepository->findBy(['user'=> $user]);
+
         return $this->render('demand_relation/index.html.twig', [
-            'demand_relations' => $demandRelationRepository->findAll(),
+            'demand_relations' => $demandRelationRepository->findRelations($user,$demands),            
         ]);
     }
 
+
     #[Route('/new', name: 'app_demand_relation_new', methods: ['GET','POST'])]
-    public function new(Request $request, DemandRelationRepository $demandRelationRepository, DemandRepository $demandRepository, Security $security, MailerInterface $mailer): Response
+    public function new(Request $request, DemandRelationRepository $demandRelationRepository, DemandRepository $demandRepository, MessageRepository $messageRepository, Security $security, MailerInterface $mailer): Response
     {
+    
+        
         
         $user = $security->getUser();
         $demandId = $request->get('demandId');
-        $text = $request->get('text');
-        $demand = $demandRepository->findOneBy(['id' => $demandId,]);
-        $demandEmail = $demand->getUser()->getEmail();
+
 
         $demandRelation = new DemandRelation();
         if (!$demandRelationRepository->findOneBy(['user' => $user,'demand' => $demandId,]))
-        {
-            $email = (new Email())
-            ->from('hello@example.com')      // For security reason, put an exemple on purpose to not put the actual email on gitHub. It works fine like this.
-            ->to($demandEmail)
-            //->cc('cc@example.com')
-            //->bcc('bcc@example.com')
-            //->replyTo('fabien@example.com')
-            //->priority(Email::PRIORITY_HIGH)
-            ->subject('Help & Share, '.$user. ' a répondu à votre demande.')
-            ->text($text)
-            ->html($text);
-
-            $mailer->send($email);
-            
+        {        
             $demandRelation->setdemand($demandRepository->find($demandId));
             $demandRelation->setUser($user);
 
             // add et save c est quoi la diff??
             $demandRelationRepository->save($demandRelation, true);
 
-        }         
-        return $this->redirectToRoute('app_demand_show', ['id' => $demandId,], Response::HTTP_SEE_OTHER); 
+        }
+        $response = $this->forward('App\Controller\MessageController::new', [
+        '$demandId'  => $demandId,
+    ]);         
+        return $response;
     }
 
     #[Route('/{id}', name: 'app_demand_relation_show', methods: ['GET'])]

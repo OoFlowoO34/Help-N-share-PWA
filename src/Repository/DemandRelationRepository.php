@@ -39,6 +39,21 @@ class DemandRelationRepository extends ServiceEntityRepository
         }
     }
 
+   public function findRelations($user,array $demand): array
+   {
+    return $this->createQueryBuilder('dr')
+         ->innerJoin('dr.user', 'u')
+         ->innerJoin('dr.demand', 'd')
+         ->andWhere('dr.user = :user OR dr.demand IN (:demand) ')
+         ->setParameter('user', $user)
+         ->setParameter('demand',$demand)
+         // ->orderBy('d.date_created', 'DESC')
+         ->getQuery()
+         ->getResult()
+    ;
+    }
+
+
 //    /**
 //     * @return DemandRelation[] Returns an array of DemandRelation objects
 //     */
