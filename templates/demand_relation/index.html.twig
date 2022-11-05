@@ -1,40 +1,84 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}DemandRelation index{% endblock %}
+{% block title %}Messagerie{% endblock %}
 
 {% block body %}
-    <h1>DemandRelation index</h1>
+<div class="p-5">
+    <h1 class="p-5">Messagerie</h1>
+</div>
+<main>
 
-    <table class="table">
+   
 
-        <tbody>
-                    <tr>
-            <thead>
-            <td>Demandeur</td>
-            <td>Répondant</td>
-            
-            </thead>
-        {% for demand_relation in demand_relations %}
+    {% for demand_relation in demand_relations %}
+    <div class="col m-3">          
+        <div class="card shadow border-0">
+            <div class="card-body d-flex flex-row">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-auto">
+                            <div class="card-img-top photo-profile mt-3 mb-3">
+                                <img src="{{ asset('photos/' ~ demand_relation.getUser().photo) }}" alt="">
+                            </div>
+
+                        </div>
+
+                        <div class="col-auto align-self-center">
+
+                            <div class="row">
+                                    {% if app.user == demand_relation.getDemand().getUser()  %}
+                                        <span>{{ demand_relation.getUser().pseudo }}</span>
+                                    {% else %}
+                                
+                                        <span>{{ demand_relation.getDemand().getUser().pseudo }}</span>
+                            
+                                    {% endif %}
+                            </div>
+                            {# <div class="row">
+                                    <small class="text-muted">{{ demand_relation.getDemand().getUser().location }}</small>
+                            </div> #}
+                                
+                                
+                                
+                       
+                            
+
+                        </div>
+                        
+                        <div class="col-md align-self-center">
+                            <div class="row">
+                                <div class="col-auto align-self-center m-auto">
+                                    <span id="message-chevron-right" class="material-icons align-middle">
+                                        chevron_right
+                                    </span>
+                                    <span id="message-chevron-down" class="material-icons align-middle">
+                                        expand_more
+                                    </span>
+                                </div>
+                                <div class="col-md">
+                                    <p class="card-title m-0">{{ demand_relation.getDemand().title }}</p>
+                                </div>
+
+                            </div>
+
+                                
+                        </div>
 
 
-           
-                
-                <td>{{ demand_relation.getDemand().getUser().pseudo }}</td>
-                
-                <td>{{ demand_relation.getUser().pseudo }}</td>
-                <td>{{ demand_relation.getDemand().getUser().location }}</td>
-                <td>{{ demand_relation.getDemand().title }}</td>
-                <td>
-                    <a href="{{ path('app_my_message', {'id_demand_relation': demand_relation.id}) }}">show</a>
-                </td>
+                        <div class="col-lg align-self-center text-end">
+                            <a class="btn btn-primary stretched-link text-right" href="{{ path('app_my_message', {'id_demand_relation': demand_relation.id}) }}">Voir messages</a>
+                        </div>
 
-            
-            </tr>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
         {% else %}
-            <tr>
-                <td colspan="2">no records found</td>
-            </tr>
+            
+                <span>Aucun message</span>
+        
         {% endfor %}
-        </tbody>
-    </table>
+    
+</main>    
 {% endblock %}

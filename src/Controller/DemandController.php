@@ -157,23 +157,13 @@ class DemandController extends AbstractController
  
         $mine = $myDemand ? true : false;
 
-        $replies = $relatedInfos->getMessages()->getValues();
-
-     
-         
-
-        // foreach($relatedInfos as $relatedInfo){
-           
-        //     //If related user = user connected
-        //     if($relatedInfos->getUser() == $user){
-        //         $related = true;
-        //         $relatedInfos = $relation;
-        //         break;
-        //     }
-        // }
-
-
-
+        if($relatedInfos){
+            $replies = $relatedInfos->getMessages()->getValues();
+        }
+        else {
+            $replies = Null;
+        }
+       
 
         return $this->render('demand/show.html.twig', [
             'demand' => $demand,

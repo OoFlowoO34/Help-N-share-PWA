@@ -47,12 +47,10 @@ class DemandRelationController extends AbstractController
     #[Route('/new', name: 'app_demand_relation_new', methods: ['GET','POST'])]
     public function new(Request $request, DemandRelationRepository $demandRelationRepository, DemandRepository $demandRepository, MessageRepository $messageRepository, Security $security, MailerInterface $mailer): Response
     {
-    
-        
         
         $user = $security->getUser();
         $demandId = $request->get('demandId');
-
+        
 
         $demandRelation = new DemandRelation();
         if (!$demandRelationRepository->findOneBy(['user' => $user,'demand' => $demandId,]))

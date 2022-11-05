@@ -48,6 +48,20 @@ button {
   }
 }
 
+#message-chevron-right {
+  display: inline-block;
+  @include media-breakpoint-up(sm) {
+    display: none;
+  }
+}
+
+#message-chevron-down {
+  display: none;
+  @include media-breakpoint-up(sm) {
+    display: inline-block;
+  }
+}
+
 header {
   background-image: url("/photos/bg-hammer.jpg");
   background-size: cover;

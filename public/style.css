@@ -29,6 +29,24 @@ button {
   }
 }
 
+#message-chevron-right {
+  display: inline-block;
+}
+@media (max-width: 767.98px) {
+  #message-chevron-right {
+    display: none;
+  }
+}
+
+#message-chevron-down {
+  display: none;
+}
+@media (max-width: 767.98px) {
+  #message-chevron-down {
+    display: inline-block;
+  }
+}
+
 header {
   background-image: url("/photos/bg-hammer.jpg");
   background-size: cover;

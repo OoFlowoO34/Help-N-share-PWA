@@ -53,12 +53,12 @@ class MessageController extends AbstractController
     {
             
             $user = $security->getUser();
+            $otherUser = $request->request->get('otherUser');
            
             $demandId = $request->request->get('demandId');
             $text = $request->request->get('text');
-            
-            $demandRelation = $demandRelationRepository->findOneBy(['demand' => $demandId, 'user' => $user ]);
-
+            $demandRelation = $demandRelationRepository->findOneBy(['demand' => $demandId, 'user' => [$user, $otherUser] ]);
+           
            
             $demand = $demandRepository->findOneBy(['id' => $demandId,]);
             $demandEmail = $demand->getUser()->getEmail();

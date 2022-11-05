@@ -3,32 +3,97 @@
 {% block title %}Message index{% endblock %}
 
 {% block body %}
-    <h1>Message index</h1>
-
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Text</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for message in messages %}
-            <tr>
-               
-                <td>{{ message.user.pseudo }}: {{ message.text }}</td>
-                <td>
-                    <a href="{{ path('app_message_show', {'id': message.id}) }}">show</a>
-                </td>
-            </tr>
+<div class="container">
+    <div class="row p-5">
+        
+    {% for message in messages|slice(0, 1) %}
+        {% if app.user == message.getDemandRelation().getDemand().getUser() %}
+        <div class="col-auto">
+            <div class="card-img-top photo-profile mt-3 mb-3">
+                {% if  message.getDemandRelation().getUser().photo %}
+                        <img src="{{ asset('photos/' ~ message.getDemandRelation().getUser().photo) }}" alt="">
+                        {% else %}
+                            <img src="{{ asset('photos/default_photo_profil.png') }}" alt="">
+                {% endif %}
+            </div>
+        </div>
+        <div class="col align-self-center">
+            <span class="">{{ message.getDemandRelation().getUser().pseudo }}</span>
+        </div> 
         {% else %}
-            <tr>
-                <td colspan="4">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+            {% if  message.getDemandRelation().getDemand().getUser().photo %}
+                <div class="card-img-top photo-profile mt-3 mb-3">
+                    <img src="{{ asset('photos/' ~ message.getDemandRelation().getDemand().getUser().photo) }}" alt="">
+                    {% else %}
+                        <img src="{{ asset('photos/default_photo_profil.png') }}" alt="">
+                </div>
+            {% endif %}
+            <span class="">{{ message.getDemandRelation().getDemand().getUser().pseudo }}</span>                                        
+        {% endif %}
+        <span>Discutez à propos de la demande:</span>
+        <h1 class="h6">{{ message.getDemandRelation().getDemand().title}}</h1>
+    {% endfor %}
+    
+    </div>
+</div>
 
-    <a href="{{ path('app_message_new') }}">Create new</a>
+<main class="p-5">
+
+<div class="m-auto w-50 p-3 d-flex flex-column flex-end justify-content-end rounded shadow" style="background-color: white; height:300px;">
+{% for message in messages %}
+{% if app.user == message.user %}
+    <div class="align-self-end p-1 m-2 rounded" style="background-color:cornflowerblue; width:fit-content;"> <p class="m-0">{{ message.text }}</p> </div>
+   
+{% else %}
+    <div class="align-self-start p-1 rounded" style="background-color: #ebebeb; width:fit-content;"> <p class="m-0">{{ message.text }}</p> </div>
+    
+{% endif %}
+{% endfor %}
+</div>
+
+
+
+
+
+
+
+
+
+
+    
+    {# Form to send the id of the demand to create the relation and the message for the Email #}
+    <form class="w-100" action="{{ path('app_message_new') }}" method="POST">
+        {% for message in messages|slice(0, 1) %}
+        <input name="demandId" type="hidden" value= "{{ message.getDemandRelation().getDemand.id }}">
+        
+        {% if app.user == message.getDemandRelation().getDemand().getUser() %}
+            <input name="otherUser" type="hidden" value= "{{ message.getDemandRelation().getUser() }}">
+        {% elseif app.user == message.getDemandRelation().getUser() %}
+            <input name="otherUser" type="hidden" value= "{{ message.getDemandRelation().getDemand().getUser() }}">
+        {% endif %}
+       
+        {% endfor %}
+        <div class="form-group">
+        {% for message in messages|slice(0, 1) %}
+            {% if app.user == message.getDemandRelation().getDemand().getUser() %}
+                <label class="pb-2" for="exampleFormControlTextarea1">Ecrivez un message à {{message.getDemandRelation().getUser().pseudo}}</label>
+            {% elseif app.user ==  message.getDemandRelation().getUser()%}
+                <label class="pb-2" for="exampleFormControlTextarea1">Ecrivez un message à {{message.getDemandRelation().getDemand().getUser().pseudo}}</label>
+            {% endif %}
+        {% endfor %}
+
+        <textarea name="text" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+        </div>
+        <div class="d-flex justify-content-between">
+        <button name="email"  value="email" type="submit" class="btn btn-outline-primary mt-3 mb-3">
+            <span>Contacter par email</span>
+        </button>
+        <button name="hsMessage" value="hsMessage" type="submit" class="btn btn-outline-primary mt-3 mb-3">
+            <span>Contacer par Help and Share</span>
+        </button>
+        </div>
+
+    </form>
+</main>
+
 {% endblock %}
