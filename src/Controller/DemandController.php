@@ -27,7 +27,7 @@ class DemandController extends AbstractController
                                         INDEX
      ↓↓↓↓↓↓↓↓↓↓↓↓↓                                                       ↓↓↓↓↓↓↓↓↓↓↓↓                                   
     _________________________________________________________________________________*/
-    #[Route('/', name: 'app_demand_index', methods: ['GET','POST'])]
+    #[Route('/home', name: 'app_demand_index', methods: ['GET','POST'])]
     public function index(Request $request,DemandRepository $demandRepository): Response
     {
         $request = Request::createFromGlobals();

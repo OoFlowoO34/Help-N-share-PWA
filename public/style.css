@@ -19,7 +19,7 @@ button {
   z-index: 2;
   /* If < xs, place the navbar at the bottom of the page, and make it stick */
 }
-@media (max-width: 575.98px) {
+@media (max-width: 767.98px) {
   .navbar {
     background-color: rgba(0, 0, 0, 0.9);
     position: fixed;
@@ -93,6 +93,33 @@ textarea {
           text-decoration: underline 2px;
   -webkit-text-decoration-color: #fff;
           text-decoration-color: #fff;
+}
+
+/* a container with flex-direction column */
+.main-container {
+  height: 50vh !important; /* or position:absolute; height:100%; */
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+/* this is the flex container that will take the rest of the height */
+.content-wrapper {
+  display: flex !important;
+  flex: 1 !important;
+  min-height: 0px !important; /* IMPORTANT: you need this for non-chrome browsers */
+}
+
+/* the container for our overflowed content */
+.overflow-container {
+  flex: 1 !important;
+  overflow: auto !important;
+}
+
+/* the overflow content itself */
+.overflow-content {
+  height: -webkit-fit-content !important;
+  height: -moz-fit-content !important;
+  height: fit-content !important;
 }
 
 .form-floating > .form-control:not(:-moz-placeholder-shown) ~ label {

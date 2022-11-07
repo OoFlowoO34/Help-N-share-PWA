@@ -39,7 +39,10 @@ Sent by DemandController :
             <div class="col">
                 <div class="card shadow border-0">
                     <div class="card-body ">
-                        <img class="card-img-top w-25 rounded-circle mt-3 mb-3"style="max-width: 100px" src="{{ demand.getUser().photo }}" alt="">
+                        <div class="card-img-top photo-profile mt-3 mb-3">
+                            <img src="{{ asset('photos/' ~ demand.getUser().photo) }}" alt="">
+                        </div>
+                        {# <img class="card-img-top w-25 rounded-circle mt-3 mb-3"style="max-width: 100px" src="{{ demand.getUser().photo }}" alt=""> #}
                         <span class="card-text">{{ demand.getUser().pseudo }}</span>
                         <h5 class="card-title m-0">{{ demand.title }}</h5>
                         <small class="text-muted"> {{ demand.getUser().location }}</small>

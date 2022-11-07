@@ -39,17 +39,38 @@
 
 <main class="p-5">
 
-<div class="m-auto w-50 p-3 d-flex flex-column flex-end justify-content-end rounded shadow" style="background-color: white; height:300px;">
-{% for message in messages %}
-{% if app.user == message.user %}
-    <div class="align-self-end p-1 m-2 rounded" style="background-color:cornflowerblue; width:fit-content;"> <p class="m-0">{{ message.text }}</p> </div>
-   
-{% else %}
-    <div class="align-self-start p-1 rounded" style="background-color: #ebebeb; width:fit-content;"> <p class="m-0">{{ message.text }}</p> </div>
+<div class="main-container">
+<div class="content-wrapper">
+
+<div class="overflow-container">
+
+    <div class="overflow-content m-auto w-50 p-3 d-flex flex-column flex-end justify-content-end rounded shadow overflow-auto" style="background-color: white; height:300px; overflow-y: auto;">
+    {% for message in messages %}
+        <div class="m-5"></div>
+    {% if app.user == message.user %}
+        <div class="align-self-end p-1 rounded" style="background-color:cornflowerblue; width:fit-content;"> <p class="m-0">{{ message.text }}</p> </div>
     
-{% endif %}
-{% endfor %}
+    {% else %}
+        <div class="align-self-start p-1 rounded" style="background-color: #ebebeb; width:fit-content;"> <p class="m-0">{{ message.text }}</p> </div>
+        
+    {% endif %}
+        
+    {% endfor %}
+    <div style="scroll-snap-align: end;"></div>
+    </div>
+
 </div>
+
+
+
+
+
+
+</div>
+</div>
+
+
+
 
 
 

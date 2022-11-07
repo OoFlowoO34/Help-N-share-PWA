@@ -39,7 +39,7 @@ button {
   z-index: 2;
 
   /* If < xs, place the navbar at the bottom of the page, and make it stick */
-  @include media-breakpoint-up(xs) {
+  @include media-breakpoint-up(sm) {
     background-color: rgba(0, 0, 0, 0.9);
     position: fixed;
     bottom: 0px;
@@ -136,6 +136,31 @@ textarea {
 .navbar-nav .nav-item .nav-link:hover {
   text-decoration: underline 2px;
   text-decoration-color: #fff;
+}
+
+/* a container with flex-direction column */
+.main-container {
+  height: 50vh !important; /* or position:absolute; height:100%; */
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+/* this is the flex container that will take the rest of the height */
+.content-wrapper {
+  display: flex !important;
+  flex: 1 !important;
+  min-height: 0px !important; /* IMPORTANT: you need this for non-chrome browsers */
+}
+
+/* the container for our overflowed content */
+.overflow-container {
+  flex: 1 !important;
+  overflow: auto !important;
+}
+
+/* the overflow content itself */
+.overflow-content {
+  height: fit-content !important;
 }
 
 // Fix the problem form-floating on textarea /////////////////////
