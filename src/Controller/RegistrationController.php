@@ -54,8 +54,9 @@ class RegistrationController extends AbstractController
                     ->subject('Please Confirm your Email')
                     ->htmlTemplate('registration/confirmation_email.html.twig')
             );
-
-            return $this->redirectToRoute('app_home');
+            // @TODO Change the redirect on success and handle or remove the flash message in your templates
+            $this->addFlash('success', 'Un email vous à été envoyé afin de vérifier votre adresse email.');
+            return $this->redirectToRoute('app_demand_index');
         }
 
         return $this->render('registration/register.html.twig', [
@@ -79,6 +80,7 @@ class RegistrationController extends AbstractController
         }
 
         // validate email confirmation link, sets User::isVerified=true and persists
+        $prevMessage = '';
         try {
             $this->emailVerifier->handleEmailConfirmation($request, $user);
         } catch (VerifyEmailExceptionInterface $exception) {
@@ -88,7 +90,7 @@ class RegistrationController extends AbstractController
         }
 
         // @TODO Change the redirect on success and handle or remove the flash message in your templates
-        $this->addFlash('success', 'Your email address has been verified.');
+        $this->addFlash('success', 'Votre addresse email a bien été vérifié, vous pouvez vous connecter.');
 
         return $this->redirectToRoute('app_login');
     }

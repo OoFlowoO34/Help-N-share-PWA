@@ -3,118 +3,108 @@
 {% block title %}Message index{% endblock %}
 
 {% block body %}
-<div class="container">
-    <div class="row p-5">
+<header class="pt-5 pb-5 d-flex flex-wrap flex-column">
+        <h1 class="text-center pt-5 pb-5">Messagerie</h1>    
+</header>
+
+
+<main class="container-fluid p-5">
+    <div class="row justify-content-center">
+        <div class="col-md-10 col-12" style="">
+
+            <div class="row"> 
         
-    {% for message in messages|slice(0, 1) %}
-        {% if app.user == message.getDemandRelation().getDemand().getUser() %}
-        <div class="col-auto">
-            <div class="card-img-top photo-profile mt-3 mb-3">
-                {% if  message.getDemandRelation().getUser().photo %}
-                        <img src="{{ asset('photos/' ~ message.getDemandRelation().getUser().photo) }}" alt="">
-                        {% else %}
-                            <img src="{{ asset('photos/default_photo_profil.png') }}" alt="">
-                {% endif %}
-            </div>
-        </div>
-        <div class="col align-self-center">
-            <span class="">{{ message.getDemandRelation().getUser().pseudo }}</span>
-        </div> 
-        {% else %}
-            {% if  message.getDemandRelation().getDemand().getUser().photo %}
-                <div class="card-img-top photo-profile mt-3 mb-3">
-                    <img src="{{ asset('photos/' ~ message.getDemandRelation().getDemand().getUser().photo) }}" alt="">
+                {% for message in messages|slice(0, 1) %}
+                    {% if app.user == message.getDemandRelation().getDemand().getUser() %}
+                        <div class="col-auto">        
+                            <div class="card-img-top photo-profile mt-3 mb-3 p-0">
+                                {% if  message.getDemandRelation().getUser().photo %}
+                                        <img src="{{ asset('photos/' ~ message.getDemandRelation().getUser().photo) }}" alt="">
+                                        {% else %}
+                                            <img src="{{ asset('photos/default_photo_profil.png') }}" alt="">
+                                {% endif %}
+                            </div>
+                            </div> 
+                            <div class="col align-self-center">
+                                <span class="">{{ message.getDemandRelation().getUser().pseudo }}</span>
+                            </div>
+                        
                     {% else %}
-                        <img src="{{ asset('photos/default_photo_profil.png') }}" alt="">
+                        <div class="col-auto">
+                    
+                            <div class="card-img-top photo-profile mt-3 mb-3 p-0">
+                                {% if  message.getDemandRelation().getDemand().getUser().photo %}
+                                    <img src="{{ asset('photos/' ~ message.getDemandRelation().getDemand().getUser().photo) }}" alt="">
+                                {% else %}
+                                    <img src="{{ asset('photos/default_photo_profil.png') }}" alt="">
+                                {% endif %}
+                            </div>
+                        </div>
+                            <div class="col align-self-center">
+                                <span class="">{{ message.getDemandRelation().getDemand().getUser().pseudo }}</span>
+                            </div>
+
+                    {% endif %}
+            </div> 
+                    <span>Discutez à propos de la demande:</span>
+                    <h1 class="h6">{{ message.getDemandRelation().getDemand().title}}</h1>
+                {% endfor %}
+            
+
+
+
+
+            <div class="main-container ">
+                <div class="content-wrapper">
+                    <div class="overflow-container rounded shadow d-flex flex-column ">
+            
+                        <div class="overflow-content w-100 p-3 d-flex flex-column flex-end justify-content-end ">
+                            {% for message in messages %}
+                                <div class="m-3"></div>
+                                {% if app.user == message.user %}
+                                    <div class="align-self-end p-1 rounded" style="background-color:cornflowerblue; width:fit-content;"> <p class="m-0">{{ message.text }}</p> </div>
+                                {% else %}
+                                    <div class="align-self-start p-1 rounded" style="background-color: #ebebeb; width:fit-content;"> <p class="m-0">{{ message.text }}</p> </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
                 </div>
-            {% endif %}
-            <span class="">{{ message.getDemandRelation().getDemand().getUser().pseudo }}</span>                                        
-        {% endif %}
-        <span>Discutez à propos de la demande:</span>
-        <h1 class="h6">{{ message.getDemandRelation().getDemand().title}}</h1>
-    {% endfor %}
-    
-    </div>
-</div>
+            </div>
+            {# Form to send the id of the demand to create the relation and the message for the Email #}
+            <form class="w-100" action="{{ path('app_message_new') }}" method="POST">
+                {% for message in messages|slice(0, 1) %}
+                    <input name="demandId" type="hidden" value= "{{ message.getDemandRelation().getDemand.id }}">
+                        {% if app.user == message.getDemandRelation().getDemand().getUser() %}
+                            <input name="otherUser" type="hidden" value= "{{ message.getDemandRelation().getUser() }}">
+                        {% elseif app.user == message.getDemandRelation().getUser() %}
+                            <input name="otherUser" type="hidden" value= "{{ message.getDemandRelation().getDemand().getUser() }}">
+                        {% endif %}
+                {% endfor %}
 
-<main class="p-5">
+                <div class="form-group pt-3">
+                    {% for message in messages|slice(0, 1) %}
+                        {% if app.user == message.getDemandRelation().getDemand().getUser() %}
+                            <label class="pb-2" for="exampleFormControlTextarea1">Ecrivez un message à {{message.getDemandRelation().getUser().pseudo}}</label>
+                        {% elseif app.user ==  message.getDemandRelation().getUser()%}
+                            <label class="pb-2" for="exampleFormControlTextarea1">Ecrivez un message à {{message.getDemandRelation().getDemand().getUser().pseudo}}</label>
+                        {% endif %}
+                    {% endfor %}
+                    <textarea name="text" class="form-control message-textarea" id="exampleFormControlTextarea1" rows="3"></textarea>
+                </div>
 
-<div class="main-container">
-<div class="content-wrapper">
+                <div class="d-flex justify-content-between">
+                    <button name="email"  value="email" type="submit" class="btn btn-outline-primary mt-3 mb-3">
+                        <span>Contacter par email</span>
+                    </button>
+                    <button name="hsMessage" value="hsMessage" type="submit" class="btn btn-outline-primary mt-3 mb-3">
+                        <span>Contacer par Help and Share</span>
+                    </button>
+                </div>
 
-<div class="overflow-container">
-
-    <div class="overflow-content m-auto w-50 p-3 d-flex flex-column flex-end justify-content-end rounded shadow overflow-auto" style="background-color: white; height:300px; overflow-y: auto;">
-    {% for message in messages %}
-        <div class="m-5"></div>
-    {% if app.user == message.user %}
-        <div class="align-self-end p-1 rounded" style="background-color:cornflowerblue; width:fit-content;"> <p class="m-0">{{ message.text }}</p> </div>
-    
-    {% else %}
-        <div class="align-self-start p-1 rounded" style="background-color: #ebebeb; width:fit-content;"> <p class="m-0">{{ message.text }}</p> </div>
-        
-    {% endif %}
-        
-    {% endfor %}
-    <div style="scroll-snap-align: end;"></div>
-    </div>
-
-</div>
-
-
-
-
-
-
-</div>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
-    {# Form to send the id of the demand to create the relation and the message for the Email #}
-    <form class="w-100" action="{{ path('app_message_new') }}" method="POST">
-        {% for message in messages|slice(0, 1) %}
-        <input name="demandId" type="hidden" value= "{{ message.getDemandRelation().getDemand.id }}">
-        
-        {% if app.user == message.getDemandRelation().getDemand().getUser() %}
-            <input name="otherUser" type="hidden" value= "{{ message.getDemandRelation().getUser() }}">
-        {% elseif app.user == message.getDemandRelation().getUser() %}
-            <input name="otherUser" type="hidden" value= "{{ message.getDemandRelation().getDemand().getUser() }}">
-        {% endif %}
-       
-        {% endfor %}
-        <div class="form-group">
-        {% for message in messages|slice(0, 1) %}
-            {% if app.user == message.getDemandRelation().getDemand().getUser() %}
-                <label class="pb-2" for="exampleFormControlTextarea1">Ecrivez un message à {{message.getDemandRelation().getUser().pseudo}}</label>
-            {% elseif app.user ==  message.getDemandRelation().getUser()%}
-                <label class="pb-2" for="exampleFormControlTextarea1">Ecrivez un message à {{message.getDemandRelation().getDemand().getUser().pseudo}}</label>
-            {% endif %}
-        {% endfor %}
-
-        <textarea name="text" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+            </form>
         </div>
-        <div class="d-flex justify-content-between">
-        <button name="email"  value="email" type="submit" class="btn btn-outline-primary mt-3 mb-3">
-            <span>Contacter par email</span>
-        </button>
-        <button name="hsMessage" value="hsMessage" type="submit" class="btn btn-outline-primary mt-3 mb-3">
-            <span>Contacer par Help and Share</span>
-        </button>
-        </div>
-
-    </form>
-</main>
+    </div>
+</main>  
 
 {% endblock %}

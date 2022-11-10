@@ -45,15 +45,15 @@
             {{app.user.pseudo}}
           </a>
           <ul class="dropdown-menu dropdown-menu-end text-center " aria-labelledby="navbarDropdown">
-            {# <li class="nav-item">
+            <li class="nav-item">
               <a class="dropdown-item" aria-current="page" href="{{path("my_demands")}}">Mes demandes</a>
-            </li> #}
+            </li>
             <li class="nav-item text-center">
               <a class="dropdown-item" aria-current="page" href="{{path("app_my_demand_relations")}}">Messagerie</a>
             </li>
             <li><hr class="dropdown-divider"></li>
             <li>
-              <a class="dropdown-item text-primary text-center" href="{{ path('app_user_edit', {'id': app.user.id}) }}">Mon profil</a>
+              <a class="dropdown-item text-primary text-center" href="{{ path('app_user_edit', {'id': app.user.id}) }}">Mon compte</a>
             </li>
             <li>
               <a class="dropdown-item text-danger text-center" href="{{ path('app_logout') }}">Se déconnecter</a>

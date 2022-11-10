@@ -1,36 +1,35 @@
 {% extends 'base.html.twig' %}
 
-
 {% block title %}Demandes{% endblock %}
 
 {% block body %}
 <header class="pt-5 pb-5">
         {% if app.user %}
-
-            {# <div class="d-flex flex-wrap justify-content-center mt-5"> 
-                <a class="btn btn-success m-3" href="{{ path('app_demand_new') }}"> + Créér une demande</a>
-                <div class="btn-my"> #}
-
-                            {# Sliding little profile image effect  #}
-                            {# {% if  app.getUser().photo %}
-                                <img class="my-img-button  rounded-circle" src="{{ asset('photos/' ~ app.getUser().photo) }}" alt="">
-                            {% else %}
-                                <img class="my-img-button rounded-circle" src="{{ asset('photos/default_photo_profil.png') }}" alt="">
-                            {% endif %}    #}
-
-                    {# <a class="btn btn-primary m-3" href="{{ path('my_demands') }}">Mes demandes </a>
-                </div>
-                
-            </div> #}
-    
         {% endif %}
         <h1 class="text-center p-5" >Consultez les demandes de la commnauté Help and Share</h1>
-        <form method="post" action="{{ path('app_demand_index') }}" class="d-flex w-25 m-auto" style="min-width: 250px">
-            <input class="form-control me-2" name="search" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-secondary border-2" type="submit">Search</button>
-        </form>
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-10" style="min-width: 300px; max-width: 600px;">
+                    <form method="post" action="{{ path('app_demand_index') }}" class="container d-flex" >
+                        <input class="form-control me-2" name="search" type="search" placeholder="Search" aria-label="Search">
+                        <button class="btn btn-secondary border-2" type="submit">Search</button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+
+
 </header>
+{% for message in app.flashes('success') %}
+
+    <div class="flash-notice alert alert-success">
+        {{ message }}
+    </div>
+{% endfor %}
 <main class="p-5 test">
+
+
 
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-5 ">
 

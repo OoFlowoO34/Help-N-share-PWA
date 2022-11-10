@@ -34,11 +34,13 @@ security:
     - { path: ^/demand/mes_demandes, roles: ROLE_USER }
     - { path: ^/demand/new, roles: ROLE_USER }
     - { path: ^/demand/(.+)/edit, roles: ROLE_USER }
+    - { path: ^/demand_relation, roles: ROLE_USER }
+    - { path: ^/message, roles: ROLE_USER }
+    - { path: ^/user/(.+)/edit, roles: ROLE_USER }
 
-    - { path: ^/proposal/mes_propositions, roles: ROLE_USER }
-    - { path: ^/proposal/new, roles: ROLE_USER }
-    - { path: ^/proposal/(.+)/edit, roles: ROLE_USER }
-
+    # - { path: ^/proposal/mes_propositions, roles: ROLE_USER }
+    # - { path: ^/proposal/new, roles: ROLE_USER }
+    # - { path: ^/proposal/(.+)/edit, roles: ROLE_USER }
     # - { path: ^/profile, roles: ROLE_USER }
 
 when@test:

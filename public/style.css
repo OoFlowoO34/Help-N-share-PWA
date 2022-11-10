@@ -12,6 +12,19 @@ button {
   font-family: "Roboto", sans-serif;
 }
 
+ul {
+  list-style: none;
+}
+
+body {
+  padding-bottom: 0px;
+}
+@media (max-width: 767.98px) {
+  body {
+    padding-bottom: 80px;
+  }
+}
+
 .navbar {
   background-color: rgba(0, 0, 0, 0.5);
   position: fixed;
@@ -75,6 +88,7 @@ textarea {
   position: relative;
 }
 .photo-profile img {
+  height: 100%;
   width: 100%;
   position: absolute;
 }
@@ -95,9 +109,13 @@ textarea {
           text-decoration-color: #fff;
 }
 
+.message-textarea {
+  height: auto !important;
+}
+
 /* a container with flex-direction column */
 .main-container {
-  height: 50vh !important; /* or position:absolute; height:100%; */
+  max-height: 50vh !important; /* or position:absolute; height:100%; */
   display: flex !important;
   flex-direction: column !important;
 }
@@ -111,6 +129,7 @@ textarea {
 
 /* the container for our overflowed content */
 .overflow-container {
+  background-color: white;
   flex: 1 !important;
   overflow: auto !important;
 }

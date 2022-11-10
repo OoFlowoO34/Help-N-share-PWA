@@ -8,6 +8,7 @@ use App\Entity\Demand;
 use App\Form\DemandType;
 use App\Service\FileUploader;
 use App\Repository\DemandRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\DemandRelationRepository;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
@@ -76,6 +77,7 @@ class DemandController extends AbstractController
     #[Route('/new', name: 'app_demand_new', methods: ['GET', 'POST'])]
     public function new(Request $request, DemandRepository $demandRepository, Security $security, FileUploader $fileUploader ): Response
     {
+        
         $user = $security->getUser();
         $demand = new Demand();
 
@@ -107,7 +109,8 @@ class DemandController extends AbstractController
             }
 
             $demandRepository->save($demand, true);
-            return $this->redirectToRoute('app_demand_index', [], Response::HTTP_SEE_OTHER);
+            $demandId = $demand->getId();
+            return $this->redirectToRoute('app_demand_show', ['id' => $demandId,], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('demand/new.html.twig', [
@@ -181,53 +184,62 @@ class DemandController extends AbstractController
      ↓↓↓↓↓↓↓↓↓↓↓↓↓                                                       ↓↓↓↓↓↓↓↓↓↓↓↓	
     _________________________________________________________________________________*/
     #[Route('/{id}/edit', name: 'app_demand_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Demand $demand, DemandRepository $demandRepository, Filesystem $filesystem, FileUploader $fileUploader ): Response
+    public function edit(Request $request, Demand $demand, Filesystem $filesystem, FileUploader $fileUploader, EntityManagerInterface $entityManager, Security $security ): Response
     {
-       
-        $form = $this->createForm(DemandType::class, $demand);
-        $form->handleRequest($request);
-      
-        if ($form->isSubmitted() && $form->isValid()) {
+        $demandId = $demand->getUser();
+        $user = $security->getUser();
 
-            $demand->setDateModified(new DateTime('Europe/Paris'));
+        if ($demandId == $user) {
+            $form = $this->createForm(DemandType::class, $demand);
+            $form->handleRequest($request);
 
-            /*xxxxxxxxxxxxxxx
-            x    PHOTO      x
-            xxxxxxxxxxxxxxxx*/
+            if ($form->isSubmitted() && $form->isValid()) {
+                $demand->setDateModified(new DateTime('Europe/Paris'));
 
-            /** @var UploadedFile $photoFile */
-            $photoFile = $form->get('photo')->getData();
+                /*xxxxxxxxxxxxxxx
+                x    PHOTO      x
+                xxxxxxxxxxxxxxxx*/
 
-            /*__________________________________________________________________________
-            This condition is needed because the 'photo' field is not required
-            so the photo file must be processed only when a file is uploaded         ↓ */
-            if ($photoFile) {
-                
-                // Get the route and the filename to delete
-                $photo = $demand->getPhoto();
-                $TargetDirectory = $fileUploader->getTargetDirectory();
-                $photo_pointer = $TargetDirectory.'/'.$photo;
+                /** @var UploadedFile $photoFile */
+                $photoFile = $form->get('photo')->getData();
 
-                // Delete the photo to be replaced, like unlink($photo_pointer);
-                $filesystem->remove($photo_pointer);
+                /*__________________________________________________________________________
+                This condition is needed because the 'photo' field is not required
+                so the photo file must be processed only when a file is uploaded         ↓ */
+                if ($photoFile) {
+                    // Get the route and the filename to delete
+                    $photo = $demand->getPhoto();
+                    $TargetDirectory = $fileUploader->getTargetDirectory();
+                    $photo_pointer = $TargetDirectory.'/'.$photo;
 
-                // To avoid logic in controllers, making them big, I extracted the upload logic to a separate service ( fileUploader ).
-                // Store the photo and return a new uniq name.
-                $photoFileName = $fileUploader->upload($photoFile);
-                
-                // Store the photo file name instead of its contents
-                $demand->setPhoto($photoFileName);
+                    // Delete the photo to be replaced, like unlink($photo_pointer);
+                    if ($photo) {
+                        $filesystem->remove($photo_pointer);
+                    }
+
+                    // To avoid logic in controllers, making them big, I extracted the upload logic to a separate service ( fileUploader ).
+                    // Store the photo and return a new uniq name.
+                    $photoFileName = $fileUploader->upload($photoFile);
+
+                    // Store the photo file name instead of its contents
+                    $demand->setPhoto($photoFileName);
+                }
+
+                $entityManager->persist($demand);
+                $entityManager->flush();
+                // $demandRepository->save($demand, true);
+                $demandId = $demand->getId();
+                return $this->redirectToRoute('app_demand_show', ['id' => $demandId,], Response::HTTP_SEE_OTHER);
             }
 
-            $demandRepository->save($demand, true);
-            
+            return $this->renderForm('demand/edit.html.twig', [
+                'demand' => $demand,
+                'form' => $form,
+            ]);
+        }
+        else{
             return $this->redirectToRoute('app_demand_index', [], Response::HTTP_SEE_OTHER);
         }
-
-        return $this->renderForm('demand/edit.html.twig', [
-            'demand' => $demand,
-            'form' => $form,
-        ]);
     }
 
 
@@ -252,7 +264,9 @@ class DemandController extends AbstractController
 
         // As it takes a lot of data space and we won't need it any more, 
         // Delete the photo, like unlink($photo_pointer);
-        $filesystem->remove($photo_pointer);
+        if($photo){
+            $filesystem->remove($photo_pointer);
+        }
 
         // Set Deleted to true so the demand disappear for the users 
         // but is still in the database for further uses;
@@ -264,6 +278,6 @@ class DemandController extends AbstractController
         //     $demandRepository->remove($demand, true);
         // }
 
-        return $this->redirectToRoute('app_demand_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('my_demands', [], Response::HTTP_SEE_OTHER);
     }
 }

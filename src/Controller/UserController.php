@@ -97,7 +97,10 @@ class UserController extends AbstractController
                 $photo_pointer = $TargetDirectory.'/'.$photo;
 
                 // Delete the photo to be replaced, like unlink($photo_pointer);
-                $filesystem->remove($photo_pointer);
+                if($photo){
+                    $filesystem->remove($photo_pointer);
+                }
+                
 
                 // To avoid logic in controllers, making them big, I extracted the upload logic to a separate service ( fileUploader ).
                 // Store the photo and return a new uniq name.

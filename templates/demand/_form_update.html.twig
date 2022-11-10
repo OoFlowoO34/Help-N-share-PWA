@@ -11,7 +11,9 @@
     {{ form_row(form.text) }}
     <img class="card-img-top " style="width: 200px"src="{{ asset('photos/' ~ demand.photo) }}" alt="">
     {{ form_row(form.photo) }}
-
     <button class="btn btn-success">{{ button_label|default('Sauvegarder') }}</button>
+
+    <button class="btn btn-danger" type="submit" formaction="{{ path('app_demand_delete', {'id': demand.id}) }}" onclick="return confirm('Supprimer l\'annonce : {{ demand.title}} ?');">Supprimer</button>
+  
 {{ form_end(form) }}
 

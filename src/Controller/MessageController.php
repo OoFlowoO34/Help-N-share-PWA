@@ -27,21 +27,29 @@ class MessageController extends AbstractController
     // }
 
 
-
-
-
     #[Route('/', name: 'app_my_message', methods: ['GET'])]
-    public function myMessages(Request $request, MessageRepository $messageRepository, Security $security): Response
+    public function myMessages(Request $request, DemandRelationRepository $demandRelationRepository, MessageRepository $messageRepository, Security $security): Response
     { 
-  
-        
         $demand_relation_id = $request->query->get('id_demand_relation');
+
+        $relation = $demandRelationRepository->find(['id' => $demand_relation_id,]);
         
-
-
-        return $this->render('message/index.html.twig', [
-            'messages' => $messageRepository->findby(['demandRelation' => $demand_relation_id,])
-        ]);
+        //Check if a relation exist
+        if ($relation) {
+            // And then check if the user is part of the relation ( is allowed to see the messages );
+            if ($relation->getUser() == $security->getUser() or $relation->getDemand()->getUser() ==  $security->getUser()) {
+                $messages = $messageRepository->findby(['demandRelation' => $demand_relation_id,]);
+                return $this->render('message/index.html.twig', [
+                    'messages' => $messages
+                ]);
+            }
+            else {
+            return $this->redirectToRoute('app_my_demand_relations', [], Response::HTTP_SEE_OTHER);
+            }
+        }
+        else {
+            return $this->redirectToRoute('app_my_demand_relations', [], Response::HTTP_SEE_OTHER);
+        }  
     }
 
 
@@ -78,19 +86,21 @@ class MessageController extends AbstractController
                 ->html($text);
 
                 $mailer->send($email);
-            
+                $text = "email: ".$text;
             }
-            elseif($request->request->get("hsMessage")){
-                
+
+            // elseif($request->request->get("hsMessage")){
+            // send hs message anyway  
                 // dd("hsMessage");
                 $message = new Message();
                 $message->setText($text);
                 $message->setUser($user);
                 $message->setDemandRelation($demandRelation);
                 $messageRepository->save($message, true);
-            }
+            // }
+           
             
-        return $this->redirectToRoute('app_demand_show', ['id' => $demandId,], Response::HTTP_SEE_OTHER); 
+        return $this->redirectToRoute('app_my_message', ["id_demand_relation" => $demandRelation->getId()], Response::HTTP_SEE_OTHER); 
         
         // $message = new Message();
         // $form = $this->createForm(MessageType::class, $message);

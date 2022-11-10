@@ -3,8 +3,12 @@
 {% block title %}Edit User{% endblock %}
 
 {% block body %}
-<div class="p-5">
-   
+<header class="pt-5 pb-5 d-flex flex-wrap flex-column">
+        <h1 class="text-center p-5" >Mon compte</h1>     
+</header>
+    <div class="container p-5">
+        <div class="row justify-content-center">
+            <div class="col-10" style="min-width: 300px; max-width: 600px;">
     <div class="card-img-top photo-profile mt-3 mb-3">
 
         {% if  app.getUser().photo %}
@@ -19,8 +23,8 @@
 
     {{ include('user/_form.html.twig', {'button_label': 'Update'}) }}
 
-    <a href="{{ path('app_user_index') }}">back to list</a>
 
-    {{ include('user/_delete_form.html.twig') }}
-</div>
+            </div>
+        </div>
+    </div>    
 {% endblock %}
