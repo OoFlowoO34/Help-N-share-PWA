@@ -74,12 +74,12 @@
             {# Form to send the id of the demand to create the relation and the message for the Email #}
             <form class="w-100" action="{{ path('app_message_new') }}" method="POST">
                 {% for message in messages|slice(0, 1) %}
-                    <input name="demandId" type="hidden" value= "{{ message.getDemandRelation().getDemand.id }}">
-                        {% if app.user == message.getDemandRelation().getDemand().getUser() %}
+                    <input name="DemandRelationId" type="hidden" value= "{{ message.getDemandRelation().id }}">
+                        {# {% if app.user == message.getDemandRelation().getDemand().getUser() %}
                             <input name="otherUser" type="hidden" value= "{{ message.getDemandRelation().getUser() }}">
                         {% elseif app.user == message.getDemandRelation().getUser() %}
                             <input name="otherUser" type="hidden" value= "{{ message.getDemandRelation().getDemand().getUser() }}">
-                        {% endif %}
+                        {% endif %} #}
                 {% endfor %}
 
                 <div class="form-group pt-3">
