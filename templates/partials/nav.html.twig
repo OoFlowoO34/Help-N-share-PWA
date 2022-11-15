@@ -44,19 +44,19 @@
           <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             {{app.user.pseudo}}
           </a>
-          <ul class="dropdown-menu dropdown-menu-end text-center " aria-labelledby="navbarDropdown">
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
             <li class="nav-item">
               <a class="dropdown-item" aria-current="page" href="{{path("my_demands")}}">Mes demandes</a>
             </li>
-            <li class="nav-item text-center">
+            <li class="nav-item">
               <a class="dropdown-item" aria-current="page" href="{{path("app_my_demand_relations")}}">Messagerie</a>
             </li>
             <li><hr class="dropdown-divider"></li>
             <li>
-              <a class="dropdown-item text-primary text-center" href="{{ path('app_user_edit', {'id': app.user.id}) }}">Mon compte</a>
+              <a class="dropdown-item text-primary" href="{{ path('app_user_edit', {'id': app.user.id}) }}">Mon compte</a>
             </li>
             <li>
-              <a class="dropdown-item text-danger text-center" href="{{ path('app_logout') }}">Se déconnecter</a>
+              <a class="dropdown-item text-danger" href="{{ path('app_logout') }}">Se déconnecter</a>
             </li>
           </ul>
         </li>
