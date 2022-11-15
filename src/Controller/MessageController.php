@@ -18,14 +18,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 #[Route('/message')]
 class MessageController extends AbstractController
 {
-    // #[Route('/', name: 'app_message_index', methods: ['GET'])]
-    // public function index(MessageRepository $messageRepository): Response
-    // {
-    //     return $this->render('message/index.html.twig', [
-    //         'messages' => $messageRepository->findAll(),
-    //     ]);
-    // }
-
 
     #[Route('/', name: 'app_my_message', methods: ['GET'])]
     public function myMessages(Request $request, DemandRelationRepository $demandRelationRepository, MessageRepository $messageRepository, Security $security): Response
@@ -53,19 +45,17 @@ class MessageController extends AbstractController
     }
 
 
-
-
-
     #[Route('/new', name: 'app_message_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, DemandRelationRepository $demandRelationRepository, DemandRepository $demandRepository, MessageRepository $messageRepository, Security $security, MailerInterface $mailer): Response
+    public function new(Request $request, DemandRelationRepository $demandRelationRepository, DemandRepository $demandRepository, MessageRepository $messageRepository, Security $security, MailerInterface $mailer, $demandRelationId = 0)
     {
             
             $user = $security->getUser();            
             $text = $request->request->get('text');
 
-            $demandRelationId = $request->request->get('DemandRelationId');
-            $demandRelation = $demandRelationRepository->findOneBy(['id' => $demandRelationId,]);
-        
+            $demandRelationId = $request->request->get('demandRelationId',$demandRelationId);
+            
+            $demandRelation = $demandRelationId ? $demandRelationRepository->findOneBy(['id' => $demandRelationId]) : null;
+            
             $demandRelationUser = $demandRelation->getUser();
             $demanduser = $demandRelation->getDemand()->getUser();
 
@@ -91,7 +81,7 @@ class MessageController extends AbstractController
                 //->bcc('bcc@example.com')
                 //->replyTo('fabien@example.com')
                 //->priority(Email::PRIORITY_HIGH)
-                ->subject('Help & Share, '.$user. ' a répondu à votre demande.')
+                ->subject('Ask, '.$user->getPseudo(). ' a répondu à votre demande.')
                 ->text($text)
                 ->html($text);
 
@@ -113,39 +103,57 @@ class MessageController extends AbstractController
         return $this->redirectToRoute('app_my_message', ["id_demand_relation" => $demandRelation->getId()], Response::HTTP_SEE_OTHER); 
     }
 
-    #[Route('/{id}', name: 'app_message_show', methods: ['GET'])]
-    public function show(Message $message): Response
-    {
-        return $this->render('message/show.html.twig', [
-            'message' => $message,
-        ]);
-    }
 
-    #[Route('/{id}/edit', name: 'app_message_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Message $message, MessageRepository $messageRepository): Response
-    {
-        $form = $this->createForm(MessageType::class, $message);
-        $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $messageRepository->save($message, true);
 
-            return $this->redirectToRoute('app_message_index', [], Response::HTTP_SEE_OTHER);
-        }
 
-        return $this->renderForm('message/edit.html.twig', [
-            'message' => $message,
-            'form' => $form,
-        ]);
-    }
 
-    #[Route('/{id}', name: 'app_message_delete', methods: ['POST'])]
-    public function delete(Request $request, Message $message, MessageRepository $messageRepository): Response
-    {
-        if ($this->isCsrfTokenValid('delete'.$message->getId(), $request->request->get('_token'))) {
-            $messageRepository->remove($message, true);
-        }
 
-        return $this->redirectToRoute('app_message_index', [], Response::HTTP_SEE_OTHER);
-    }
+
+
+
+
+    // #[Route('/', name: 'app_message_index', methods: ['GET'])]
+    // public function index(MessageRepository $messageRepository): Response
+    // {
+    //     return $this->render('message/index.html.twig', [
+    //         'messages' => $messageRepository->findAll(),
+    //     ]);
+    // }
+
+    // #[Route('/{id}', name: 'app_message_show', methods: ['GET'])]
+    // public function show(Message $message): Response
+    // {
+    //     return $this->render('message/show.html.twig', [
+    //         'message' => $message,
+    //     ]);
+    // }
+
+    // #[Route('/{id}/edit', name: 'app_message_edit', methods: ['GET', 'POST'])]
+    // public function edit(Request $request, Message $message, MessageRepository $messageRepository): Response
+    // {
+    //     $form = $this->createForm(MessageType::class, $message);
+    //     $form->handleRequest($request);
+
+    //     if ($form->isSubmitted() && $form->isValid()) {
+    //         $messageRepository->save($message, true);
+
+    //         return $this->redirectToRoute('app_message_index', [], Response::HTTP_SEE_OTHER);
+    //     }
+
+    //     return $this->renderForm('message/edit.html.twig', [
+    //         'message' => $message,
+    //         'form' => $form,
+    //     ]);
+    // }
+
+    // #[Route('/{id}', name: 'app_message_delete', methods: ['POST'])]
+    // public function delete(Request $request, Message $message, MessageRepository $messageRepository): Response
+    // {
+    //     if ($this->isCsrfTokenValid('delete'.$message->getId(), $request->request->get('_token'))) {
+    //         $messageRepository->remove($message, true);
+    //     }
+
+    //     return $this->redirectToRoute('app_message_index', [], Response::HTTP_SEE_OTHER);
+    // }
 }
