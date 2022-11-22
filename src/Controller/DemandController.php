@@ -10,6 +10,7 @@ use App\Service\FileUploader;
 use App\Repository\DemandRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\DemandRelationRepository;
+use App\Repository\LikeRepository;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Security;
@@ -29,7 +30,7 @@ class DemandController extends AbstractController
      ↓↓↓↓↓↓↓↓↓↓↓↓↓                                                       ↓↓↓↓↓↓↓↓↓↓↓↓                                   
     _________________________________________________________________________________*/
     #[Route('/home', name: 'app_demand_index', methods: ['GET','POST'])]
-    public function index(Request $request,DemandRepository $demandRepository): Response
+    public function index(Request $request,DemandRepository $demandRepository, LikeRepository $likeRepository): Response
     {
         $request = Request::createFromGlobals();
         
@@ -42,6 +43,7 @@ class DemandController extends AbstractController
         }
         return $this->render('demand/index.html.twig', [
             'demands' => $demandRepository->findAll(),
+            'likes' => $likeRepository->findAll(),
         ]);
     }
 
@@ -141,7 +143,9 @@ class DemandController extends AbstractController
         //check if connnected user already contacted the demand
         $relations = $demandRelationRepository->findBy(['demand' => $demandId,]);
 
+
         //Check if the user connected is related to the demand
+        // I found out that it was maybe better if I check in the entity so I could use it easily
         $related = false;
         $relatedInfos = Null;
         foreach($relations as $relation){

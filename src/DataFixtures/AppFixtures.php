@@ -96,33 +96,7 @@ class AppFixtures extends Fixture
             $manager->persist($demand);
         }
 
-        /**
-         * Generate fake Proposals
-         */
-    
-        for ($i = 0; $i< 20; ++$i) {
-
-            // Generated two random values, the value of the modified date must be less than the created date
-            // so the random value for modified is between 0 and the value generated for the created date      
-            $rand_days_created = mt_rand(0, 365);
-            $rand_days_modified = mt_rand(0,$rand_days_created);
-
-            $proposal = new Proposal();
-            $proposal->setTitle($this->faker->sentence(3));
-            $proposal->setText($this->faker->text());
-            $proposal->setPhoto($this->faker->imageUrl(100, 100, 'photo', true));
-            $proposal->setDateCreated($this->faker->dateTimeBetween('-'.$rand_days_created.' days','-'.$rand_days_modified.' days'));
-            
-            // Add fake random modified and no modified proposals ( around 50% chance )
-            // $rand_days_created = mt_rand(0, 365);
-            if ($rand_days_created > 182) {
-                $proposal->setDateModified($this->faker->dateTimeBetween('-'.$rand_days_modified.' days'));
-            }
-
-            $proposal->setDeleted($this->faker->boolean());
-            $proposal->setUser($users[mt_rand(0, count($users) - 1)]);  
-            $manager->persist($proposal);
-        }
+       
         $manager->flush();
     }
 }

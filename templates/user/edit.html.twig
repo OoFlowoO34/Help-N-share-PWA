@@ -9,20 +9,28 @@
     <div class="container p-5">
         <div class="row justify-content-center">
             <div class="col-10" style="min-width: 300px; max-width: 600px;">
-    <div class="card-img-top photo-profile mt-3 mb-3">
+                <div class="row align-items-center">
+                    <div class="col-auto card-img-top photo-profile mt-3 mb-3">
 
-        {% if  app.getUser().photo %}
-            <img src="{{ asset('photos/' ~ app.getUser().photo) }}" alt="">
-        {% else %}
-            <img src="{{ asset('photos/default_photo_profil.png') }}" alt="">
-        {% endif %}
+                        {% if  app.getUser().photo %}
+                            <img src="{{ asset('photos/' ~ app.getUser().photo) }}" alt="">
+                        {% else %}
+                            <img src="{{ asset('photos/default_photo_profil.png') }}" alt="">
+                        {% endif %}
 
-        {# <img class="card-img-top w-25 rounded-circle mt-3 mb-3" src="{{ demand.getUser().photo }}" alt=""> #}   
-    
-    </div>
+                        {# <img class="card-img-top w-25 rounded-circle mt-3 mb-3" src="{{ demand.getUser().photo }}" alt=""> #}   
+                    
+                    </div>
+                    <div class="col ps-5">
+                        <span class=" m-0 js-likes-length">{{ app.getUser().getLikeds() | length}}</span>
+                        <i class="fa-solid fa-thumbs-up"></i>
+                    </div>
 
-    {{ include('user/_form.html.twig', {'button_label': 'Update'}) }}
 
+                </div>
+
+
+                {{ include('user/_form.html.twig', {'button_label': 'Update'}) }}
 
             </div>
         </div>

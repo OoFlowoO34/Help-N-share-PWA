@@ -37,7 +37,39 @@ Sent by DemandController :
                             {% endif %}
                         </div>
                         {# <img class="card-img-top w-25 rounded-circle mt-3 mb-3"style="max-width: 100px" src="{{ demand.getUser().photo }}" alt=""> #}
-                        <span class="card-text">{{ demand.getUser().pseudo }}</span>
+                        <span class="card-text m-0 pe-2">{{ demand.getUser().pseudo }}</span>
+                        {% if app.user %}
+                                {% if demand.isRelated(app.user) %}
+                                    <a href="{{ path('app_like_index', {'id': demand.getUser().id}) }}" class="js-like">
+                                {% endif %}
+                                
+
+                                {% if demand.getUser().getLikeds() | length is same as(0) %}
+                                    <span class=" m-0 js-likes-length"></span>
+                                {% else %}
+                                    <span class=" m-0 js-likes-length">{{ demand.getUser().getLikeds() | length}}</span>
+                                {% endif %}
+                        
+                                    {% if demand.getUser().isLikedByUser(app.user) %}                           
+                                        <i class="fa-solid fa-thumbs-up"></i>
+                                    {% else %}
+                                        <i class="fa-regular fa-thumbs-up"></i>
+                                    {% endif %}
+
+                                {% if demand.isRelated(app.user) %}    
+                                </a>
+                                {% endif %}
+                            
+                            {% elseif not app.user %}
+
+                                {% if demand.getUser().getLikeds() | length is same as(0) %}
+                                    <span class=" m-0 js-likes-length"></span>
+                                {% else %}
+                                    <span class=" m-0 js-likes-length">{{ demand.getUser().getLikeds() | length}}</span>
+                                {% endif %}
+                                <i class="fa-regular fa-thumbs-up"></i>
+                                
+                            {% endif %}
                         <h5 class="card-title m-0">{{ demand.title }}</h5>
                         <small class="text-muted"> {{ demand.getUser().location }}</small>
                         <p class="card-text mt-3 mb-3 overflow-hidden" style="height: fit-content;">{{ demand.text }}</p>

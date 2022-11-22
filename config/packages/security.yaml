@@ -38,11 +38,6 @@ security:
     - { path: ^/message, roles: ROLE_USER }
     - { path: ^/user/(.+)/edit, roles: ROLE_USER }
 
-    # - { path: ^/proposal/mes_propositions, roles: ROLE_USER }
-    # - { path: ^/proposal/new, roles: ROLE_USER }
-    # - { path: ^/proposal/(.+)/edit, roles: ROLE_USER }
-    # - { path: ^/profile, roles: ROLE_USER }
-
 when@test:
   security:
     password_hashers:
