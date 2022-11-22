@@ -6,7 +6,7 @@
 <header class="pt-5 pb-5">
         {% if app.user %}
         {% endif %}
-        <h1 class="text-center p-5" >Consultez les demandes de la commnauté Help and Share</h1>
+        <h1 class="text-center p-5" >Consultez les demandes sur ASK</h1>
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-10" style="min-width: 300px; max-width: 600px;">
@@ -18,18 +18,18 @@
 
             </div>
         </div>
-
-
 </header>
 {% for message in app.flashes('success') %}
-
     <div class="flash-notice alert alert-success">
         {{ message }}
     </div>
 {% endfor %}
+{% for message in app.flashes('danger') %}
+    <div class="flash-notice alert alert-danger">
+        {{ message }}
+    </div>
+{% endfor %}
 <main class="p-5 test">
-
-
 
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-5 ">
 
@@ -37,20 +37,6 @@
 
             {# Don't show the demand if is from the connected user and if he has deleted it #}
             {% if demand.user != app.user and demand.deleted == 0 %} 
-                
-                {# <div class="card ml-auto mr-auto mt-5" style="width: 50%;">
-                    <img class="card-img-top w-25" src="{{ demand.getUser().photo }}" alt="">
-                    <div class="card-body">
-                        <span class="card-title">{{ demand.user.pseudo }}</span>
-                        <h5 class="card-title">{{ demand.title }}</h5>
-                        <p class="card-text">{{ demand.text }}</p>
-                        
-                        {% endif %}
-                        
-                     
-                        <a href="{{ path('app_demand_show', {'id': demand.id}) }}">show</a>
-                    </div>
-                </div> #}
 
                 <div class="col ">
                     <div class="card shadow border-0">
@@ -67,13 +53,47 @@
                                 {# <img class="card-img-top w-25 rounded-circle mt-3 mb-3" src="{{ demand.getUser().photo }}" alt=""> #}   
                             
                             </div>
-                            <span class="card-title m-0">{{ demand.getUser().pseudo}}</span>
-                            <h5 class="card-title m-0">{{ demand.title }}</h5>
+                            <span class="card-text m-0 pe-2">{{ demand.getUser().pseudo}}</span>
+                            
+                            {% if app.user %}
+                                {% if demand.isRelated(app.user) %}
+                                    <a href="{{ path('app_like_index', {'id': demand.getUser().id}) }}" class="js-like">
+                                {% endif %}
+                                
+
+                                {% if demand.getUser().getLikeds() | length is same as(0) %}
+                                    <span class=" m-0 js-likes-length"></span>
+                                {% else %}
+                                    <span class=" m-0 js-likes-length">{{ demand.getUser().getLikeds() | length}}</span>
+                                {% endif %}
+                        
+                                    {% if demand.getUser().isLikedByUser(app.user) %}                           
+                                        <i class="fa-solid fa-thumbs-up"></i>
+                                    {% else %}
+                                        <i class="fa-regular fa-thumbs-up"></i>
+                                    {% endif %}
+
+                                {% if demand.isRelated(app.user) %}    
+                                </a>
+                                {% endif %}
+                            
+                            {% elseif not app.user %}
+
+                                {% if demand.getUser().getLikeds() | length is same as(0) %}
+                                    <span class=" m-0 js-likes-length"></span>
+                                {% else %}
+                                    <span class=" m-0 js-likes-length">{{ demand.getUser().getLikeds() | length}}</span>
+                                {% endif %}
+                                <i class="fa-regular fa-thumbs-up"></i>
+                                
+                            {% endif %}
+
+                            <h5 class="card-title m-0 overflow-hidden" style="height: 24px;">{{ demand.title }}</h5>
                             <small class="text-muted"> {{ demand.getUser().location }}</small>
                             <p class="card-text mt-3 mb-3 overflow-hidden" style="height: 100px;">{{ demand.text }}</p>
                         </div>
                         <div class="card-footer d-flex flex-wrap justify-content-between ">
-                        <a class="btn btn-primary stretched-link mt-3 mb-3" href="{{ path('app_demand_show', {'id': demand.id}) }}">Consulter</a>
+                        <a class="btn btn-primary  mt-3 mb-3" href="{{ path('app_demand_show', {'id': demand.id}) }}">Consulter</a>
                         {% if demand.dateModified %}
             
                             <small class="text-muted align-self-end">Modifié le {{ demand.dateModified ? demand.dateModified|date('d-m-Y') : '' }}</small>

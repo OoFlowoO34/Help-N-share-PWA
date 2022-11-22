@@ -43,9 +43,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Demand::class, orphanRemoval: true)]
     protected Collection $demands;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Proposal::class, orphanRemoval: true)]
-    private Collection $proposals;
-
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: DemandRelation::class)]
     private Collection $demandRelations;
 
@@ -55,12 +52,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Message::class)]
     private Collection $messages;
 
+    #[ORM\OneToMany(mappedBy: 'user_liker', targetEntity: Like::class)]
+    private Collection $likers;
+
+    #[ORM\OneToMany(mappedBy: 'user_liked', targetEntity: Like::class)]
+    private Collection $likeds;
+
     public function __construct()
     {
         $this->demands = new ArrayCollection();
-        $this->proposals = new ArrayCollection();
         $this->demandRelations = new ArrayCollection();
         $this->messages = new ArrayCollection();
+        $this->likers = new ArrayCollection();
+        $this->likeds = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -200,36 +204,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @return Collection<int, Proposal>
-     */
-    public function getProposals(): Collection
-    {
-        return $this->proposals;
-    }
-
-    public function addProposal(Proposal $proposal): self
-    {
-        if (!$this->proposals->contains($proposal)) {
-            $this->proposals->add($proposal);
-            $proposal->setUser($this);
-        }
-
-        return $this;
-    }
-
-    public function removeProposal(Proposal $proposal): self
-    {
-        if ($this->proposals->removeElement($proposal)) {
-            // set the owning side to null (unless already changed)
-            if ($proposal->getUser() === $this) {
-                $proposal->setUser(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
      * @return Collection<int, DemandRelation>
      */
     public function getDemandRelations(): Collection
@@ -303,5 +277,78 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         }
 
         return $this;
+    }
+
+    /**
+     * @return Collection<int, Like>
+     */
+    public function getLikers(): Collection
+    {
+        return $this->likers;
+    }
+
+    public function addLiker(Like $liker): self
+    {
+        if (!$this->likers->contains($liker)) {
+            $this->likers->add($liker);
+            $liker->setUserLiker($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLiker(Like $liker): self
+    {
+        if ($this->likers->removeElement($liker)) {
+            // set the owning side to null (unless already changed)
+            if ($liker->getUserLiker() === $this) {
+                $liker->setUserLiker(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Like>
+     */
+    public function getLikeds(): Collection
+    {
+        return $this->likeds;
+    }
+
+    public function addLiked(Like $liked): self
+    {
+        if (!$this->likeds->contains($liked)) {
+            $this->likeds->add($liked);
+            $liked->setUserLiked($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLiked(Like $liked): self
+    {
+        if ($this->likeds->removeElement($liked)) {
+            // set the owning side to null (unless already changed)
+            if ($liked->getUserLiked() === $this) {
+                $liked->setUserLiked(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function isLikedByUser(User $user): bool {
+        $userLikeds = $this->getLikeds();
+        if($userLikeds != null ){
+            foreach($userLikeds as $userLiked){
+               
+                if($userLiked->getUserLiker() == $user){  
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

@@ -167,4 +167,16 @@ class Demand
 
         return $this;
     }
+    
+    public function isRelated(User $user): bool {
+        $relations = $this->getDemandRelations();
+        if($relations != null ){
+            foreach($relations as $relation){
+                if($relation->getUser() == $user or $relation->getDemand()->getUser() == $user){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 }

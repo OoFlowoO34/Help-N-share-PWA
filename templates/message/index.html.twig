@@ -7,7 +7,6 @@
         <h1 class="text-center pt-5 pb-5">Messagerie</h1>    
 </header>
 
-
 <main class="container-fluid p-5">
     <div class="row justify-content-center">
         <div class="col-md-10 col-12" style="">
@@ -28,6 +27,14 @@
                             <div class="col align-self-center">
                                 <span class="">{{ message.getDemandRelation().getUser().pseudo }}</span>
                             </div>
+                            <a href="{{ path('app_like_index', {'id': message.getDemandRelation().getUser().id}) }}" class="js-like">
+                                <span class=" m-0 js-likes-length">{{ message.getDemandRelation().getUser().getLikeds() | length}}</span>
+                                {% if message.getDemandRelation().getUser().isLikedByUser(app.user) %}                           
+                                    <i class="fa-solid fa-thumbs-up"></i>
+                                {% else %}
+                                    <i class="fa-regular fa-thumbs-up"></i>
+                                {% endif %}
+                            </a>
                         
                     {% else %}
                         <div class="col-auto">
@@ -40,18 +47,30 @@
                                 {% endif %}
                             </div>
                         </div>
-                            <div class="col align-self-center">
-                                <span class="">{{ message.getDemandRelation().getDemand().getUser().pseudo }}</span>
-                            </div>
+                        <div class="col align-self-center">
+                            <span class="">{{ message.getDemandRelation().getDemand().getUser().pseudo }}</span>
+                            <a href="{{ path('app_like_index', {'id': message.getDemandRelation().getDemand().getUser().id}) }}" class="js-like">
+                                {% if message.getDemandRelation().getDemand().getUser().getLikeds() | length is same as(0) %}
+                                    <span class=" m-0 js-likes-length"></span>
+                                {% else %}
+                                    <span class=" m-0 js-likes-length">{{ message.getDemandRelation().getDemand().getUser().getLikeds() | length}}</span>
+                                {% endif %}
+        
+                                {% if message.getDemandRelation().getDemand().getUser().isLikedByUser(app.user) %}                           
+                                    <i class="fa-solid fa-thumbs-up"></i>
+                                {% else %}
+                                    <i class="fa-regular fa-thumbs-up"></i>
+                                {% endif %}
+                            </a>
+                        </div>
+
 
                     {% endif %}
             </div> 
                     <span>Discutez à propos de la demande:</span>
-                    <h1 class="h6">{{ message.getDemandRelation().getDemand().title}}</h1>
+                    <h1 class="h6"><a href="{{ path('app_demand_show', {'id': message.getDemandRelation().getDemand().getId()}) }}">{{ message.getDemandRelation().getDemand().title}}</a></h1>
+                    
                 {% endfor %}
-            
-
-
 
 
             <div class="main-container ">
@@ -74,12 +93,7 @@
             {# Form to send the id of the demand to create the relation and the message for the Email #}
             <form class="w-100" action="{{ path('app_message_new') }}" method="POST">
                 {% for message in messages|slice(0, 1) %}
-                    <input name="demandId" type="hidden" value= "{{ message.getDemandRelation().getDemand.id }}">
-                        {% if app.user == message.getDemandRelation().getDemand().getUser() %}
-                            <input name="otherUser" type="hidden" value= "{{ message.getDemandRelation().getUser() }}">
-                        {% elseif app.user == message.getDemandRelation().getUser() %}
-                            <input name="otherUser" type="hidden" value= "{{ message.getDemandRelation().getDemand().getUser() }}">
-                        {% endif %}
+                    <input name="demandRelationId" type="hidden" value= "{{ message.getDemandRelation().getId() }}">
                 {% endfor %}
 
                 <div class="form-group pt-3">
@@ -98,7 +112,7 @@
                         <span>Contacter par email</span>
                     </button>
                     <button name="hsMessage" value="hsMessage" type="submit" class="btn btn-outline-primary mt-3 mb-3">
-                        <span>Contacer par Help and Share</span>
+                        <span>Contacter par ASK</span>
                     </button>
                 </div>
 

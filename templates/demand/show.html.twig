@@ -37,7 +37,39 @@ Sent by DemandController :
                             {% endif %}
                         </div>
                         {# <img class="card-img-top w-25 rounded-circle mt-3 mb-3"style="max-width: 100px" src="{{ demand.getUser().photo }}" alt=""> #}
-                        <span class="card-text">{{ demand.getUser().pseudo }}</span>
+                        <span class="card-text m-0 pe-2">{{ demand.getUser().pseudo }}</span>
+                        {% if app.user %}
+                                {% if demand.isRelated(app.user) %}
+                                    <a href="{{ path('app_like_index', {'id': demand.getUser().id}) }}" class="js-like">
+                                {% endif %}
+                                
+
+                                {% if demand.getUser().getLikeds() | length is same as(0) %}
+                                    <span class=" m-0 js-likes-length"></span>
+                                {% else %}
+                                    <span class=" m-0 js-likes-length">{{ demand.getUser().getLikeds() | length}}</span>
+                                {% endif %}
+                        
+                                    {% if demand.getUser().isLikedByUser(app.user) %}                           
+                                        <i class="fa-solid fa-thumbs-up"></i>
+                                    {% else %}
+                                        <i class="fa-regular fa-thumbs-up"></i>
+                                    {% endif %}
+
+                                {% if demand.isRelated(app.user) %}    
+                                </a>
+                                {% endif %}
+                            
+                            {% elseif not app.user %}
+
+                                {% if demand.getUser().getLikeds() | length is same as(0) %}
+                                    <span class=" m-0 js-likes-length"></span>
+                                {% else %}
+                                    <span class=" m-0 js-likes-length">{{ demand.getUser().getLikeds() | length}}</span>
+                                {% endif %}
+                                <i class="fa-regular fa-thumbs-up"></i>
+                                
+                            {% endif %}
                         <h5 class="card-title m-0">{{ demand.title }}</h5>
                         <small class="text-muted"> {{ demand.getUser().location }}</small>
                         <p class="card-text mt-3 mb-3 overflow-hidden" style="height: fit-content;">{{ demand.text }}</p>
@@ -69,16 +101,14 @@ Sent by DemandController :
                                                 <label class="pb-2" for="exampleFormControlTextarea1"><a class="" href="{{ path('app_my_message', {'id_demand_relation': relation.getId()}) }}">Vous avez contacté {{demand.user.pseudo}}</a></label>
                                             {% endif %}  
                                         {% endfor %}
+                                    </div> 
                                     {% else %}
                                         <label class="pb-2" for="exampleFormControlTextarea1">Ecrivez un message à {{demand.user.pseudo}}</label>
-                                    {% endif %}
-                                    
-                                    
                                         <textarea name="text" class="form-control message-textarea" id="exampleFormControlTextarea1" rows="3"></textarea>
                                     </div>
                                     
-                                    {# <div class="d-flex justify-content-between align-items-center"> #}
-                                    <div class="container-fluid p-0">
+                                  
+                                    <div class="container p-0 m-0">
                                         <div class="row">
                                             <div class="col-12 col-sm-auto ">
                                                 <button name="email"  value="email" type="submit" class=" w-100 btn btn-outline-primary mt-3 ">
@@ -90,9 +120,11 @@ Sent by DemandController :
                                                     <span>Contacter par Help and Share</span>
                                                 </button>
                                             </div>
-                
+                                        </div>                
+                                    </div>
 
-
+                                    {% endif %}
+                                    
                                 </form>  
                             {% endif %}
                                 
@@ -107,8 +139,7 @@ Sent by DemandController :
                                         {% if relations %}
                                             <div class="row">
                                                 <div class="col-auto">
-                                           
-                                                <span class="mt-3 mb-3">Vous avez été contacté par: </span>
+                                                    <span class="mt-3 mb-3">Vous avez été contacté par: </span>
                                                 </div>
                                             
                                                 {% for relation in relations %}
@@ -117,9 +148,7 @@ Sent by DemandController :
                                                         <a class="" href="{{ path('app_my_message', {'id_demand_relation': relation.getId()}) }}">{{relation.user.pseudo}}</a>
                                                     </div>
                                                     {% endif %}  
-                                                {% endfor %}
-                                                </div>
-                                             
+                                                {% endfor %}                                          
                                             </div>
         
                                         {% endif %}
@@ -132,29 +161,31 @@ Sent by DemandController :
                                                 {{ include('demand/_delete_form.html.twig', {'id': demand.id}) }}
                                             </div>
                                         </div>
+                                    </div>
+                                </div>
                             
                             {% endif %}
 
                         {% endif %}
-                        <div class="col">
-                        </div>
-                            <div class="col align-self-end" style="min-width:fit-content;" >
-                                {% if demand.dateModified %}
-                                <div class="text-muted w-100" style="text-align:end;">
-                                    <small class="text-muted ">Modifié le {{ demand.dateModified ? demand.dateModified|date('d-m-Y') : '' }}</small>
+                        <div class="container-fluid p-0 m-0">
+                            <div class="row">
+                                    <div class="col"  >
+                                        {% if demand.dateModified %}
+                                        <div class="text-muted text-right " style="text-align:end;">
+                                            <small>Modifié le {{ demand.dateModified ? demand.dateModified|date('d-m-Y') : '' }}</small>
+                                        </div>
+                    
+                                            
+
+                                        {% else %}
+                                        <div class="text-muted" style="text-align:end;">
+                                            <small>Créé le {{ demand.dateCreated ? demand.dateCreated|date('d-m-Y') : '' }}</small>
+                                        </div>
+                                        {% endif %}
+                                    </div>
                                 </div>
-            
-                                    
-
-                                {% else %}
-            
-                                    <small class="text-muted w-100 ">Créé le {{ demand.dateCreated ? demand.dateCreated|date('d-m-Y') : '' }}</small>
-
-                                {% endif %}
                             </div>
-
                         </div>
-                    </div>
 
                         
 
