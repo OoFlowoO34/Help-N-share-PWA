@@ -19,3 +19,8 @@
 .phpunit.result.cache
 /phpunit.xml
 ###< symfony/phpunit-bridge ###
+
+composer.phar
+error_log
+/public/.htaccess
+/public/photos/
