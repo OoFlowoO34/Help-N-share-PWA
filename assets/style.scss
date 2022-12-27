@@ -40,18 +40,20 @@ ul {
 
 body {
   padding-bottom: 0px;
-
   @include media-breakpoint-up(sm) {
     padding-bottom: 80px;
   }
 }
+
+// Navbar
 .navbar {
   background-color: rgba(0, 0, 0, 0.5);
   position: fixed;
   width: 100%;
   z-index: 2;
 
-  /* If < xs, place the navbar at the bottom of the page, and make it stick */
+  /* If < xs, place the navbar at the bottom of the page, 
+  and make it stick */
   @include media-breakpoint-up(sm) {
     background-color: rgba(0, 0, 0, 0.9);
     position: fixed;
@@ -61,6 +63,7 @@ body {
   }
 }
 
+// Responsive chevron right-down
 #message-chevron-right {
   display: inline-block;
   @include media-breakpoint-up(sm) {
@@ -75,6 +78,7 @@ body {
   }
 }
 
+// header background 
 header {
   background-image: url("/photos/bg-hammer.jpg");
   background-size: cover;
@@ -87,40 +91,38 @@ header {
       rgba(0, 0, 0, 0.5) 70%,
       rgba(0, 0, 0, 0) 100%
     );
-    // backdrop-filter: blur(2px);
     color: white;
   }
 }
+
+// Blink every 1O seconds
+.blink {
+  animation: blink 10s infinite;
+}
+@keyframes blink {
+  0% {
+    background: #212529;
+  }
+  7% {
+    background: #0d6efd;
+  }
+  10% {
+    background: #212529;
+  }
+  15% {
+    background: #0d6efd;
+  }
+  30% {
+    background: #212529;
+  }
+}
+
 
 main {
   position: relative;
   z-index: 3;
   background-color: #fafafa;
 }
-
-//Sliding little profile image effect
-// .btn-my {
-//   position: relative;
-//   .btn {
-//     position: relative;
-//     z-index: 1;
-//   }
-//   .my-img-button {
-//     height: 40px;
-//     width: 40px;
-//     transition: all 0.5s ease;
-//     z-index: 0;
-//     position: absolute;
-//     bottom: 0px;
-//     right: 38%;
-//   }
-// }
-// .btn-my:hover {
-//   .my-img-button {
-//     transition: all 0.5s ease;
-//     bottom: -30px;
-//   }
-// }
 
 textarea {
   height: 200px !important;
@@ -158,27 +160,6 @@ textarea {
   }
 }
 
-.blink {
-  animation: blink 10s infinite;
-}
-@keyframes blink {
-  0% {
-    background: #212529;
-  }
-  7% {
-    background: #0d6efd;
-  }
-  10% {
-    background: #212529;
-  }
-  15% {
-    background: #0d6efd;
-  }
-  30% {
-    background: #212529;
-  }
-}
-
 .message-textarea {
   height: auto !important;
 }
@@ -208,6 +189,8 @@ textarea {
 .overflow-content {
   height: fit-content !important;
 }
+
+
 
 // Fix the problem form-floating on textarea /////////////////////
 .form-floating > .form-control:not(:-moz-placeholder-shown) ~ label {

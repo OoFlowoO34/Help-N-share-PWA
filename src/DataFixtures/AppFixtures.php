@@ -66,7 +66,6 @@ class AppFixtures extends Fixture
 
         //Photos fixtures from Unsplash, website to share photos under free licence.
         $photosTab = ["fixture_photo_1.jpg","fixture_photo_2.jpg","fixture_photo_3.jpg","fixture_photo_4.jpg","fixture_photo_5.jpg","fixture_photo_6.jpg"];
-        
 
         /**
          * Generate fake Demands
@@ -85,7 +84,7 @@ class AppFixtures extends Fixture
             $demand->setPhoto($photosTab[mt_rand(0, count($photosTab) - 1)]);
             $demand->setDateCreated($this->faker->dateTimeBetween('-'.$rand_days_created.' days','-'.$rand_days_modified.' days'));
 
-            // Add fake random modified and no modified demands ( around 50% chance )
+            // Add fake random modified and not modified demands ( around 50% chance )
             // $rand_days_created = mt_rand(0, 365);
             if ($rand_days_created > 182) {
                 $demand->setDateModified($this->faker->dateTimeBetween('-'.$rand_days_modified.' days'));
@@ -95,7 +94,6 @@ class AppFixtures extends Fixture
             $demand->setUser($users[mt_rand(0, count($users) - 1)]);  
             $manager->persist($demand);
         }
-
        
         $manager->flush();
     }

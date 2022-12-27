@@ -49,18 +49,20 @@ class DemandRepository extends ServiceEntityRepository
             ->orderBy('d.date_created', 'DESC')
             ->getQuery()
             ->getResult()
+
+            // SQL :
+            /*
+            SELECT * FROM demand d
+            INNER JOIN user u ON d.user_id = u.id
+            WHERE  d.title LIKE '%'.$search.'%'
+                OR d.text LIKE '%'.$search.'%'
+                OR u.location LIKE '%'.$search.'%'
+            ORDER BY d.date_created, 'DESC'
+            */
        ;
    }
 
-    // Same as :
-    /*
-    SELECT * FROM demand d
-    INNER JOIN user u ON d.id = u.id
-    WHERE  d.title LIKE '%'.$search.'%'
-        OR d.text LIKE '%'.$search.'%'
-        OR u.location LIKE '%'.$search.'%'
-    ORDER BY d.date_created, 'DESC'
-    */
+
 
 
 

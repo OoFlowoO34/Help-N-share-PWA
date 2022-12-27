@@ -49,8 +49,6 @@
                             {% else %}
                                 <img src="{{ asset('photos/default_photo_profil.png') }}" alt="">
                             {% endif %}
-                
-                                {# <img class="card-img-top w-25 rounded-circle mt-3 mb-3" src="{{ demand.getUser().photo }}" alt=""> #}   
                             
                             </div>
                             <span class="card-text m-0 pe-2">{{ demand.getUser().pseudo}}</span>
@@ -60,7 +58,7 @@
                                     <a href="{{ path('app_like_index', {'id': demand.getUser().id}) }}" class="js-like">
                                 {% endif %}
                                 
-
+                                {# If the user who posted this demand has 0 like  #}
                                 {% if demand.getUser().getLikeds() | length is same as(0) %}
                                     <span class=" m-0 js-likes-length"></span>
                                 {% else %}

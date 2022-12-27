@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: DemandRepository::class)]
 class Demand
@@ -16,10 +17,27 @@ class Demand
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 50)]
+
+    #[ORM\Column(type: Types::TEXT)]
+    #[Assert\NotBlank]
+    #[Assert\NotNull]
+    #[Assert\Length(
+        min: 10,
+        max: 50,
+        minMessage: 'Votre titre doit faire minimum {{ limit }} caractères',
+        maxMessage: 'Votre titre doit faire maximum {{ limit }} caractères',
+    )]
     private ?string $title = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Assert\NotBlank]
+    #[Assert\NotNull]
+    #[Assert\Length(
+        min: 10,
+        max: 200,
+        minMessage: 'Votre message doit faire minimum {{ limit }} caractères',
+        maxMessage: 'Votre message doit faire maximum {{ limit }} caractères',
+    )]
     private ?string $text = null;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -30,7 +48,7 @@ class Demand
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $date_modified = null;
-
+    
     #[ORM\Column]
     private ?bool $deleted = null;
 
@@ -167,11 +185,18 @@ class Demand
 
         return $this;
     }
-    
+
+    // If the connected user has already responded to the demand or if he is the one who got a response to his demand
     public function isRelated(User $user): bool {
+        
+        // Get all relations of this demand
         $relations = $this->getDemandRelations();
+
+        // If there is at least 1 relation on this demand
         if($relations != null ){
             foreach($relations as $relation){
+
+                // If the connected user has already responded to the demand or if he is the one who got a response to his demand
                 if($relation->getUser() == $user or $relation->getDemand()->getUser() == $user){
                     return true;
                 }

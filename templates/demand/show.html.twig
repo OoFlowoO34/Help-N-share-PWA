@@ -2,7 +2,7 @@
 Sent by DemandController : 
             'demand'    => ( ENTITY )   The instance from the request for "demand" 
             'relations' => ( OBJ )      All the demandRelation of this demand instance 
-            'related'   => ( BOOL )     True if user is related w/ the demand, else false 
+            'related'   => ( BOOL )     True if the connected user has already responded to the demand, else false 
             'mine'      => ( BOOL )     True if the demand is from the connected user, else false
 #}
 
@@ -15,7 +15,7 @@ Sent by DemandController :
 {# {{  dump(demand) }} #}
 {# {{  dump(relations) }} #}
 {# {{  dump(related) }} #}
-{# {{  dump(myDemand) }} #}
+{# {{  dump(mine) }} #}
 
 <header class="pt-5 pb-5 d-flex flex-wrap flex-column">
         <h1 class="text-center p-5" >Demande</h1>     
@@ -25,51 +25,56 @@ Sent by DemandController :
 
         {# Don't show the demand if the demand is deleted #}
         {% if demand.deleted == 0 %} 
-
             <div class="col">
                 <div class="card shadow border-0">
                     <div class="card-body ">
                         <div class="card-img-top photo-profile mt-3 mb-3">
+                            {# If the demand creator uploaded a profil photo #}
                             {% if  demand.getUser().photo %}
                                 <img src="{{ asset('photos/' ~ demand.getUser().photo) }}" alt="">
                             {% else %}
                                 <img src="{{ asset('photos/default_photo_profil.png') }}" alt="">
                             {% endif %}
                         </div>
-                        {# <img class="card-img-top w-25 rounded-circle mt-3 mb-3"style="max-width: 100px" src="{{ demand.getUser().photo }}" alt=""> #}
                         <span class="card-text m-0 pe-2">{{ demand.getUser().pseudo }}</span>
+                        {# If user connected #}
                         {% if app.user %}
-                                {% if demand.isRelated(app.user) %}
-                                    <a href="{{ path('app_like_index', {'id': demand.getUser().id}) }}" class="js-like">
-                                {% endif %}
-                                
 
-                                {% if demand.getUser().getLikeds() | length is same as(0) %}
-                                    <span class=" m-0 js-likes-length"></span>
+                            {# If the connected user has already responded to the demand or if he is the one who got a response to his demand #}
+                            {% if demand.isRelated(app.user) %}
+                                <a href="{{ path('app_like_index', {'id': demand.getUser().id}) }}" class="js-like">
+                            {% endif %}
+
+                            {# If the user who posted this demand has 0 like #}
+                            {% if demand.getUser().getLikeds() | length is same as(0) %}
+                                <span class=" m-0 js-likes-length"></span>
+                            {% else %}
+                                <span class=" m-0 js-likes-length">{{ demand.getUser().getLikeds() | length}}</span>
+                            {% endif %}
+
+                                {# If the user who posted this demand is already liked by the connected user #}
+                                {% if demand.getUser().isLikedByUser(app.user) %}                           
+                                    <i class="fa-solid fa-thumbs-up"></i>
                                 {% else %}
-                                    <span class=" m-0 js-likes-length">{{ demand.getUser().getLikeds() | length}}</span>
-                                {% endif %}
-                        
-                                    {% if demand.getUser().isLikedByUser(app.user) %}                           
-                                        <i class="fa-solid fa-thumbs-up"></i>
-                                    {% else %}
-                                        <i class="fa-regular fa-thumbs-up"></i>
-                                    {% endif %}
-
-                                {% if demand.isRelated(app.user) %}    
-                                </a>
+                                    <i class="fa-regular fa-thumbs-up"></i>
                                 {% endif %}
                             
-                            {% elseif not app.user %}
-
-                                {% if demand.getUser().getLikeds() | length is same as(0) %}
-                                    <span class=" m-0 js-likes-length"></span>
-                                {% else %}
-                                    <span class=" m-0 js-likes-length">{{ demand.getUser().getLikeds() | length}}</span>
-                                {% endif %}
-                                <i class="fa-regular fa-thumbs-up"></i>
-                                
+                            {# If the connected user has already responded to the demand or if he is the one who got a response to his demand #}
+                            {% if demand.isRelated(app.user) %}    
+                            </a>
                             {% endif %}
+
+                        {# If user is not connected #}
+                        {% elseif not app.user %}
+
+                            {# If the user who posted this demand has 0 like #}
+                            {% if demand.getUser().getLikeds() | length is same as(0) %}
+                                <span class=" m-0 js-likes-length"></span>
+                            {% else %}
+                                <span class=" m-0 js-likes-length">{{ demand.getUser().getLikeds() | length}}</span>
+                            {% endif %}
+                            <i class="fa-regular fa-thumbs-up"></i>        
+                        {% endif %}
                         <h5 class="card-title m-0">{{ demand.title }}</h5>
                         <small class="text-muted"> {{ demand.getUser().location }}</small>
                         <p class="card-text mt-3 mb-3 overflow-hidden" style="height: fit-content;">{{ demand.text }}</p>
@@ -79,35 +84,38 @@ Sent by DemandController :
                     <div class="card-footer d-flex flex-wrap justify-content-between pt-4">
 
 
-                        {#  If the connected user is NOT related w/ the demand #}
-                        {#  And if the demand is NOT from the connected user #} 
+                        {# If it is not the connected user's demand #}
                         {% if not mine %}
 
                             {#  If the user is connected #}
                             {% if app.user %}
 
-                                {# Form to send the id of the demand to create the relation and the message for the Email #}
+                                {# Display form to send a message #}
                                 <form class="w-100" action="{{ path('app_demand_relation_new') }}" method="POST">
-                                
                                     <input name="demandId" type="hidden" value= "{{ demand.id }}">
 
                                     <div class="form-group">
                                         
-                                    {#  If the connected user is related w/ the demand #}
-                                    {#  And if the demand is NOT from the connected user #}    
+                                    {#  If the connected user has already responded to the demand #}
                                     {% if related %}
                                         {% for relation in relations %}
+
+                                            {#  If the relation matches with the demand and the user connected #}    
                                             {% if relation.getDemand() == demand and relation.getUser() == app.user  %}
-                                                <label class="pb-2" for="exampleFormControlTextarea1"><a class="" href="{{ path('app_my_message', {'id_demand_relation': relation.getId()}) }}">Vous avez contacté {{demand.user.pseudo}}</a></label>
+                                                <label class="pb-2" for="exampleFormControlTextarea1">
+                                                    <a class="" href="{{ path('app_my_message', {'id_demand_relation': relation.getId()}) }}">
+                                                        Vous avez contacté {{demand.user.pseudo}}
+                                                    </a>
+                                                </label>
                                             {% endif %}  
                                         {% endfor %}
                                     </div> 
+                                    
                                     {% else %}
                                         <label class="pb-2" for="exampleFormControlTextarea1">Ecrivez un message à {{demand.user.pseudo}}</label>
                                         <textarea name="text" class="form-control message-textarea" id="exampleFormControlTextarea1" rows="3"></textarea>
-                                    </div>
-                                    
-                                  
+                                    </div>  
+     
                                     <div class="container p-0 m-0">
                                         <div class="row">
                                             <div class="col-12 col-sm-auto ">
@@ -117,25 +125,24 @@ Sent by DemandController :
                                             </div>
                                             <div class="col-12 col-sm-auto">
                                                 <button name="hsMessage" value="hsMessage" type="submit" class="w-100 btn btn-outline-primary mt-3 mb-3">
-                                                    <span>Contacter par Help and Share</span>
+                                                    <span>Contacter par ASK</span>
                                                 </button>
                                             </div>
                                         </div>                
                                     </div>
-
-                                    {% endif %}
-                                    
+                                    {% endif %}     
                                 </form>  
                             {% endif %}
-                                
+
+                        {# If it is the connected user's demand #}        
                         {% elseif mine %}
 
+                            {#  If the user is connected #}
                             {% if app.user %}
-                                {#  If there is a demandRelation of this demand instance  #}
-                                {# if the demand is from the connected user     #}
                                 <div class="row">
                                     <div class="col">
-                            
+
+                                        {#  If this demand has a relation #}
                                         {% if relations %}
                                             <div class="row">
                                                 <div class="col-auto">
@@ -143,6 +150,8 @@ Sent by DemandController :
                                                 </div>
                                             
                                                 {% for relation in relations %}
+
+                                                    {#  If the relation matches with the demand and the user connected #}
                                                     {% if relation.getDemand() == demand and relation.getUser() == relation.user  %}
                                                     <div class="col-auto">
                                                         <a class="" href="{{ path('app_my_message', {'id_demand_relation': relation.getId()}) }}">{{relation.user.pseudo}}</a>
@@ -169,13 +178,13 @@ Sent by DemandController :
                         {% endif %}
                         <div class="container-fluid p-0 m-0">
                             <div class="row">
-                                    <div class="col"  >
+                                    <div class="col">
+                                    
+                                        {# If the demand has been modified #}
                                         {% if demand.dateModified %}
                                         <div class="text-muted text-right " style="text-align:end;">
                                             <small>Modifié le {{ demand.dateModified ? demand.dateModified|date('d-m-Y') : '' }}</small>
                                         </div>
-                    
-                                            
 
                                         {% else %}
                                         <div class="text-muted" style="text-align:end;">

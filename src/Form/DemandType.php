@@ -20,6 +20,8 @@ class DemandType extends AbstractType
                 'label' => 'Titre',
                 'attr' => [
                     'placeholder' => 'Titre',
+                    'maxlength' => "50",
+                    'minlength' => "10",
                 ],
                 'row_attr' => [
                     'class' => 'form-floating mb-3',
@@ -29,6 +31,7 @@ class DemandType extends AbstractType
                 'label' => 'Texte',
                 'attr' => [
                     'placeholder' => 'text',
+                    'maxlength' => "200",
                 ],
                 'row_attr' => [
                     'class' => 'form-floating mb-3 h',
@@ -36,13 +39,15 @@ class DemandType extends AbstractType
             ])
             ->add('photo', FileType::class, [
                 'label' => 'Image',
+                
+                // make it optional so you don't have to re-upload the photo
+                // every time you edit the Demand details
+                'required' => false,
 
                 // unmapped means that this field is not associated to any entity property
                 'mapped' => false,
 
-                // make it optional so you don't have to re-upload the PDF file
-                // every time you edit the Product details
-                'required' => false,
+
 
                 // unmapped fields can't define their validation using annotations
                 // in the associated entity, so you can use the PHP constraint classes
