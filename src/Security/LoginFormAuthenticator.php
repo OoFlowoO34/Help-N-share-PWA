@@ -56,6 +56,7 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
         $isVerfied = $user->isVerified();
        
         if(!$isVerfied){
+            //stop the execution
             throw new CustomUserMessageAuthenticationException("Votre compte n'a pas été vérifié");
         }
         
@@ -71,7 +72,7 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
         }
 
         // For example:
-        return new RedirectResponse($this->urlGenerator->generate('app_home'));
+        return new RedirectResponse($this->urlGenerator->generate('app_demand_index'));
         //throw new \Exception('TODO: provide a valid redirect inside '.__FILE__);
     }
     

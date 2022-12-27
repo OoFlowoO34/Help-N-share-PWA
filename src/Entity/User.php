@@ -312,8 +312,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @return Collection<int, Like>
      */
-    public function getLikeds(): Collection
-    {
+    public function getLikeds(): Collection {
         return $this->likeds;
     }
 

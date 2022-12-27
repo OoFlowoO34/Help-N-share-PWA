@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-
 use DateTime;
 use App\Entity\Demand;
 use App\Form\DemandType;
@@ -19,8 +18,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-
-#[Route('/demand')]
+#[Route('/')]
 class DemandController extends AbstractController
 {
 
@@ -29,8 +27,8 @@ class DemandController extends AbstractController
                                         HOME
      ↓↓↓↓↓↓↓↓↓↓↓↓↓                                                       ↓↓↓↓↓↓↓↓↓↓↓↓                                   
     _________________________________________________________________________________*/
-    #[Route('/home', name: 'app_demand_index', methods: ['GET','POST'])]
-    public function index(Request $request,DemandRepository $demandRepository, LikeRepository $likeRepository): Response
+    #[Route('/', name: 'app_demand_index', methods: ['GET','POST'])]
+    public function index(Request $request,DemandRepository $demandRepository): Response
     {
         $request = Request::createFromGlobals();
         
@@ -43,7 +41,6 @@ class DemandController extends AbstractController
         }
         return $this->render('demand/index.html.twig', [
             'demands' => $demandRepository->findAll(),
-            'likes' => $likeRepository->findAll(),
         ]);
     }
 
@@ -131,25 +128,19 @@ class DemandController extends AbstractController
     // Nous permet de ne pas mettre Request en paramettre et d'aller chercher la demande correspondante avec l'id :
     //$id = $request->get('id');
     //$demand = $demandRepository->findOneBy(['id'=>$id]);
-    #[Route('/{id}', name: 'app_demand_show', methods: ['GET'])]
+    #[Route('demand/{id}', name: 'app_demand_show', methods: ['GET'])]
     public function show(Demand $demand, DemandRelationRepository $demandRelationRepository, DemandRepository $demandRepository, Security $security): Response
     {
         $user = $security->getUser();
         $demandId = $demand->getId();
-        
-        // $toto = $demandRepository->findBy(['user' => $user,'demandId' => $demandId ]);
 
-        //find the connected user's demandRelation on this demand instance if there is one 
-        //check if connnected user already contacted the demand
+        // find the Relations on this Demand instance if there is one 
         $relations = $demandRelationRepository->findBy(['demand' => $demandId,]);
 
-
-        //Check if the user connected is related to the demand
-        // I found out that it was maybe better if I check in the entity so I could use it easily
+        // Check if the connected user has already responded to the demand 
         $related = false;
         $relatedInfos = Null;
         foreach($relations as $relation){
-           
             //If related user = user connected
             if($relation->getUser() == $user){
                 $related = true;
@@ -187,16 +178,21 @@ class DemandController extends AbstractController
                                         EDIT
      ↓↓↓↓↓↓↓↓↓↓↓↓↓                                                       ↓↓↓↓↓↓↓↓↓↓↓↓	
     _________________________________________________________________________________*/
-    #[Route('/{id}/edit', name: 'app_demand_edit', methods: ['GET', 'POST'])]
+    #[Route('demand/{id}/edit', name: 'app_demand_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Demand $demand, Filesystem $filesystem, FileUploader $fileUploader, EntityManagerInterface $entityManager, Security $security ): Response
     {
-        $demandId = $demand->getUser();
+        // Get user who posted the demand ( GET method )
+        $demandUser = $demand->getUser();
+
+        // Get user connected
         $user = $security->getUser();
 
-        if ($demandId == $user) {
+        // Verify if the user who posted the demand is the one connected
+        if ($demandUser == $user) {
             $form = $this->createForm(DemandType::class, $demand);
             $form->handleRequest($request);
-
+            
+            // If the form is submitted and valid, edit demand;
             if ($form->isSubmitted() && $form->isValid()) {
                 $demand->setDateModified(new DateTime('Europe/Paris'));
 
@@ -216,7 +212,7 @@ class DemandController extends AbstractController
                     $TargetDirectory = $fileUploader->getTargetDirectory();
                     $photo_pointer = $TargetDirectory.'/'.$photo;
 
-                    // Delete the photo to be replaced, like unlink($photo_pointer);
+                    // If the demand already has a photo, Delete the photo to be replaced, like unlink($photo_pointer);
                     if ($photo) {
                         $filesystem->remove($photo_pointer);
                     }
@@ -231,7 +227,7 @@ class DemandController extends AbstractController
 
                 $entityManager->persist($demand);
                 $entityManager->flush();
-                // $demandRepository->save($demand, true);
+               
                 $demandId = $demand->getId();
                 return $this->redirectToRoute('app_demand_show', ['id' => $demandId,], Response::HTTP_SEE_OTHER);
             }
@@ -252,7 +248,7 @@ class DemandController extends AbstractController
                                         DELETE
      ↓↓↓↓↓↓↓↓↓↓↓↓↓                                                       ↓↓↓↓↓↓↓↓↓↓↓↓                                   
     _________________________________________________________________________________*/
-    #[Route('/{id}', name: 'app_demand_delete', methods: ['POST'])]
+    #[Route('demand/{id}', name: 'app_demand_delete', methods: ['POST'])]
     public function delete(Request $request, Demand $demand, DemandRepository $demandRepository, FileUploader $fileUploader, Filesystem $filesystem): Response
     {
         $demandId = $request->get('id');

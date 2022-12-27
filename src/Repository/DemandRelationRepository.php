@@ -47,11 +47,26 @@ class DemandRelationRepository extends ServiceEntityRepository
          ->andWhere('dr.user = :user OR dr.demand IN (:demand) ')
          ->setParameter('user', $user)
          ->setParameter('demand',$demand)
-         // ->orderBy('d.date_created', 'DESC')
          ->getQuery()
          ->getResult()
+
+        // SQL :
+        /*
+        SELECT * FROM demand_relation dr 
+        INNER JOIN user u ON dr.user_id = u.id 
+        INNER JOIN demand d ON dr.demand_id = d.id 
+        WHERE dr.user_id = $user 
+        OR dr.demand_id = $demand
+        */
     ;
     }
+
+
+
+
+
+
+
 
 
 //    /**

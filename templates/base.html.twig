@@ -31,82 +31,80 @@
         {% endblock %}
         <script>
             
-        // Get a NodeList of all .demo elements
-        const demoClasses = document.querySelectorAll('.nav-brand');
-        const lulu = document.getElementById("idtest");
-        // Change the text of multiple elements with a loop
-        demoClasses.forEach(element => {
-            
-           
-                lulu.addEventListener("mouseover", test);
+        // Get a NodeList of all .svg-brand elements
+        const svgBrand = document.querySelectorAll('.svg-brand');
+        const logoBrandLink = document.getElementById("logo-brand-link");
+        
+        // Change the color of multiple elements with a loop
+        svgBrand.forEach(element => {
 
-                function test(){
+                // Call changeColorToBlue when passing the mouse on the brand logo
+                logoBrandLink.addEventListener("mouseover", changeColorToBlue);
+
+                // Change the color to blue
+                function changeColorToBlue(){
                 element.setAttribute("fill", "#0D6EFD")
-                console.log("brand blue")
+                //console.log("brand blue")
                 }
 
-                lulu.addEventListener("mouseout", leave);
-
-                function leave(){
-               
+                // Call changeColorToBlue when leaving the mouse on the brand logo
+                logoBrandLink.addEventListener("mouseout", changeColorToWhite);
+                
+                // Change the color to white
+                function changeColorToWhite(){
                 element.setAttribute("fill", "white")
-                console.log("brand white")
+                //console.log("brand white")
             }
         });
             
   
         // AJAX
-        
-        {# fetch('https://127.0.0.1:8000/like')
-        .then(r => r.json())
-        .then(body => console.log(body))
-         #}
 
+        // Get a NodeList of all .js-like elements
         const jsLikes = document.querySelectorAll(".js-like");
-        {# const js-likes = document.getElementsByClassName("js-like"); #}
-        console.log(jsLikes);
+        
+        // For each jsLikes found, call the function onClickBtnLike() if cliked
+        jsLikes.forEach(function(link){
+            console.log("jsLikes");
+            link.addEventListener('click', onClickBtnLike);
+        })
 
+        // Fetch to add or remove a like and get the number of like(s),
+        // Replace icones 
         function onClickBtnLike(event){
 
-            //prevents the page refresh
+            // prevents the page refresh
             event.preventDefault();
+
+            // Path to the resource to fetch
             const url = this.href; 
+
             const jsLikesLength = this.querySelector('.js-likes-length');
             const icone = this.querySelector('.fa-thumbs-up');
+            
+            // If icone solide, replace with a regular 
             if(icone.classList.contains("fa-solid")){
                 icone.classList.replace("fa-solid","fa-regular")
             }
+            //else replace the regular with a solid
             else{
                 icone.classList.replace("fa-regular","fa-solid")
-            }
-            console.log(url);
+            };
 
+            // Fetch to add or remove a like and get the number of like(s)
             fetch(url)
             .then(response => response.json())
             .then(function(response){
-                // console.log(response)
-                // console.log(this)
-                // console.log(response.likes)
-                // console.log(jsLikesLength)
+                
+                // If the number of like(s) is different from 0
                 if(response.countLiked !== 0){
-                    console.log("test")
                     jsLikesLength.textContent = response.countLiked;
                 }
                 else{
                     jsLikesLength.textContent = "";
                 }
             })
-            
-            
-            
-         
         }
-
-        jsLikes.forEach(function(link){
-            console.log("jsLikes");
-            link.addEventListener('click', onClickBtnLike);
-        })
-
 
         </script>
 
